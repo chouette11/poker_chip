@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter_template/model/document/room/room_document.dart';
+import 'package:poker_chip/model/document/room/room_document.dart';
 
 part 'room_entity.freezed.dart';
 

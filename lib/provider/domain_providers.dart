@@ -1,17 +1,17 @@
-import 'package:flutter_template/page/tutorial/children/tutorial_page_1.dart';
-import 'package:flutter_template/page/tutorial/children/tutorial_page_2.dart';
-import 'package:flutter_template/page/tutorial/children/tutorial_page_3.dart';
-import 'package:flutter_template/page/tutorial/children/tutorial_page_4.dart';
-import 'package:flutter_template/page/tutorial/children/tutorial_page_5.dart';
-import 'package:flutter_template/page/tutorial/children/tutorial_page_6.dart';
-import 'package:flutter_template/repository/user_repository.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_1.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_2.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_3.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_4.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_5.dart';
+import 'package:poker_chip/page/tutorial/children/tutorial_page_6.dart';
+import 'package:poker_chip/repository/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutter_template/page/root/root_page.dart';
+import 'package:poker_chip/page/root/root_page.dart';
 
 final firebaseFirestoreProvider = Provider((_) => FirebaseFirestore.instance);
 

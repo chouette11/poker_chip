@@ -1,8 +1,8 @@
-import 'package:flutter_template/page/tutorial/component/tutorial_executed_dialog.dart';
+import 'package:poker_chip/page/tutorial/component/tutorial_executed_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
-import 'package:flutter_template/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class TutorialAnswerDialog extends ConsumerStatefulWidget {
   const TutorialAnswerDialog({super.key, required this.index});

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/data/api/api_example.dart';
-import 'package:flutter_template/model/entity/message/message_entity.dart';
+import 'package:poker_chip/data/api/api_example.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
 
 final apiProvider = Provider<ApiDataSource>((ref) => ApiDataSource(ref: ref));
 

@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_template/page/tutorial/component/tutorial_appbar.dart';
-import 'package:flutter_template/page/tutorial/component/tutorial_text_field.dart';
+import 'package:poker_chip/page/tutorial/component/tutorial_appbar.dart';
+import 'package:poker_chip/page/tutorial/component/tutorial_text_field.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/util/constant/text_style_constant.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:go_router/go_router.dart';
 
 class TutorialPage1 extends ConsumerStatefulWidget {

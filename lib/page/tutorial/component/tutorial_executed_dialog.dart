@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:flutter_template/util/constant/text_style_constant.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 
 class TutorialExecutedDialog extends ConsumerWidget {
   const TutorialExecutedDialog({

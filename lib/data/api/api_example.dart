@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_template/model/document/message/message_document.dart';
+import 'package:poker_chip/model/document/message/message_document.dart';
 
 part 'api_example.g.dart';
 

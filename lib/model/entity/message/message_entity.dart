@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter_template/model/document/message/message_document.dart';
+import 'package:poker_chip/model/document/message/message_document.dart';
 
 part 'message_entity.freezed.dart';
 part 'message_entity.g.dart';

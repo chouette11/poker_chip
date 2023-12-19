@@ -1,4 +1,4 @@
-import 'package:flutter_template/model/document/user/user_document.dart';
+import 'package:poker_chip/model/document/user/user_document.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_entity.freezed.dart';

@@ -1,10 +1,10 @@
-import 'package:flutter_template/model/document/user/user_document.dart';
+import 'package:poker_chip/model/document/user/user_document.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/model/document/message/message_document.dart';
-import 'package:flutter_template/model/document/room/room_document.dart';
-import 'package:flutter_template/provider/domain_providers.dart';
-import 'package:flutter_template/provider/presentation_providers.dart';
+import 'package:poker_chip/model/document/message/message_document.dart';
+import 'package:poker_chip/model/document/room/room_document.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
 
 final firestoreProvider =
     Provider<FirestoreDataSource>((ref) => FirestoreDataSource(ref: ref));

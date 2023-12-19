@@ -1,9 +1,9 @@
-import 'package:flutter_template/model/entity/user/user_entity.dart';
-import 'package:flutter_template/provider/domain_providers.dart';
-import 'package:flutter_template/provider/presentation_providers.dart';
-import 'package:flutter_template/repository/user_repository.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
-import 'package:flutter_template/util/constant/text_style_constant.dart';
+import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/user_repository.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:app_settings/app_settings.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

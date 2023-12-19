@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter_template/provider/domain_providers.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:flutter_template/repository/message_repository.dart';
-import 'package:flutter_template/repository/room_repository.dart';
-import 'package:flutter_template/util/constant/const.dart';
+import 'package:poker_chip/repository/message_repository.dart';
+import 'package:poker_chip/repository/room_repository.dart';
+import 'package:poker_chip/util/constant/const.dart';
 import 'package:uuid/uuid.dart';
 
 part 'presentation_providers.g.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
-import 'package:flutter_template/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class MainButton extends StatelessWidget {
   const MainButton({

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter_template/model/document/message/timestamp_converter.dart';
+import 'package:poker_chip/model/document/message/timestamp_converter.dart';
 
 part 'message_document.freezed.dart';
 

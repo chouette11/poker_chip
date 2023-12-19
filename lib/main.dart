@@ -1,12 +1,12 @@
-import 'package:flutter_template/data/firebase_auth_data_source.dart';
-import 'package:flutter_template/repository/user_repository.dart';
-import 'package:flutter_template/util/environment/environment.dart';
+import 'package:poker_chip/data/firebase_auth_data_source.dart';
+import 'package:poker_chip/repository/user_repository.dart';
+import 'package:poker_chip/util/environment/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/provider/audio_provider.dart';
-import 'package:flutter_template/provider/domain_providers.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
+import 'package:poker_chip/provider/audio_provider.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

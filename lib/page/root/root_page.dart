@@ -1,14 +1,14 @@
-import 'package:flutter_template/data/firebase_auth_data_source.dart';
-import 'package:flutter_template/page/root/component/mute_button.dart';
-import 'package:flutter_template/provider/domain_providers.dart';
+import 'package:poker_chip/data/firebase_auth_data_source.dart';
+import 'package:poker_chip/page/root/component/mute_button.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/provider/audio_provider.dart';
-import 'package:flutter_template/page/root/component/join_dialog.dart';
-import 'package:flutter_template/util/play.dart';
-import 'package:flutter_template/page/root/component/main_button.dart';
-import 'package:flutter_template/page/root/component/title_icon.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
+import 'package:poker_chip/provider/audio_provider.dart';
+import 'package:poker_chip/page/root/component/join_dialog.dart';
+import 'package:poker_chip/util/play.dart';
+import 'package:poker_chip/page/root/component/main_button.dart';
+import 'package:poker_chip/page/root/component/title_icon.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:just_audio/just_audio.dart';
 
 final _localPlayer = AudioPlayer(userAgent: "local");

@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/data/firestore_data_source.dart';
-import 'package:flutter_template/model/entity/room/room_entity.dart';
+import 'package:poker_chip/data/firestore_data_source.dart';
+import 'package:poker_chip/model/entity/room/room_entity.dart';
 
 final roomRepositoryProvider =
     Provider<RoomRepository>((ref) => RoomRepository(ref));

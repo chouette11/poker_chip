@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_template/data/api_data_source.dart';
-import 'package:flutter_template/data/firestore_data_source.dart';
-import 'package:flutter_template/model/entity/message/message_entity.dart';
-import 'package:flutter_template/provider/presentation_providers.dart';
+import 'package:poker_chip/data/api_data_source.dart';
+import 'package:poker_chip/data/firestore_data_source.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
 
 final messageRepositoryProvider =
     Provider<MessageRepository>((ref) => MessageRepository(ref));

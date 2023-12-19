@@ -1,6 +1,6 @@
-import 'package:flutter_template/provider/audio_provider.dart';
-import 'package:flutter_template/repository/user_repository.dart';
-import 'package:flutter_template/util/constant/color_constant.dart';
+import 'package:poker_chip/provider/audio_provider.dart';
+import 'package:poker_chip/repository/user_repository.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';

@@ -1,4 +1,4 @@
-import 'package:flutter_template/provider/audio_provider.dart';
+import 'package:poker_chip/provider/audio_provider.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

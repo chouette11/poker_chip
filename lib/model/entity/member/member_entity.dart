@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter_template/model/document/member/member_document.dart';
+import 'package:poker_chip/model/document/member/member_document.dart';
 
 part 'member_entity.freezed.dart';
 
