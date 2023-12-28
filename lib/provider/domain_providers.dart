@@ -1,3 +1,8 @@
+import 'package:poker_chip/page/game/host.dart';
+import 'package:poker_chip/page/game/host_page.dart';
+import 'package:poker_chip/page/game/participant.dart';
+import 'package:poker_chip/page/game/paticipant_page.dart';
+import 'package:poker_chip/page/read_qr/read_qr_page.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_1.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_2.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_3.dart';
@@ -27,16 +32,36 @@ final routerProvider = Provider<GoRouter>(
       GoRoute(
         path: '/',
         redirect: (BuildContext context, GoRouterState state) async {
-          final bool launched =
-              await ref.read(userRepositoryProvider).getIsLaunch();
-          if (!launched) {
-            ref.read(isTutorialProvider.notifier).update((state) => true);
-            return '/tutorial';
-          }
-          return null;
+          // final bool launched =
+          //     await ref.read(userRepositoryProvider).getIsLaunch();
+          // if (!launched) {
+          //   ref.read(isTutorialProvider.notifier).update((state) => true);
+          //   return '/tutorial';
+          // }
+          // return null;
         },
         builder: (context, state) => const RootPage(),
-        routes: [        
+        routes: [
+          GoRoute(
+            path: 'host_ex',
+            builder: (context, state) => const HostExample(),
+          ),
+          GoRoute(
+            path: 'participant_ex',
+            builder: (context, state) => ParticipantExample(id: state.extra as String),
+          ),
+          GoRoute(
+            path: 'host',
+            builder: (context, state) => const HostPage(),
+          ),
+          GoRoute(
+            path: 'read_qr',
+            builder: (context, state) => const ReadQRPage(),
+          ),
+          GoRoute(
+            path: 'participant',
+            builder: (context, state) => ParticipantPage(id: state.extra as String),
+          ),
           GoRoute(
             path: 'tutorial',
             builder: (context, state) => const TutorialPage1(),

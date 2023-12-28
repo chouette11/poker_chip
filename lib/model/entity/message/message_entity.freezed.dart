@@ -20,9 +20,8 @@ MessageEntity _$MessageEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MessageEntity {
-  String get content => throw _privateConstructorUsedError;
-  String get uid => throw _privateConstructorUsedError;
-  DateTime get createdAt => throw _privateConstructorUsedError;
+  String get type => throw _privateConstructorUsedError;
+  dynamic get content => throw _privateConstructorUsedError;
   bool? get isQuestion => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +36,7 @@ abstract class $MessageEntityCopyWith<$Res> {
           MessageEntity value, $Res Function(MessageEntity) then) =
       _$MessageEntityCopyWithImpl<$Res, MessageEntity>;
   @useResult
-  $Res call({String content, String uid, DateTime createdAt, bool? isQuestion});
+  $Res call({String type, dynamic content, bool? isQuestion});
 }
 
 /// @nodoc
@@ -53,24 +52,19 @@ class _$MessageEntityCopyWithImpl<$Res, $Val extends MessageEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? content = null,
-    Object? uid = null,
-    Object? createdAt = null,
+    Object? type = null,
+    Object? content = freezed,
     Object? isQuestion = freezed,
   }) {
     return _then(_value.copyWith(
-      content: null == content
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as dynamic,
       isQuestion: freezed == isQuestion
           ? _value.isQuestion
           : isQuestion // ignore: cast_nullable_to_non_nullable
@@ -87,7 +81,7 @@ abstract class _$$_MessageEntityCopyWith<$Res>
       __$$_MessageEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String content, String uid, DateTime createdAt, bool? isQuestion});
+  $Res call({String type, dynamic content, bool? isQuestion});
 }
 
 /// @nodoc
@@ -101,24 +95,19 @@ class __$$_MessageEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? content = null,
-    Object? uid = null,
-    Object? createdAt = null,
+    Object? type = null,
+    Object? content = freezed,
     Object? isQuestion = freezed,
   }) {
     return _then(_$_MessageEntity(
-      content: null == content
+      type: null == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
-              as String,
-      uid: null == uid
-          ? _value.uid
-          : uid // ignore: cast_nullable_to_non_nullable
-              as String,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
+              as dynamic,
       isQuestion: freezed == isQuestion
           ? _value.isQuestion
           : isQuestion // ignore: cast_nullable_to_non_nullable
@@ -131,27 +120,22 @@ class __$$_MessageEntityCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_MessageEntity extends _MessageEntity {
   const _$_MessageEntity(
-      {required this.content,
-      required this.uid,
-      required this.createdAt,
-      this.isQuestion})
+      {required this.type, required this.content, this.isQuestion})
       : super._();
 
   factory _$_MessageEntity.fromJson(Map<String, dynamic> json) =>
       _$$_MessageEntityFromJson(json);
 
   @override
-  final String content;
+  final String type;
   @override
-  final String uid;
-  @override
-  final DateTime createdAt;
+  final dynamic content;
   @override
   final bool? isQuestion;
 
   @override
   String toString() {
-    return 'MessageEntity(content: $content, uid: $uid, createdAt: $createdAt, isQuestion: $isQuestion)';
+    return 'MessageEntity(type: $type, content: $content, isQuestion: $isQuestion)';
   }
 
   @override
@@ -159,18 +143,16 @@ class _$_MessageEntity extends _MessageEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_MessageEntity &&
-            (identical(other.content, content) || other.content == content) &&
-            (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
+            (identical(other.type, type) || other.type == type) &&
+            const DeepCollectionEquality().equals(other.content, content) &&
             (identical(other.isQuestion, isQuestion) ||
                 other.isQuestion == isQuestion));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, content, uid, createdAt, isQuestion);
+  int get hashCode => Object.hash(runtimeType, type,
+      const DeepCollectionEquality().hash(content), isQuestion);
 
   @JsonKey(ignore: true)
   @override
@@ -188,9 +170,8 @@ class _$_MessageEntity extends _MessageEntity {
 
 abstract class _MessageEntity extends MessageEntity {
   const factory _MessageEntity(
-      {required final String content,
-      required final String uid,
-      required final DateTime createdAt,
+      {required final String type,
+      required final dynamic content,
       final bool? isQuestion}) = _$_MessageEntity;
   const _MessageEntity._() : super._();
 
@@ -198,11 +179,9 @@ abstract class _MessageEntity extends MessageEntity {
       _$_MessageEntity.fromJson;
 
   @override
-  String get content;
+  String get type;
   @override
-  String get uid;
-  @override
-  DateTime get createdAt;
+  dynamic get content;
   @override
   bool? get isQuestion;
   @override

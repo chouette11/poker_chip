@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/page/root/component/mute_button.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
@@ -55,6 +56,7 @@ class _RootPageState extends ConsumerState<RootPage> {
                     const SizedBox(height: 52),
                     MainButton(
                       onTap: () async {
+                        context.push('/host');
                         
                       },
                       text: '部屋作成',
@@ -62,17 +64,7 @@ class _RootPageState extends ConsumerState<RootPage> {
                     const SizedBox(height: 32),
                     MainButton(
                       onTap: () async {
-                        _localPlayer.stop();
-                        final path = ref.read(buttonSoundProvider);
-                        await play(ref, path);
-                        Future.delayed(const Duration(milliseconds: 500), () {
-                          showDialog(
-                            context: context,
-                            builder: (_) {
-                              return const JoinDialog();
-                            },
-                          );
-                        });
+                        context.push('/read_qr');
                       },
                       text: '参加する',
                     ),

@@ -17,7 +17,8 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$UserEntity {
   String get uid => throw _privateConstructorUsedError;
-  String get token => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  int get stack => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserEntityCopyWith<UserEntity> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $UserEntityCopyWith<$Res> {
           UserEntity value, $Res Function(UserEntity) then) =
       _$UserEntityCopyWithImpl<$Res, UserEntity>;
   @useResult
-  $Res call({String uid, String token});
+  $Res call({String uid, String? name, int stack});
 }
 
 /// @nodoc
@@ -47,17 +48,22 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
+    Object? name = freezed,
+    Object? stack = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stack: null == stack
+          ? _value.stack
+          : stack // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$_UserEntityCopyWith<$Res>
       __$$_UserEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String token});
+  $Res call({String uid, String? name, int stack});
 }
 
 /// @nodoc
@@ -85,17 +91,22 @@ class __$$_UserEntityCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
+    Object? name = freezed,
+    Object? stack = null,
   }) {
     return _then(_$_UserEntity(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stack: null == stack
+          ? _value.stack
+          : stack // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -103,16 +114,19 @@ class __$$_UserEntityCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_UserEntity extends _UserEntity {
-  const _$_UserEntity({required this.uid, required this.token}) : super._();
+  const _$_UserEntity({required this.uid, this.name, required this.stack})
+      : super._();
 
   @override
   final String uid;
   @override
-  final String token;
+  final String? name;
+  @override
+  final int stack;
 
   @override
   String toString() {
-    return 'UserEntity(uid: $uid, token: $token)';
+    return 'UserEntity(uid: $uid, name: $name, stack: $stack)';
   }
 
   @override
@@ -121,11 +135,12 @@ class _$_UserEntity extends _UserEntity {
         (other.runtimeType == runtimeType &&
             other is _$_UserEntity &&
             (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.stack, stack) || other.stack == stack));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, uid, token);
+  int get hashCode => Object.hash(runtimeType, uid, name, stack);
 
   @JsonKey(ignore: true)
   @override
@@ -136,13 +151,17 @@ class _$_UserEntity extends _UserEntity {
 
 abstract class _UserEntity extends UserEntity {
   const factory _UserEntity(
-      {required final String uid, required final String token}) = _$_UserEntity;
+      {required final String uid,
+      final String? name,
+      required final int stack}) = _$_UserEntity;
   const _UserEntity._() : super._();
 
   @override
   String get uid;
   @override
-  String get token;
+  String? get name;
+  @override
+  int get stack;
   @override
   @JsonKey(ignore: true)
   _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>

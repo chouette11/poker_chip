@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   ColorConstant._();
 
-  static const back = Color(0xFF474747);
+  static const back = Color.fromARGB(255, 31, 31, 31);
 
   static const accent = Color(0xFF74AA9C);
   static const accent2 = Color(0xFFEBFFFA);
@@ -32,7 +32,7 @@ class ColorConstant {
 }
 
 Color getChatColor(int assignedId) {
-  switch(assignedId) {
+  switch (assignedId) {
     case 1:
       return ColorConstant.chat1;
     case 2:

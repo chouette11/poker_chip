@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDruAb-OGbnPdheqp8QdeZjKfGegeymqfQ</string>
+	<string>AIzaSyCurKg5Hx1JE0yxUXvkT3Fl2EV3UoeS3Ao</string>
 	<key>GCM_SENDER_ID</key>
-	<string>673045133489</string>
+	<string>632237526803</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.AI.werewolf</string>
+	<string>com.AI.werewolf.dev</string>
 	<key>PROJECT_ID</key>
-	<string>ai-werewolf</string>
+	<string>wordwolf-1f53d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ai-werewolf.appspot.com</string>
+	<string>wordwolf-1f53d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:673045133489:ios:80cd75fbb2ce25f3dd4a90</string>
+	<string>1:632237526803:ios:1938f58c06a91ab13754e6</string>
 </dict>
 </plist>

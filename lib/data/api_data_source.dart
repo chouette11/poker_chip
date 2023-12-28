@@ -12,26 +12,4 @@ class ApiDataSource {
   ///
   /// Message
   ///
-
-  Future<Message> fetchQuestionAnswerMessage(
-    MessageEntity messageEntity,
-    String topic,
-  ) async {
-    try {
-      final api = ref.read(apiClientProvider);
-      const flavor = String.fromEnvironment('flavor');
-      final message = Message(
-        topic: topic,
-        content: messageEntity.content,
-        uid: messageEntity.uid,
-      );
-      final resMessage = flavor == 'prod'
-          ? await api.fetchQuestionAnswerMessage(message)
-          : await api.fetchQuestionAnswerMessageDev(message);
-      return resMessage;
-    } catch (e) {
-      print('api_getMessageWithPrompt');
-      throw e;
-    }
-  }
 }

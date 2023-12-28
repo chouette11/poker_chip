@@ -9,20 +9,23 @@ class UserEntity with _$UserEntity {
 
   const factory UserEntity({
     required String uid,
-    required String token,
+    String? name,
+    required int stack,
   }) = _UserEntity;
 
   static UserEntity fromDoc(UserDocument userDoc) {
     return UserEntity(
       uid: userDoc.uid,
-      token: userDoc.token,
+      name: userDoc.name,
+      stack: userDoc.stack,
     );
   }
 
   UserDocument toUserDocument() {
     return UserDocument(
       uid: uid,
-      token: token,
+      name: name,
+      stack: stack,
     );
   }
 }

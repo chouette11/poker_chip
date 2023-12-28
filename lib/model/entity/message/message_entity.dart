@@ -10,9 +10,8 @@ class MessageEntity with _$MessageEntity {
     const MessageEntity._();
 
   const factory MessageEntity({
-    required String content,
-    required String uid,
-    required DateTime createdAt,
+    required String type,
+    required dynamic content,
     bool? isQuestion,
   }) = _MessageEntity;
 
@@ -21,17 +20,15 @@ class MessageEntity with _$MessageEntity {
 
   static MessageEntity fromDoc(MessageDocument taskDoc) {
     return MessageEntity(
+      type: taskDoc.type,
       content: taskDoc.content,
-      uid: taskDoc.uid,
-      createdAt: taskDoc.createdAt,
     );
   }
 
   MessageDocument toMessageDocument() {
     return MessageDocument(
+      type: type,
       content: content,
-      uid: uid,
-      createdAt: createdAt,
     );
   }
 }

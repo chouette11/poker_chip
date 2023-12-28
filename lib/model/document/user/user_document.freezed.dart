@@ -22,8 +22,10 @@ UserDocument _$UserDocumentFromJson(Map<String, dynamic> json) {
 mixin _$UserDocument {
   @JsonKey(name: 'uid')
   String get uid => throw _privateConstructorUsedError;
-  @JsonKey(name: 'token')
-  String get token => throw _privateConstructorUsedError;
+  @JsonKey(name: 'name')
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'stack')
+  int get stack => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -38,7 +40,9 @@ abstract class $UserDocumentCopyWith<$Res> {
       _$UserDocumentCopyWithImpl<$Res, UserDocument>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'uid') String uid, @JsonKey(name: 'token') String token});
+      {@JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'stack') int stack});
 }
 
 /// @nodoc
@@ -55,17 +59,22 @@ class _$UserDocumentCopyWithImpl<$Res, $Val extends UserDocument>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
+    Object? name = freezed,
+    Object? stack = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stack: null == stack
+          ? _value.stack
+          : stack // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -79,7 +88,9 @@ abstract class _$$_UserDocumentCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'uid') String uid, @JsonKey(name: 'token') String token});
+      {@JsonKey(name: 'uid') String uid,
+      @JsonKey(name: 'name') String? name,
+      @JsonKey(name: 'stack') int stack});
 }
 
 /// @nodoc
@@ -94,17 +105,22 @@ class __$$_UserDocumentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
-    Object? token = null,
+    Object? name = freezed,
+    Object? stack = null,
   }) {
     return _then(_$_UserDocument(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
-      token: null == token
-          ? _value.token
-          : token // ignore: cast_nullable_to_non_nullable
-              as String,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
+      stack: null == stack
+          ? _value.stack
+          : stack // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -114,7 +130,8 @@ class __$$_UserDocumentCopyWithImpl<$Res>
 class _$_UserDocument extends _UserDocument {
   const _$_UserDocument(
       {@JsonKey(name: 'uid') required this.uid,
-      @JsonKey(name: 'token') required this.token})
+      @JsonKey(name: 'name') this.name,
+      @JsonKey(name: 'stack') required this.stack})
       : super._();
 
   factory _$_UserDocument.fromJson(Map<String, dynamic> json) =>
@@ -124,12 +141,15 @@ class _$_UserDocument extends _UserDocument {
   @JsonKey(name: 'uid')
   final String uid;
   @override
-  @JsonKey(name: 'token')
-  final String token;
+  @JsonKey(name: 'name')
+  final String? name;
+  @override
+  @JsonKey(name: 'stack')
+  final int stack;
 
   @override
   String toString() {
-    return 'UserDocument(uid: $uid, token: $token)';
+    return 'UserDocument(uid: $uid, name: $name, stack: $stack)';
   }
 
   @override
@@ -138,12 +158,13 @@ class _$_UserDocument extends _UserDocument {
         (other.runtimeType == runtimeType &&
             other is _$_UserDocument &&
             (identical(other.uid, uid) || other.uid == uid) &&
-            (identical(other.token, token) || other.token == token));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.stack, stack) || other.stack == stack));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, token);
+  int get hashCode => Object.hash(runtimeType, uid, name, stack);
 
   @JsonKey(ignore: true)
   @override
@@ -162,7 +183,8 @@ class _$_UserDocument extends _UserDocument {
 abstract class _UserDocument extends UserDocument {
   const factory _UserDocument(
       {@JsonKey(name: 'uid') required final String uid,
-      @JsonKey(name: 'token') required final String token}) = _$_UserDocument;
+      @JsonKey(name: 'name') final String? name,
+      @JsonKey(name: 'stack') required final int stack}) = _$_UserDocument;
   const _UserDocument._() : super._();
 
   factory _UserDocument.fromJson(Map<String, dynamic> json) =
@@ -172,8 +194,11 @@ abstract class _UserDocument extends UserDocument {
   @JsonKey(name: 'uid')
   String get uid;
   @override
-  @JsonKey(name: 'token')
-  String get token;
+  @JsonKey(name: 'name')
+  String? get name;
+  @override
+  @JsonKey(name: 'stack')
+  int get stack;
   @override
   @JsonKey(ignore: true)
   _$$_UserDocumentCopyWith<_$_UserDocument> get copyWith =>

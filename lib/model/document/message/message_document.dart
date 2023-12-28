@@ -11,10 +11,8 @@ class MessageDocument with _$MessageDocument {
   const MessageDocument._();
 
   const factory MessageDocument({
-    @JsonKey(name: 'content') required String content,
-    @JsonKey(name: 'uid') required String uid,
-    @TimestampConverter() @JsonKey(name: 'createdAt') required DateTime createdAt,
-    @JsonKey(name: 'isQuestion') bool? isQuestion,
+    @JsonKey(name: 'type') required String type,
+    @JsonKey(name: 'content') required dynamic content,
   }) = _MessageDocument;
 
   factory MessageDocument.fromJson(Map<String, dynamic> json) =>
