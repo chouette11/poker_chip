@@ -26,13 +26,6 @@ class _RootPageState extends ConsumerState<RootPage> {
 
   @override
   void initState() {
-    final isTutorial = ref.read(isTutorialProvider);
-    if (!isTutorial) {
-      ref.read(authProvider).requestNotification(context);
-    }
-    final audio = ref.read(justAudioProvider);
-    audio.setAsset('assets/audios/title.mp3');
-    audio.play();
     super.initState();
   }
 

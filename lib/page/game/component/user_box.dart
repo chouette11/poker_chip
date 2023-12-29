@@ -9,16 +9,12 @@ class UserBoxes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final others = ref.watch(othersDataProvider);
+    final players = ref.watch(playerDataProvider);
+    final others = players.where((e) => e.uid != ref.read(uidProvider)).toList();
     final users =
         others.map((e) => UserBox(name: e.name ?? '', stack: e.stack)).toList();
     if (users.isEmpty) {
-      return const SizedBox();
-    } else if (users.length == 1) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: users,
-      );
+      return Text(others.length.toString(), style: TextStyle(fontSize: 32),);
     } else {
       final List<Widget> child = [];
       final List<Widget> children = [];

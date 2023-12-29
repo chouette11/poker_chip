@@ -22,7 +22,6 @@ MessageEntity _$MessageEntityFromJson(Map<String, dynamic> json) {
 mixin _$MessageEntity {
   String get type => throw _privateConstructorUsedError;
   dynamic get content => throw _privateConstructorUsedError;
-  bool? get isQuestion => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +35,7 @@ abstract class $MessageEntityCopyWith<$Res> {
           MessageEntity value, $Res Function(MessageEntity) then) =
       _$MessageEntityCopyWithImpl<$Res, MessageEntity>;
   @useResult
-  $Res call({String type, dynamic content, bool? isQuestion});
+  $Res call({String type, dynamic content});
 }
 
 /// @nodoc
@@ -54,7 +53,6 @@ class _$MessageEntityCopyWithImpl<$Res, $Val extends MessageEntity>
   $Res call({
     Object? type = null,
     Object? content = freezed,
-    Object? isQuestion = freezed,
   }) {
     return _then(_value.copyWith(
       type: null == type
@@ -65,10 +63,6 @@ class _$MessageEntityCopyWithImpl<$Res, $Val extends MessageEntity>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      isQuestion: freezed == isQuestion
-          ? _value.isQuestion
-          : isQuestion // ignore: cast_nullable_to_non_nullable
-              as bool?,
     ) as $Val);
   }
 }
@@ -81,7 +75,7 @@ abstract class _$$_MessageEntityCopyWith<$Res>
       __$$_MessageEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String type, dynamic content, bool? isQuestion});
+  $Res call({String type, dynamic content});
 }
 
 /// @nodoc
@@ -97,7 +91,6 @@ class __$$_MessageEntityCopyWithImpl<$Res>
   $Res call({
     Object? type = null,
     Object? content = freezed,
-    Object? isQuestion = freezed,
   }) {
     return _then(_$_MessageEntity(
       type: null == type
@@ -108,10 +101,6 @@ class __$$_MessageEntityCopyWithImpl<$Res>
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      isQuestion: freezed == isQuestion
-          ? _value.isQuestion
-          : isQuestion // ignore: cast_nullable_to_non_nullable
-              as bool?,
     ));
   }
 }
@@ -119,8 +108,7 @@ class __$$_MessageEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_MessageEntity extends _MessageEntity {
-  const _$_MessageEntity(
-      {required this.type, required this.content, this.isQuestion})
+  const _$_MessageEntity({required this.type, required this.content})
       : super._();
 
   factory _$_MessageEntity.fromJson(Map<String, dynamic> json) =>
@@ -130,12 +118,10 @@ class _$_MessageEntity extends _MessageEntity {
   final String type;
   @override
   final dynamic content;
-  @override
-  final bool? isQuestion;
 
   @override
   String toString() {
-    return 'MessageEntity(type: $type, content: $content, isQuestion: $isQuestion)';
+    return 'MessageEntity(type: $type, content: $content)';
   }
 
   @override
@@ -144,15 +130,13 @@ class _$_MessageEntity extends _MessageEntity {
         (other.runtimeType == runtimeType &&
             other is _$_MessageEntity &&
             (identical(other.type, type) || other.type == type) &&
-            const DeepCollectionEquality().equals(other.content, content) &&
-            (identical(other.isQuestion, isQuestion) ||
-                other.isQuestion == isQuestion));
+            const DeepCollectionEquality().equals(other.content, content));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, type,
-      const DeepCollectionEquality().hash(content), isQuestion);
+  int get hashCode => Object.hash(
+      runtimeType, type, const DeepCollectionEquality().hash(content));
 
   @JsonKey(ignore: true)
   @override
@@ -171,8 +155,7 @@ class _$_MessageEntity extends _MessageEntity {
 abstract class _MessageEntity extends MessageEntity {
   const factory _MessageEntity(
       {required final String type,
-      required final dynamic content,
-      final bool? isQuestion}) = _$_MessageEntity;
+      required final dynamic content}) = _$_MessageEntity;
   const _MessageEntity._() : super._();
 
   factory _MessageEntity.fromJson(Map<String, dynamic> json) =
@@ -182,8 +165,6 @@ abstract class _MessageEntity extends MessageEntity {
   String get type;
   @override
   dynamic get content;
-  @override
-  bool? get isQuestion;
   @override
   @JsonKey(ignore: true)
   _$$_MessageEntityCopyWith<_$_MessageEntity> get copyWith =>

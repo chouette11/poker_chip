@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 
 class Chips extends StatelessWidget {
   const Chips({super.key});
@@ -31,11 +32,23 @@ class Chip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      'assets/images/chip.svg',
-      width: size,
-      height: size,
-      color: color,
+    return Stack(
+      children: [
+        Container(
+          width: size,
+          height: size,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            color: ColorConstant.black90
+          ),
+        ),
+        SvgPicture.asset(
+          'assets/images/chip.svg',
+          width: size,
+          height: size,
+          color: color,
+        ),
+      ],
     );
   }
 }

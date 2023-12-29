@@ -11,7 +11,7 @@ class ActionDocument with _$ActionDocument {
   const ActionDocument._();
 
   const factory ActionDocument({
-    @JsonKey(name: 'id') required int id,
+    @JsonKey(name: 'uid') required String uid,
     @JsonKey(name: 'action') required String action,
     @JsonKey(name: 'score') int? score,
 

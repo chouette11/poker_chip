@@ -12,7 +12,6 @@ class MessageEntity with _$MessageEntity {
   const factory MessageEntity({
     required String type,
     required dynamic content,
-    bool? isQuestion,
   }) = _MessageEntity;
 
    factory MessageEntity.fromJson(Map<String, dynamic> json) =>

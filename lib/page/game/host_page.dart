@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
@@ -11,6 +13,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/enum/host.dart';
+import 'package:poker_chip/util/enum/participant.dart';
 
 class HostPage extends ConsumerStatefulWidget {
   const HostPage({Key? key}) : super(key: key);
@@ -59,36 +63,38 @@ class _GamePageState extends ConsumerState<HostPage> {
       conn = event;
 
       conn.on("data").listen((data) {
-        print(data);
-        final mes = data as MessageEntity;
+        final json = data as String;
+        final mes = MessageEntity.fromJson(jsonDecode(json));
         print('host: $mes');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text(mes.type)));
-        if (mes.type == 'join') {
-          UserEntity user = mes.content as UserEntity;
-          final others = ref.read(othersDataProvider);
+        if (mes.type == ParticipantMessageTypeEnum.join.name) {
+          UserEntity user = UserEntity.fromJson(mes.content);
+          final players = ref.read(playerDataProvider);
           user = UserEntity(
             uid: user.uid,
-            name: user.name ?? 'プレイヤー${others.length + 2}',
+            name: user.name ?? 'プレイヤー${players.length + 1}',
             stack: user.stack,
           );
-          ref.read(othersDataProvider.notifier).update((state) => [
-                ...state,
-                user,
-              ]);
-          final res = MessageEntity(type: 'joined', content: user);
+          ref.read(playerDataProvider.notifier).add(user);
+          final res = MessageEntity(
+              type: HostMessageTypeEnum.joined.name, content: user);
           conn.send(res.toJson());
+
           final uid = ref.read(uidProvider);
           conn.send(MessageEntity(
-                  type: 'host',
+                  type: HostMessageTypeEnum.joined.name,
                   content: UserEntity(uid: uid, name: 'プレイヤー1', stack: 1000))
               .toJson());
+        } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
+          final action = ActionEntity.fromJson(mes.content);
+          ref
+              .read(playerDataProvider.notifier)
+              .updateStack(action.uid, action.score ?? 0);
         }
       });
 
       conn.on("binary").listen((data) {
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Got binary")));
+            .showSnackBar(const SnackBar(content: Text("Got binary")));
       });
 
       conn.on("close").listen((event) {
@@ -151,16 +157,29 @@ class _GamePageState extends ConsumerState<HostPage> {
                     child: UserBoxes(),
                   ),
                 ),
-                Positioned(
-                  child: Image.asset(
-                    'assets/images/chips.png',
-                    fit: BoxFit.fitHeight,
-                    height: 200,
-                    width: 200,
-                  ),
+                ElevatedButton(
+                  onPressed: () {
+                    final uid = ref.read(uidProvider);
+                    final mes = MessageEntity(
+                      type: 'action',
+                      content:
+                          ActionEntity(uid: uid, action: 'blind', score: -10),
+                    );
+                    conn.send(mes.toJson());
+                  },
+                  child: const Text('ブラインド'),
                 ),
+                // Positioned(
+                //   child: Image.asset(
+                //     'assets/images/chips.png',
+                //     fit: BoxFit.fitHeight,
+                //     height: 200,
+                //     width: 200,
+                //   ),
+                // ),
                 Positioned(bottom: height * 0.2, child: const Hole()),
-                Positioned(bottom: height * 0.2, child:  Text(connected.toString())),
+                Positioned(
+                    bottom: height * 0.2, child: Text(connected.toString())),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),

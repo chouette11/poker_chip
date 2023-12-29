@@ -20,8 +20,8 @@ ActionDocument _$ActionDocumentFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ActionDocument {
-  @JsonKey(name: 'id')
-  int get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'uid')
+  String get uid => throw _privateConstructorUsedError;
   @JsonKey(name: 'action')
   String get action => throw _privateConstructorUsedError;
   @JsonKey(name: 'score')
@@ -40,7 +40,7 @@ abstract class $ActionDocumentCopyWith<$Res> {
       _$ActionDocumentCopyWithImpl<$Res, ActionDocument>;
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int id,
+      {@JsonKey(name: 'uid') String uid,
       @JsonKey(name: 'action') String action,
       @JsonKey(name: 'score') int? score});
 }
@@ -58,15 +58,15 @@ class _$ActionDocumentCopyWithImpl<$Res, $Val extends ActionDocument>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? uid = null,
     Object? action = null,
     Object? score = freezed,
   }) {
     return _then(_value.copyWith(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String,
       action: null == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
@@ -88,7 +88,7 @@ abstract class _$$_ActionDocumentCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {@JsonKey(name: 'id') int id,
+      {@JsonKey(name: 'uid') String uid,
       @JsonKey(name: 'action') String action,
       @JsonKey(name: 'score') int? score});
 }
@@ -104,15 +104,15 @@ class __$$_ActionDocumentCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = null,
+    Object? uid = null,
     Object? action = null,
     Object? score = freezed,
   }) {
     return _then(_$_ActionDocument(
-      id: null == id
-          ? _value.id
-          : id // ignore: cast_nullable_to_non_nullable
-              as int,
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as String,
       action: null == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
@@ -129,7 +129,7 @@ class __$$_ActionDocumentCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ActionDocument extends _ActionDocument {
   const _$_ActionDocument(
-      {@JsonKey(name: 'id') required this.id,
+      {@JsonKey(name: 'uid') required this.uid,
       @JsonKey(name: 'action') required this.action,
       @JsonKey(name: 'score') this.score})
       : super._();
@@ -138,8 +138,8 @@ class _$_ActionDocument extends _ActionDocument {
       _$$_ActionDocumentFromJson(json);
 
   @override
-  @JsonKey(name: 'id')
-  final int id;
+  @JsonKey(name: 'uid')
+  final String uid;
   @override
   @JsonKey(name: 'action')
   final String action;
@@ -149,7 +149,7 @@ class _$_ActionDocument extends _ActionDocument {
 
   @override
   String toString() {
-    return 'ActionDocument(id: $id, action: $action, score: $score)';
+    return 'ActionDocument(uid: $uid, action: $action, score: $score)';
   }
 
   @override
@@ -157,14 +157,14 @@ class _$_ActionDocument extends _ActionDocument {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ActionDocument &&
-            (identical(other.id, id) || other.id == id) &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.action, action) || other.action == action) &&
             (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, action, score);
+  int get hashCode => Object.hash(runtimeType, uid, action, score);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +182,7 @@ class _$_ActionDocument extends _ActionDocument {
 
 abstract class _ActionDocument extends ActionDocument {
   const factory _ActionDocument(
-      {@JsonKey(name: 'id') required final int id,
+      {@JsonKey(name: 'uid') required final String uid,
       @JsonKey(name: 'action') required final String action,
       @JsonKey(name: 'score') final int? score}) = _$_ActionDocument;
   const _ActionDocument._() : super._();
@@ -191,8 +191,8 @@ abstract class _ActionDocument extends ActionDocument {
       _$_ActionDocument.fromJson;
 
   @override
-  @JsonKey(name: 'id')
-  int get id;
+  @JsonKey(name: 'uid')
+  String get uid;
   @override
   @JsonKey(name: 'action')
   String get action;

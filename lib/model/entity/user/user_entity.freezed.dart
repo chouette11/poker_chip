@@ -14,12 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
+  return _UserEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$UserEntity {
   String get uid => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   int get stack => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $UserEntityCopyWith<UserEntity> get copyWith =>
       throw _privateConstructorUsedError;
@@ -112,10 +117,13 @@ class __$$_UserEntityCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$_UserEntity extends _UserEntity {
   const _$_UserEntity({required this.uid, this.name, required this.stack})
       : super._();
+
+  factory _$_UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$$_UserEntityFromJson(json);
 
   @override
   final String uid;
@@ -139,6 +147,7 @@ class _$_UserEntity extends _UserEntity {
             (identical(other.stack, stack) || other.stack == stack));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, name, stack);
 
@@ -147,6 +156,13 @@ class _$_UserEntity extends _UserEntity {
   @pragma('vm:prefer-inline')
   _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>
       __$$_UserEntityCopyWithImpl<_$_UserEntity>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$_UserEntityToJson(
+      this,
+    );
+  }
 }
 
 abstract class _UserEntity extends UserEntity {
@@ -155,6 +171,9 @@ abstract class _UserEntity extends UserEntity {
       final String? name,
       required final int stack}) = _$_UserEntity;
   const _UserEntity._() : super._();
+
+  factory _UserEntity.fromJson(Map<String, dynamic> json) =
+      _$_UserEntity.fromJson;
 
   @override
   String get uid;

@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 
   @override
   void initState() {
+    Future.delayed(Duration(seconds: 1));
+    connect();
     super.initState();
   }
 
@@ -42,7 +46,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       final uid = ref.read(uidProvider);
       final mes = MessageEntity(
           type: 'join', content: UserEntity(uid: uid, name: null, stack: 1000));
-      conn.send(mes.toJson());
+      conn.send(jsonEncode(mes.toJson()));
 
       connection.on("close").listen((event) {
         setState(() {
@@ -51,23 +55,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       });
 
       conn.on("data").listen((data) {
-        // final mes = MessageEntity.fromJson(data);
-        // print('paticipant: $mes');
-        // if (mes.type == 'joined') {
-        //   final user = mes.content as UserEntity;
-        //   if (user.uid == uid) {
-        //     ref.read(myDataProvider.notifier).update((state) => user);
-        //   } else {
-        //     ref
-        //         .read(othersDataProvider.notifier)
-        //         .update((state) => [...state, user]);
-        //   }
-        // } else if (mes.type == 'host') {
-        //   final user = mes.content as UserEntity;
-        //   ref.read(othersDataProvider.notifier).update((state) => [user]);
-        // }
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text(data)));
+        final mes = MessageEntity.fromJson(data);
+        print('paticipant: $mes');
+        if (mes.type == 'joined') {
+          final user = UserEntity.fromJson(mes.content);
+          if (user.uid != uid) {
+            ref.read(playerDataProvider.notifier).add(user);
+          }
+        } else if (mes.type == 'action') {
+          final action = ActionEntity.fromJson(mes.content);
+          ref.read(playerDataProvider.notifier).updateStack(action.uid, action.score ?? 0);
+        }
       });
       conn.on("binary").listen((data) {
         ScaffoldMessenger.of(context)
@@ -129,14 +127,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                     child: UserBoxes(),
                   ),
                 ),
-                Positioned(
-                  child: Image.asset(
-                    'assets/images/chips.png',
-                    fit: BoxFit.fitHeight,
-                    height: 200,
-                    width: 200,
-                  ),
-                ),
+                // Positioned(
+                //   child: Image.asset(
+                //     'assets/images/chips.png',
+                //     fit: BoxFit.fitHeight,
+                //     height: 200,
+                //     width: 200,
+                //   ),
+                // ),
                 Positioned(bottom: height * 0.2, child: const Hole()),
                 Positioned(bottom: height * 0.2, child:  Text(connected.toString())),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),

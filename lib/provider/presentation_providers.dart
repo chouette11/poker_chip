@@ -26,14 +26,34 @@ final answerAssignedIdProvider = StateProvider<int>((ref) => 404);
 
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
-final myDataProvider = StateProvider<UserEntity?>((ref) => null);
-
-final othersDataProvider = StateProvider<List<UserEntity>>((ref) => []);
-
 final messagesStreamProvider = StreamProvider.family(
   (ref, String roomId) =>
       ref.watch(messageRepositoryProvider).getMessageStream(roomId),
 );
+
+@riverpod
+class PlayerData extends _$PlayerData {
+  @override
+  List<UserEntity> build() {
+    final uid = ref.read(uidProvider);
+    return [UserEntity(uid: uid, stack: 1000)];
+  }
+
+  void add(UserEntity user) {
+    state = [...state, user];
+  }
+
+  void updateStack(String uid, int score) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid)
+          user.copyWith(stack: user.stack + score)
+        else
+          user,
+    ];
+  }
+    
+}
 
 @riverpod
 class LimitTime extends _$LimitTime {

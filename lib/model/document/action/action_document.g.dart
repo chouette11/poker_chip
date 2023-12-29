@@ -8,14 +8,14 @@ part of 'action_document.dart';
 
 _$_ActionDocument _$$_ActionDocumentFromJson(Map<String, dynamic> json) =>
     _$_ActionDocument(
-      id: json['id'] as int,
+      uid: json['uid'] as String,
       action: json['action'] as String,
       score: json['score'] as int?,
     );
 
 Map<String, dynamic> _$$_ActionDocumentToJson(_$_ActionDocument instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'uid': instance.uid,
       'action': instance.action,
       'score': instance.score,
     };

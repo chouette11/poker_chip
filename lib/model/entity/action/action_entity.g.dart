@@ -8,14 +8,14 @@ part of 'action_entity.dart';
 
 _$_ActionEntity _$$_ActionEntityFromJson(Map<String, dynamic> json) =>
     _$_ActionEntity(
-      id: json['id'] as int,
+      uid: json['uid'] as String,
       action: json['action'] as String,
       score: json['score'] as int?,
     );
 
 Map<String, dynamic> _$$_ActionEntityToJson(_$_ActionEntity instance) =>
     <String, dynamic>{
-      'id': instance.id,
+      'uid': instance.uid,
       'action': instance.action,
       'score': instance.score,
     };

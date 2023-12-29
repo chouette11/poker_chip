@@ -10,7 +10,7 @@ class ActionEntity with _$ActionEntity {
   const ActionEntity._();
 
   const factory ActionEntity({
-    required int id,
+    required String uid,
     required String action,
     int? score,
   }) = _ActionEntity;
@@ -20,7 +20,7 @@ class ActionEntity with _$ActionEntity {
 
   static ActionEntity fromDoc(ActionDocument actionDoc) {
     return ActionEntity(
-      id: actionDoc.id, 
+      uid: actionDoc.uid,
       action: actionDoc.action,
       score: actionDoc.score,
     );
@@ -28,7 +28,7 @@ class ActionEntity with _$ActionEntity {
 
   ActionDocument toActionDocument() {
     return ActionDocument(
-      id: id,
+      uid: uid,
       action: action,
       score: score,
     );

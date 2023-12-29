@@ -1,6 +1,4 @@
-import 'package:poker_chip/page/game/host.dart';
 import 'package:poker_chip/page/game/host_page.dart';
-import 'package:poker_chip/page/game/participant.dart';
 import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/page/read_qr/read_qr_page.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_1.dart';
@@ -9,7 +7,6 @@ import 'package:poker_chip/page/tutorial/children/tutorial_page_3.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_4.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_5.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_6.dart';
-import 'package:poker_chip/repository/user_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -42,14 +39,6 @@ final routerProvider = Provider<GoRouter>(
         },
         builder: (context, state) => const RootPage(),
         routes: [
-          GoRoute(
-            path: 'host_ex',
-            builder: (context, state) => const HostExample(),
-          ),
-          GoRoute(
-            path: 'participant_ex',
-            builder: (context, state) => ParticipantExample(id: state.extra as String),
-          ),
           GoRoute(
             path: 'host',
             builder: (context, state) => const HostPage(),

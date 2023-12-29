@@ -33,6 +33,7 @@ class _QrReadPageState extends ConsumerState<ReadQRPage> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = TextEditingController();
 
     if (result != null) {
       print('code');
@@ -49,15 +50,26 @@ class _QrReadPageState extends ConsumerState<ReadQRPage> {
             flex: 1,
             child: FittedBox(
               fit: BoxFit.contain,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  if (result != null)
-                    Text(
-                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-                  else
-                    const Text('QRコードを枠の中に入れてください！'),
-                ],
+              child: SizedBox(
+                height: 120,
+                width: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    TextField(
+                      controller: controller,
+                    ),
+                    ElevatedButton(onPressed: () {WidgetsBinding.instance.addPostFrameCallback((_) {
+                      context.go('/participant', extra: controller.text);
+                    });}, child: const Text('進む')),
+                    if (result != null)
+                      Text(
+                          'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                    else
+                      const Text('QRコードを枠の中に入れてください！'),
+                  ],
+                ),
               ),
             ),
           )
