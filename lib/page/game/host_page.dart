@@ -7,12 +7,15 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/component/qr_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
+import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/host.dart';
 import 'package:poker_chip/util/enum/participant.dart';
 
@@ -70,10 +73,11 @@ class _GamePageState extends ConsumerState<HostPage> {
           UserEntity user = UserEntity.fromJson(mes.content);
           final players = ref.read(playerDataProvider);
           user = UserEntity(
-            uid: user.uid,
-            name: user.name ?? 'プレイヤー${players.length + 1}',
-            stack: user.stack,
-          );
+              uid: user.uid,
+              assignedId: players.length + 1,
+              name: user.name ?? 'プレイヤー${players.length + 1}',
+              stack: user.stack,
+              isBtn: false);
           ref.read(playerDataProvider.notifier).add(user);
           final res = MessageEntity(
               type: HostMessageTypeEnum.joined.name, content: user);
@@ -81,14 +85,17 @@ class _GamePageState extends ConsumerState<HostPage> {
 
           final uid = ref.read(uidProvider);
           conn.send(MessageEntity(
-                  type: HostMessageTypeEnum.joined.name,
-                  content: UserEntity(uid: uid, name: 'プレイヤー1', stack: 1000))
-              .toJson());
+            type: HostMessageTypeEnum.joined.name,
+            content: UserEntity(
+                uid: uid,
+                assignedId: 1,
+                name: 'プレイヤー1',
+                stack: 1000,
+                isBtn: false),
+          ).toJson());
         } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
           final action = ActionEntity.fromJson(mes.content);
-          ref
-              .read(playerDataProvider.notifier)
-              .updateStack(action.uid, action.score ?? 0);
+          actionMethod(action, ref);
         }
       });
 
@@ -113,6 +120,36 @@ class _GamePageState extends ConsumerState<HostPage> {
     conn.send('{"text":"Hello"}');
   }
 
+  void game() {
+    final smallId = ref.read(smallIdProvider);
+    final bigId = ref.read(bigIdProvider);
+    final btnId = ref.read(btnIdProvider);
+    final smallBlind = MessageEntity(
+      type: HostMessageTypeEnum.action.name,
+      content: ActionEntity(
+        uid: assignedIdToUid(smallId, ref),
+        type: ActionTypeEnum.blind,
+        score: 10,
+      ),
+    );
+    final bigBlind = MessageEntity(
+      type: HostMessageTypeEnum.action.name,
+      content: ActionEntity(
+        uid: assignedIdToUid(bigId, ref),
+        type: ActionTypeEnum.blind,
+        score: 20,
+      ),
+    );
+    final btn = MessageEntity(
+      type: HostMessageTypeEnum.action.name,
+      content: ActionEntity(
+          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn),
+    );
+    conn.send(smallBlind.toJson());
+    conn.send(bigBlind.toJson());
+    conn.send(btn.toJson());
+  }
+
   void sendBinary() {
     final bytes = Uint8List(30);
     conn.sendBinary(bytes);
@@ -130,6 +167,7 @@ class _GamePageState extends ConsumerState<HostPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final score = ref.watch(scoreProvider);
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -157,15 +195,16 @@ class _GamePageState extends ConsumerState<HostPage> {
                     child: UserBoxes(),
                   ),
                 ),
+                Positioned(
+                  height: height * 0.4,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: PotWidget(score: score),
+                  ),
+                ),
                 ElevatedButton(
                   onPressed: () {
-                    final uid = ref.read(uidProvider);
-                    final mes = MessageEntity(
-                      type: 'action',
-                      content:
-                          ActionEntity(uid: uid, action: 'blind', score: -10),
-                    );
-                    conn.send(mes.toJson());
+                    game();
                   },
                   child: const Text('ブラインド'),
                 ),
@@ -188,4 +227,9 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
     );
   }
+}
+
+String assignedIdToUid(int assignedId, WidgetRef ref) {
+  final players = ref.read(playerDataProvider);
+  return players.firstWhere((e) => e.assignedId == assignedId).uid;
 }

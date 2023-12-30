@@ -21,8 +21,11 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$UserEntity {
   String get uid => throw _privateConstructorUsedError;
+  int get assignedId => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   int get stack => throw _privateConstructorUsedError;
+  bool get isBtn => throw _privateConstructorUsedError;
+  int? get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +39,13 @@ abstract class $UserEntityCopyWith<$Res> {
           UserEntity value, $Res Function(UserEntity) then) =
       _$UserEntityCopyWithImpl<$Res, UserEntity>;
   @useResult
-  $Res call({String uid, String? name, int stack});
+  $Res call(
+      {String uid,
+      int assignedId,
+      String? name,
+      int stack,
+      bool isBtn,
+      int? score});
 }
 
 /// @nodoc
@@ -53,14 +62,21 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
   @override
   $Res call({
     Object? uid = null,
+    Object? assignedId = null,
     Object? name = freezed,
     Object? stack = null,
+    Object? isBtn = null,
+    Object? score = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      assignedId: null == assignedId
+          ? _value.assignedId
+          : assignedId // ignore: cast_nullable_to_non_nullable
+              as int,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -69,6 +85,14 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
+      isBtn: null == isBtn
+          ? _value.isBtn
+          : isBtn // ignore: cast_nullable_to_non_nullable
+              as bool,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -81,7 +105,13 @@ abstract class _$$_UserEntityCopyWith<$Res>
       __$$_UserEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, String? name, int stack});
+  $Res call(
+      {String uid,
+      int assignedId,
+      String? name,
+      int stack,
+      bool isBtn,
+      int? score});
 }
 
 /// @nodoc
@@ -96,14 +126,21 @@ class __$$_UserEntityCopyWithImpl<$Res>
   @override
   $Res call({
     Object? uid = null,
+    Object? assignedId = null,
     Object? name = freezed,
     Object? stack = null,
+    Object? isBtn = null,
+    Object? score = freezed,
   }) {
     return _then(_$_UserEntity(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
               as String,
+      assignedId: null == assignedId
+          ? _value.assignedId
+          : assignedId // ignore: cast_nullable_to_non_nullable
+              as int,
       name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
@@ -112,6 +149,14 @@ class __$$_UserEntityCopyWithImpl<$Res>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
+      isBtn: null == isBtn
+          ? _value.isBtn
+          : isBtn // ignore: cast_nullable_to_non_nullable
+              as bool,
+      score: freezed == score
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -119,7 +164,13 @@ class __$$_UserEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_UserEntity extends _UserEntity {
-  const _$_UserEntity({required this.uid, this.name, required this.stack})
+  const _$_UserEntity(
+      {required this.uid,
+      required this.assignedId,
+      this.name,
+      required this.stack,
+      required this.isBtn,
+      this.score})
       : super._();
 
   factory _$_UserEntity.fromJson(Map<String, dynamic> json) =>
@@ -128,13 +179,19 @@ class _$_UserEntity extends _UserEntity {
   @override
   final String uid;
   @override
+  final int assignedId;
+  @override
   final String? name;
   @override
   final int stack;
+  @override
+  final bool isBtn;
+  @override
+  final int? score;
 
   @override
   String toString() {
-    return 'UserEntity(uid: $uid, name: $name, stack: $stack)';
+    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, score: $score)';
   }
 
   @override
@@ -143,13 +200,18 @@ class _$_UserEntity extends _UserEntity {
         (other.runtimeType == runtimeType &&
             other is _$_UserEntity &&
             (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.assignedId, assignedId) ||
+                other.assignedId == assignedId) &&
             (identical(other.name, name) || other.name == name) &&
-            (identical(other.stack, stack) || other.stack == stack));
+            (identical(other.stack, stack) || other.stack == stack) &&
+            (identical(other.isBtn, isBtn) || other.isBtn == isBtn) &&
+            (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, name, stack);
+  int get hashCode =>
+      Object.hash(runtimeType, uid, assignedId, name, stack, isBtn, score);
 
   @JsonKey(ignore: true)
   @override
@@ -168,8 +230,11 @@ class _$_UserEntity extends _UserEntity {
 abstract class _UserEntity extends UserEntity {
   const factory _UserEntity(
       {required final String uid,
+      required final int assignedId,
       final String? name,
-      required final int stack}) = _$_UserEntity;
+      required final int stack,
+      required final bool isBtn,
+      final int? score}) = _$_UserEntity;
   const _UserEntity._() : super._();
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
@@ -178,9 +243,15 @@ abstract class _UserEntity extends UserEntity {
   @override
   String get uid;
   @override
+  int get assignedId;
+  @override
   String? get name;
   @override
   int get stack;
+  @override
+  bool get isBtn;
+  @override
+  int? get score;
   @override
   @JsonKey(ignore: true)
   _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>

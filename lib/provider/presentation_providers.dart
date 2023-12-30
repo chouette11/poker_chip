@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:poker_chip/repository/message_repository.dart';
 import 'package:poker_chip/util/constant/const.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,33 +26,124 @@ final answerAssignedIdProvider = StateProvider<int>((ref) => 404);
 
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
-final messagesStreamProvider = StreamProvider.family(
-  (ref, String roomId) =>
-      ref.watch(messageRepositoryProvider).getMessageStream(roomId),
-);
+final scoreProvider = StateProvider((ref) => 0);
+
+@riverpod
+class BtnId extends _$BtnId {
+  @override
+  int build() {
+    return 1;
+  }
+
+  void fixId(int assignedId) {
+    final len = ref.read(playerDataProvider).length;
+    if ((state + 1) > len) {
+      state = 1;
+    } else {
+      state = state + 1;
+    }
+  }
+}
+
+@riverpod
+class SmallId extends _$SmallId {
+  @override
+  int build() {
+    final btnId = ref.read(btnIdProvider);
+    final len = ref.read(playerDataProvider).length;
+    if ((btnId + 1) > len) {
+      return 1;
+    } else {
+      return btnId + 1;
+    }
+  }
+
+  void fixId(int assignedId) {
+    final len = ref.read(playerDataProvider).length;
+    if ((state + 1) > len) {
+      state = 1;
+    } else {
+      state = state + 1;
+    }
+  }
+}
+
+@riverpod
+class BigId extends _$BigId {
+  @override
+  int build() {
+    final smallId = ref.read(smallIdProvider);
+    final len = ref.read(playerDataProvider).length;
+    if ((smallId + 1) > len) {
+      return 1;
+    } else {
+      return smallId + 1;
+    }
+  }
+
+  void fixId(int assignedId) {
+    final len = ref.read(playerDataProvider).length;
+    if ((state + 1) > len) {
+      state = 1;
+    } else {
+      state = state + 1;
+    }
+  }
+}
 
 @riverpod
 class PlayerData extends _$PlayerData {
   @override
   List<UserEntity> build() {
     final uid = ref.read(uidProvider);
-    return [UserEntity(uid: uid, stack: 1000)];
+    return [UserEntity(uid: uid, stack: 1000, assignedId: 1, isBtn: false)];
   }
 
   void add(UserEntity user) {
-    state = [...state, user];
+    if (state.where((e) => e.uid == user.uid).isEmpty) {
+      state = [...state, user];
+    }
   }
 
-  void updateStack(String uid, int score) {
+  void update(UserEntity user) {
+    state = [
+      for (final e in state)
+        if (e.uid == user.uid)
+          user
+        else
+          e,
+    ];
+  }
+
+  void updateStack(String uid, int? score) {
     state = [
       for (final user in state)
         if (user.uid == uid)
-          user.copyWith(stack: user.stack + score)
+          user.copyWith(stack: user.stack + (score ?? 0))
         else
           user,
     ];
   }
-    
+
+  void updateScore(String uid, int? score) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid)
+          user.copyWith(score: score)
+        else
+          user,
+    ];
+  }
+
+  void updateBtn(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid)
+          user.copyWith(isBtn: true)
+        else
+          user.copyWith(isBtn: false),
+    ];
+  }
 }
 
 @riverpod

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:poker_chip/model/document/member/member_document.dart';
 
 part 'member_entity.freezed.dart';
 
@@ -15,23 +14,4 @@ class MemberEntity with _$MemberEntity {
     required int voted,
   }) = _MemberEntity;
 
-  static MemberEntity fromDoc(MemberDocument memberDoc) {
-    return MemberEntity(
-      uid: memberDoc.uid,
-      assignedId: memberDoc.assignedId,
-      role: memberDoc.role,
-      isLive: memberDoc.isLive,
-      voted: memberDoc.voted,
-    );
-  }
-
-  MemberDocument toMemberDocument() {
-    return MemberDocument(
-      uid: uid,
-      assignedId: assignedId,
-      role: role,
-      isLive: isLive,
-      voted: voted,
-    );
-  }
 }

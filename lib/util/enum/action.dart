@@ -6,6 +6,7 @@ enum ActionTypeEnum {
   bet('bet'),
   pot('pot'),
   anty('anty'),
+  btn('btn'),
   blind('blind');
 
   const ActionTypeEnum(this.displayName);

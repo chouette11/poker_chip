@@ -11,12 +11,6 @@ class UserRepository {
 
   final Ref ref;
 
-  /// ユーザーを追加
-  Future<void> addUser(UserEntity userEntity) async {
-    final firestore = ref.read(firestoreProvider);
-    await firestore.insertUser(userEntity.toUserDocument());
-  }
-
   /// ユーザーが起動したかを判別
   Future<bool> getIsLaunch() async {
     final pref = ref.read(preferencesProvider);

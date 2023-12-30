@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:poker_chip/model/document/action/action_document.dart';
+import 'package:poker_chip/util/enum/action.dart';
 
 part 'action_entity.freezed.dart';
 
@@ -11,26 +11,11 @@ class ActionEntity with _$ActionEntity {
 
   const factory ActionEntity({
     required String uid,
-    required String action,
+    required ActionTypeEnum type,
     int? score,
   }) = _ActionEntity;
 
   factory ActionEntity.fromJson(Map<String, dynamic> json) =>
       _$ActionEntityFromJson(json);
 
-  static ActionEntity fromDoc(ActionDocument actionDoc) {
-    return ActionEntity(
-      uid: actionDoc.uid,
-      action: actionDoc.action,
-      score: actionDoc.score,
-    );
-  }
-
-  ActionDocument toActionDocument() {
-    return ActionDocument(
-      uid: uid,
-      action: action,
-      score: score,
-    );
-  }
 }

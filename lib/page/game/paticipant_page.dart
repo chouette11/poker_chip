@@ -12,6 +12,7 @@ import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/enum/action.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
   const ParticipantPage({Key? key, required this.id}) : super(key: key);
@@ -26,7 +27,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   Peer peer = Peer(options: PeerOptions(debug: LogLevel.All));
   late DataConnection conn;
   bool connected = false;
-
 
   @override
   void initState() {
@@ -45,7 +45,15 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       });
       final uid = ref.read(uidProvider);
       final mes = MessageEntity(
-          type: 'join', content: UserEntity(uid: uid, name: null, stack: 1000));
+        type: 'join',
+        content: UserEntity(
+          uid: uid,
+          assignedId: 404,
+          name: null,
+          stack: 1000,
+          isBtn: false,
+        ),
+      );
       conn.send(jsonEncode(mes.toJson()));
 
       connection.on("close").listen((event) {
@@ -61,10 +69,12 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
           final user = UserEntity.fromJson(mes.content);
           if (user.uid != uid) {
             ref.read(playerDataProvider.notifier).add(user);
+          } else {
+            ref.read(playerDataProvider.notifier).update(user);
           }
         } else if (mes.type == 'action') {
           final action = ActionEntity.fromJson(mes.content);
-          ref.read(playerDataProvider.notifier).updateStack(action.uid, action.score ?? 0);
+          actionMethod(action, ref);
         }
       });
       conn.on("binary").listen((data) {
@@ -101,7 +111,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () => connect(),
-
         ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
@@ -136,7 +145,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //   ),
                 // ),
                 Positioned(bottom: height * 0.2, child: const Hole()),
-                Positioned(bottom: height * 0.2, child:  Text(connected.toString())),
+                Positioned(
+                    bottom: height * 0.2, child: Text(connected.toString())),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),
@@ -144,5 +154,40 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         ),
       ),
     );
+  }
+}
+
+void actionMethod(ActionEntity action, WidgetRef ref) {
+  final type = action.type;
+  final uid = action.uid!;
+  final score = action.score;
+  switch (type) {
+    case ActionTypeEnum.fold:
+      break;
+    case ActionTypeEnum.call:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.raise:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.bet:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.check:
+      break;
+    case ActionTypeEnum.pot:
+      break;
+    case ActionTypeEnum.anty:
+      break;
+    case ActionTypeEnum.blind:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.btn:
+      ref.read(playerDataProvider.notifier).updateBtn(uid);
+      break;
   }
 }
