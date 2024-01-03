@@ -1,12 +1,7 @@
 import 'package:go_router/go_router.dart';
-import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/page/root/component/mute_button.dart';
-import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/provider/audio_provider.dart';
-import 'package:poker_chip/page/root/component/join_dialog.dart';
-import 'package:poker_chip/util/play.dart';
 import 'package:poker_chip/page/root/component/main_button.dart';
 import 'package:poker_chip/page/root/component/title_icon.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';

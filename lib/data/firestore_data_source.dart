@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
-import 'package:poker_chip/provider/presentation_providers.dart';
 
 final firestoreProvider =
     Provider<FirestoreDataSource>((ref) => FirestoreDataSource(ref: ref));

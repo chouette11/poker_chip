@@ -1,15 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
-import 'package:poker_chip/page/game/component/qr_dialog.dart';
-import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -265,7 +261,7 @@ class LimitTime extends _$LimitTime {
 void _actionMethod(
     ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
   final type = action.type;
-  final uid = action.uid!;
+  final uid = action.uid;
   final score = action.score;
   switch (type) {
     case ActionTypeEnum.fold:

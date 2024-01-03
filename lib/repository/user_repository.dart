@@ -1,6 +1,4 @@
-import 'package:poker_chip/data/firestore_data_source.dart';
 import 'package:poker_chip/data/preferences_data_source.dart';
-import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final userRepositoryProvider =

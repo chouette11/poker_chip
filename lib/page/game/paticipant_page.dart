@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -185,7 +184,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 
 void actionMethod(ActionEntity action, WidgetRef ref) {
   final type = action.type;
-  final uid = action.uid!;
+  final uid = action.uid;
   final score = action.score;
   switch (type) {
     case ActionTypeEnum.fold:

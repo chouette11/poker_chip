@@ -1,4 +1,3 @@
-import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/repository/user_repository.dart';

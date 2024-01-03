@@ -41,7 +41,6 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
   void sendHelloWorld() {
     print('send');
     final players = ref.read(playersExProvider);
-    final id = lenToPeerId(players.length);
     final consEntity = ref.read(consProvider);
     for (var conEntity in consEntity) {
       final conn = conEntity.con;

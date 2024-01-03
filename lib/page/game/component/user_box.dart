@@ -113,7 +113,7 @@ class UserBox extends StatelessWidget {
             ],
           ),
         ),
-        Text(score.toString() ?? ''),
+        Text(score.toString()),
         Visibility(visible: isBtn, child: Text('D'))
       ],
     );
