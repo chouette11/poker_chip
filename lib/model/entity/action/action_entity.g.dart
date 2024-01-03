@@ -28,5 +28,6 @@ const _$ActionTypeEnumEnumMap = {
   ActionTypeEnum.bet: 'bet',
   ActionTypeEnum.pot: 'pot',
   ActionTypeEnum.anty: 'anty',
+  ActionTypeEnum.btn: 'btn',
   ActionTypeEnum.blind: 'blind',
 };

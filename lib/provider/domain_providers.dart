@@ -1,4 +1,6 @@
+import 'package:poker_chip/page/game/host.dart';
 import 'package:poker_chip/page/game/host_page.dart';
+import 'package:poker_chip/page/game/ori.dart';
 import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/page/read_qr/read_qr_page.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_1.dart';
@@ -39,6 +41,14 @@ final routerProvider = Provider<GoRouter>(
         },
         builder: (context, state) => const RootPage(),
         routes: [
+          GoRoute(
+            path: 'host_ex',
+            builder: (context, state) => const Host(),
+          ),
+          GoRoute(
+            path: 'ori',
+            builder: (context, state) => Ori(),
+          ),
           GoRoute(
             path: 'host',
             builder: (context, state) => const HostPage(),

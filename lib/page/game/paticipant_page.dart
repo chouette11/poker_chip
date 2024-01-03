@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -30,31 +31,41 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 
   @override
   void initState() {
-    Future.delayed(Duration(seconds: 1));
-    connect();
     super.initState();
+
+    Timer.periodic(Duration(milliseconds: 1500), (timer) {
+      print('timer');
+      connect();
+      if (connected) {
+        timer.cancel();
+        final uid = ref.read(uidProvider);
+        final mes = MessageEntity(
+          type: 'join',
+          content: UserEntity(
+            uid: uid,
+            assignedId: 404,
+            name: null,
+            stack: 1000,
+            isBtn: false,
+          ),
+        );
+        conn.send(jsonEncode(mes.toJson()));
+        print('send');
+        print(mes.toJson().toString());
+      }
+    });
   }
 
   void connect() {
     final connection = peer.connect(widget.id);
     conn = connection;
+    print('con!');
 
     conn.on("open").listen((event) {
+      print('open!');
       setState(() {
         connected = true;
       });
-      final uid = ref.read(uidProvider);
-      final mes = MessageEntity(
-        type: 'join',
-        content: UserEntity(
-          uid: uid,
-          assignedId: 404,
-          name: null,
-          stack: 1000,
-          isBtn: false,
-        ),
-      );
-      conn.send(jsonEncode(mes.toJson()));
 
       connection.on("close").listen((event) {
         setState(() {
@@ -63,6 +74,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       });
 
       conn.on("data").listen((data) {
+        final uid = ref.read(uidProvider);
         final mes = MessageEntity.fromJson(data);
         print('paticipant: $mes');
         if (mes.type == 'joined') {
@@ -110,7 +122,22 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       onWillPop: () async => false,
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () => connect(),
+          onPressed: () {
+            final uid = ref.read(uidProvider);
+            final mes = MessageEntity(
+              type: 'join',
+              content: UserEntity(
+                uid: uid,
+                assignedId: 404,
+                name: null,
+                stack: 1000,
+                isBtn: false,
+              ),
+            );
+            conn.send(jsonEncode(mes.toJson()));
+            print('send');
+            print(mes.toJson().toString());
+          },
         ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
@@ -136,6 +163,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                     child: UserBoxes(),
                   ),
                 ),
+                ElevatedButton(onPressed: () => connect(), child: Text('con')),
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -173,8 +201,7 @@ void actionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+
       break;
     case ActionTypeEnum.check:
       break;

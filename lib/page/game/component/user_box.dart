@@ -50,7 +50,7 @@ class UserBoxes extends ConsumerWidget {
       if (players.length % 2 == 1) {
         for (int i = 0; i < afterUsers.length; i++) {
           child.add(beforeUsers[i]);
-          child.add(afterUsers[afterUsers.length - i]);
+          child.add(afterUsers[afterUsers.length - i - 1]);
           children.add(SizedBox(height: 16));
           children.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,

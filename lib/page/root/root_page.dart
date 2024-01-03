@@ -64,9 +64,15 @@ class _RootPageState extends ConsumerState<RootPage> {
                     const SizedBox(height: 32),
                     MainButton(
                       onTap: () async {
-                    
+                        context.push('/ori');
                       },
-                      text: 'オンライン',
+                      text: 'ori',
+                    ),
+                    MainButton(
+                      onTap: () async {
+                        context.push('/host_ex');
+                      },
+                      text: 'host',
                     ),
                   ],
                 ),

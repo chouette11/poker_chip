@@ -1,14 +1,9 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
-import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
-import 'package:poker_chip/page/game/component/qr_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
@@ -17,7 +12,6 @@ import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/host.dart';
-import 'package:poker_chip/util/enum/participant.dart';
 
 class HostPage extends ConsumerStatefulWidget {
   const HostPage({Key? key}) : super(key: key);
@@ -28,14 +22,13 @@ class HostPage extends ConsumerStatefulWidget {
 
 class _GamePageState extends ConsumerState<HostPage> {
   bool isChanged = false;
-  Peer peer = Peer(options: PeerOptions(debug: LogLevel.All));
   final TextEditingController _controller = TextEditingController();
   String? peerId;
-  late DataConnection conn;
   bool connected = false;
 
   @override
   void dispose() {
+    final peer = ref.read(peerProvider);
     peer.dispose();
     _controller.dispose();
     super.dispose();
@@ -44,83 +37,15 @@ class _GamePageState extends ConsumerState<HostPage> {
   @override
   void initState() {
     super.initState();
-
-    peer.on("open").listen((id) {
-      setState(() {
-        peerId = peer.id;
-      });
-      print(peer.id);
-      WidgetsBinding.instance!.addPostFrameCallback((_) {
-        showDialog(
-            context: context, builder: (context) => QrDialog(peer.id ?? ''));
-      });
-    });
-
-    peer.on("close").listen((id) {
-      setState(() {
-        connected = false;
-      });
-    });
-
-    peer.on<DataConnection>("connection").listen((event) {
-      conn = event;
-
-      conn.on("data").listen((data) {
-        final json = data as String;
-        final mes = MessageEntity.fromJson(jsonDecode(json));
-        print('host: $mes');
-        if (mes.type == ParticipantMessageTypeEnum.join.name) {
-          UserEntity user = UserEntity.fromJson(mes.content);
-          final players = ref.read(playerDataProvider);
-          user = UserEntity(
-              uid: user.uid,
-              assignedId: players.length + 1,
-              name: user.name ?? 'プレイヤー${players.length + 1}',
-              stack: user.stack,
-              isBtn: false);
-          ref.read(playerDataProvider.notifier).add(user);
-          final res = MessageEntity(
-              type: HostMessageTypeEnum.joined.name, content: user);
-          conn.send(res.toJson());
-
-          final uid = ref.read(uidProvider);
-          conn.send(MessageEntity(
-            type: HostMessageTypeEnum.joined.name,
-            content: UserEntity(
-                uid: uid,
-                assignedId: 1,
-                name: 'プレイヤー1',
-                stack: 1000,
-                isBtn: false),
-          ).toJson());
-        } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
-          final action = ActionEntity.fromJson(mes.content);
-          actionMethod(action, ref);
-        }
-      });
-
-      conn.on("binary").listen((data) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text("Got binary")));
-      });
-
-      conn.on("close").listen((event) {
-        setState(() {
-          connected = false;
-        });
-      });
-
-      setState(() {
-        connected = true;
-      });
-    });
+    final peer = ref.read(peerProvider);
+    ref.read(isConnProvider(peer).notifier).open(context);
   }
 
-  void sendHelloWorld() {
+  void sendHelloWorld(DataConnection conn) {
     conn.send('{"text":"Hello"}');
   }
 
-  void game() {
+  void game(DataConnection conn) {
     final smallId = ref.read(smallIdProvider);
     final bigId = ref.read(bigIdProvider);
     final btnId = ref.read(btnIdProvider);
@@ -143,31 +68,46 @@ class _GamePageState extends ConsumerState<HostPage> {
     final btn = MessageEntity(
       type: HostMessageTypeEnum.action.name,
       content: ActionEntity(
-          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn),
+          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
     );
     conn.send(smallBlind.toJson());
+    actionMethod(
+      ActionEntity(
+        uid: assignedIdToUid(smallId, ref),
+        type: ActionTypeEnum.blind,
+        score: 10,
+      ),
+      ref,
+    );
     conn.send(bigBlind.toJson());
+    actionMethod(
+      ActionEntity(
+        uid: assignedIdToUid(bigId, ref),
+        type: ActionTypeEnum.blind,
+        score: 20,
+      ),
+      ref,
+    );
+    actionMethod(
+      ActionEntity(uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
+      ref,
+    );
     conn.send(btn.toJson());
   }
 
-  void sendBinary() {
-    final bytes = Uint8List(30);
-    conn.sendBinary(bytes);
-  }
-
   void closeConnection() {
+    final peer = ref.read(peerProvider);
     peer.dispose();
   }
 
-  void reconnect() {
-    peer = Peer();
-  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final score = ref.watch(scoreProvider);
+    final conn = ref.watch(conProvider(''));
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -204,7 +144,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    game();
+                    game(conn);
                   },
                   child: const Text('ブラインド'),
                 ),

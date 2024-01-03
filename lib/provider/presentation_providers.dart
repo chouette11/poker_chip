@@ -1,10 +1,20 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/page/game/component/qr_dialog.dart';
+import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/host.dart';
+import 'package:poker_chip/util/enum/participant.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:poker_chip/util/constant/const.dart';
 import 'package:uuid/uuid.dart';
@@ -22,11 +32,79 @@ final uidProvider = StateProvider<String>((ref) =>
 
 final errorTextProvider = StateProvider((ref) => '');
 
-final answerAssignedIdProvider = StateProvider<int>((ref) => 404);
-
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
 final scoreProvider = StateProvider((ref) => 0);
+
+final conProvider =
+    StateProvider.family((ref, String id) => Peer().connect(id));
+
+final peerProvider =
+    Provider((ref) => Peer(id: 'c78da73a-9b97-4efc-9303-4161de32b84f'));
+
+@riverpod
+class IsConn extends _$IsConn {
+  @override
+  bool build(Peer peer) {
+    return false;
+  }
+
+  void open(BuildContext context) {
+    late DataConnection conn;
+    peer.on("open").listen((id) {
+      print(peer.id);
+      print('open!');
+    });
+
+    peer.on("close").listen((id) {});
+
+    peer.on<DataConnection>("connection").listen((event) {
+      conn = event;
+      print('con!');
+      ref.read(conProvider('').notifier).update((state) => event);
+
+      conn.on("data").listen((data) {
+        print('data!!');
+        final json = data as String;
+        final mes = MessageEntity.fromJson(jsonDecode(json));
+        print('host: $mes');
+        if (mes.type == ParticipantMessageTypeEnum.join.name) {
+          UserEntity user = UserEntity.fromJson(mes.content);
+          final players = ref.read(playerDataProvider);
+          user = UserEntity(
+              uid: user.uid,
+              assignedId: players.length + 1,
+              name: user.name ?? 'プレイヤー${players.length + 1}',
+              stack: user.stack,
+              isBtn: false);
+          ref.read(playerDataProvider.notifier).add(user);
+          final res = MessageEntity(
+              type: HostMessageTypeEnum.joined.name, content: user);
+          conn.send(res.toJson());
+
+          final uid = ref.read(uidProvider);
+          conn.send(MessageEntity(
+            type: HostMessageTypeEnum.joined.name,
+            content: UserEntity(
+                uid: uid,
+                assignedId: 1,
+                name: 'プレイヤー1',
+                stack: 1000,
+                isBtn: false),
+          ).toJson());
+        } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
+          final action = ActionEntity.fromJson(mes.content);
+          _actionMethod(action, ref);
+        }
+      });
+
+      conn.on("binary").listen((data) {});
+
+      conn.on("close").listen((event) {});
+      state = true;
+    });
+  }
+}
 
 @riverpod
 class BtnId extends _$BtnId {
@@ -108,10 +186,7 @@ class PlayerData extends _$PlayerData {
   void update(UserEntity user) {
     state = [
       for (final e in state)
-        if (e.uid == user.uid)
-          user
-        else
-          e,
+        if (e.uid == user.uid) user else e,
     ];
   }
 
@@ -128,10 +203,7 @@ class PlayerData extends _$PlayerData {
   void updateScore(String uid, int? score) {
     state = [
       for (final user in state)
-        if (user.uid == uid)
-          user.copyWith(score: score)
-        else
-          user,
+        if (user.uid == uid) user.copyWith(score: score) else user,
     ];
   }
 
@@ -175,5 +247,39 @@ class LimitTime extends _$LimitTime {
         timer.cancel();
       }
     });
+  }
+}
+
+void _actionMethod(
+    ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
+  final type = action.type;
+  final uid = action.uid!;
+  final score = action.score;
+  switch (type) {
+    case ActionTypeEnum.fold:
+      break;
+    case ActionTypeEnum.call:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.raise:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.bet:
+      break;
+    case ActionTypeEnum.check:
+      break;
+    case ActionTypeEnum.pot:
+      break;
+    case ActionTypeEnum.anty:
+      break;
+    case ActionTypeEnum.blind:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case ActionTypeEnum.btn:
+      ref.read(playerDataProvider.notifier).updateBtn(uid);
+      break;
   }
 }
