@@ -6,7 +6,22 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isConnHash() => r'd230ad28e222545f271ee6081ee4a8ba944bb4bb';
+String _$consHash() => r'c98da550b2421a5dc3bc166d503e16dbeb5a1628';
+
+/// See also [Cons].
+@ProviderFor(Cons)
+final consProvider =
+    AutoDisposeNotifierProvider<Cons, List<PeerConEntity>>.internal(
+  Cons.new,
+  name: r'consProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$consHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Cons = AutoDisposeNotifier<List<PeerConEntity>>;
+String _$isConnHash() => r'995033f8f993cb9f482918b9a6ec8a151527e564';
 
 /// Copied from Dart SDK
 class _SystemHash {

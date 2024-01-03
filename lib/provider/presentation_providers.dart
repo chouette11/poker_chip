@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/qr_dialog.dart';
 import 'package:poker_chip/page/game/paticipant_page.dart';
@@ -36,11 +37,21 @@ final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
 final scoreProvider = StateProvider((ref) => 0);
 
-final conProvider =
-    StateProvider.family((ref, String id) => Peer().connect(id));
+final playersExProvider = StateProvider((ref) => []);
 
-final peerProvider =
-    Provider((ref) => Peer(id: 'c78da73a-9b97-4efc-9303-4161de32b84f'));
+final peerProvider = ProviderFamily((ref, String id) => Peer(id: id));
+
+@riverpod
+class Cons extends _$Cons {
+  @override
+  List<PeerConEntity> build() {
+    return [];
+  }
+
+  void add(PeerConEntity peerConEntity) {
+    state = [...state, peerConEntity];
+  }
+}
 
 @riverpod
 class IsConn extends _$IsConn {
@@ -61,7 +72,8 @@ class IsConn extends _$IsConn {
     peer.on<DataConnection>("connection").listen((event) {
       conn = event;
       print('con!');
-      ref.read(conProvider('').notifier).update((state) => event);
+      final entity = PeerConEntity(peerId: peer.id ?? '', con: event);
+      ref.read(consProvider.notifier).add(entity);
 
       conn.on("data").listen((data) {
         print('data!!');
