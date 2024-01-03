@@ -1,6 +1,7 @@
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
@@ -23,12 +24,13 @@ class HostPage extends ConsumerStatefulWidget {
 class _GamePageState extends ConsumerState<HostPage> {
   bool isChanged = false;
   final TextEditingController _controller = TextEditingController();
-  String? peerId;
   bool connected = false;
 
   @override
   void dispose() {
-    final peer = ref.read(peerProvider);
+    final players = ref.read(playerDataProvider);
+    final id = lenToPeerId(players.length);
+    final peer = ref.read(peerProvider(id));
     peer.dispose();
     _controller.dispose();
     super.dispose();
@@ -37,7 +39,11 @@ class _GamePageState extends ConsumerState<HostPage> {
   @override
   void initState() {
     super.initState();
-    final peer = ref.read(peerProvider);
+    final players = ref.read(playerDataProvider);
+    final id = lenToPeerId(players.length);
+
+    final peer = ref.read(peerProvider(id));
+
     ref.read(isConnProvider(peer).notifier).open(context);
   }
 
@@ -45,7 +51,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     conn.send('{"text":"Hello"}');
   }
 
-  void game(DataConnection conn) {
+  void game(List<PeerConEntity> consEntity) {
     final smallId = ref.read(smallIdProvider);
     final bigId = ref.read(bigIdProvider);
     final btnId = ref.read(btnIdProvider);
@@ -70,7 +76,16 @@ class _GamePageState extends ConsumerState<HostPage> {
       content: ActionEntity(
           uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
     );
-    conn.send(smallBlind.toJson());
+
+    /// Participantの状態変更
+    for (var conEntity in consEntity) {
+      final conn = conEntity.con;
+      conn.send(smallBlind.toJson());
+      conn.send(bigBlind.toJson());
+      conn.send(btn.toJson());
+    }
+
+    /// Hostの状態変更
     actionMethod(
       ActionEntity(
         uid: assignedIdToUid(smallId, ref),
@@ -79,7 +94,6 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
       ref,
     );
-    conn.send(bigBlind.toJson());
     actionMethod(
       ActionEntity(
         uid: assignedIdToUid(bigId, ref),
@@ -89,24 +103,30 @@ class _GamePageState extends ConsumerState<HostPage> {
       ref,
     );
     actionMethod(
-      ActionEntity(uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
+      ActionEntity(
+          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
       ref,
     );
-    conn.send(btn.toJson());
   }
 
-  void closeConnection() {
-    final peer = ref.read(peerProvider);
+  void closeConnection(String id) {
+    final peer = ref.read(peerProvider(id));
     peer.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final score = ref.watch(scoreProvider);
-    final conn = ref.watch(conProvider(''));
+    final len = ref.watch(playerDataProvider).length;
+    final cons = ref.watch(consProvider);
+    final peer = ref.watch(peerProvider(lenToPeerId(len)));
+    ref.listen(playerDataProvider, (previous, next) {
+      final id = lenToPeerId(next.length);
+      final peer = ref.read(peerProvider(id));
+      ref.read(isConnProvider(peer).notifier).open(context);
+    });
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -144,10 +164,11 @@ class _GamePageState extends ConsumerState<HostPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    game(conn);
+                    game(cons);
                   },
                   child: const Text('ブラインド'),
                 ),
+                Text(peer.id ?? ''),
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -172,4 +193,13 @@ class _GamePageState extends ConsumerState<HostPage> {
 String assignedIdToUid(int assignedId, WidgetRef ref) {
   final players = ref.read(playerDataProvider);
   return players.firstWhere((e) => e.assignedId == assignedId).uid;
+}
+
+String lenToPeerId(int len) {
+  final ids = [
+    'c78da73a-9b97-4efc-9303-4161de32b84f',
+    '5f865cf4-02d2-4249-812e-d0c5d8eecad3',
+    '3'
+  ];
+  return ids[len - 1];
 }

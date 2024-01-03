@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 
 class Host extends ConsumerStatefulWidget {
@@ -20,7 +21,9 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
 
   @override
   void dispose() {
-    final peer = ref.read(peerProvider);
+    final players = ref.read(playersExProvider);
+    final id = lenToPeerId(players.length);
+    final peer = ref.read(peerProvider(id));
     peer.dispose();
     _controller.dispose();
     super.dispose();
@@ -29,15 +32,21 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
   @override
   void initState() {
     super.initState();
-    final peer = ref.read(peerProvider);
+    final players = ref.read(playersExProvider);
+    final id = lenToPeerId(players.length);
+    final peer = ref.read(peerProvider(id));
     ref.read(isConnProvider(peer).notifier).open(context);
   }
 
   void sendHelloWorld() {
     print('send');
-    print(ref.read(conProvider('')).open);
-    print(ref.read(conProvider('')).label);
-    ref.read(conProvider('')).send('data');
+    final players = ref.read(playersExProvider);
+    final id = lenToPeerId(players.length);
+    final consEntity = ref.read(consProvider);
+    for (var conEntity in consEntity) {
+      final conn = conEntity.con;
+      conn.send('send');
+    }
   }
 
   void sendBinary() {
@@ -45,8 +54,8 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
     conn.sendBinary(bytes);
   }
 
-  void closeConnection() {
-    final peer = ref.read(peerProvider);
+  void closeConnection(String id) {
+    final peer = ref.read(peerProvider(id));
     peer.dispose();
   }
 
@@ -73,7 +82,7 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
                   onPressed: sendBinary,
                   child: const Text("Send binary to peer")),
               ElevatedButton(
-                  onPressed: closeConnection,
+                  onPressed: () => closeConnection('id'),
                   child: const Text("Close connection,")),
             ],
           ),

@@ -24,36 +24,42 @@ class ParticipantPage extends ConsumerStatefulWidget {
 }
 
 class _GamePageState extends ConsumerState<ParticipantPage> {
-  bool isChanged = false;
   Peer peer = Peer(options: PeerOptions(debug: LogLevel.All));
+  bool isChanged = false;
   late DataConnection conn;
   bool connected = false;
+
+  @override
+  void dispose() {
+    peer.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
 
-    Timer.periodic(Duration(milliseconds: 1500), (timer) {
-      print('timer');
-      connect();
-      if (connected) {
-        timer.cancel();
-        final uid = ref.read(uidProvider);
-        final mes = MessageEntity(
-          type: 'join',
-          content: UserEntity(
-            uid: uid,
-            assignedId: 404,
-            name: null,
-            stack: 1000,
-            isBtn: false,
-          ),
-        );
-        conn.send(jsonEncode(mes.toJson()));
-        print('send');
-        print(mes.toJson().toString());
-      }
-    });
+    // Timer.periodic(Duration(milliseconds: 1500), (timer) {
+    //   print('timer');
+    //   // connect();
+    //   if (connected) {
+    //     timer.cancel();
+    //     final uid = ref.read(uidProvider);
+    //     final mes = MessageEntity(
+    //       type: 'join',
+    //       content: UserEntity(
+    //         uid: uid,
+    //         assignedId: 404,
+    //         name: null,
+    //         stack: 1000,
+    //         isBtn: false,
+    //       ),
+    //     );
+    //     conn.send(jsonEncode(mes.toJson()));
+    //     print('send');
+    //     print(mes.toJson().toString());
+    //   }
+    // });
   }
 
   void connect() {
@@ -104,14 +110,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   void sendBinary() {
     final bytes = Uint8List(30);
     conn.sendBinary(bytes);
-  }
-
-  void closeConnection() {
-    peer.dispose();
-  }
-
-  void reconnect() {
-    peer = Peer();
   }
 
   @override
