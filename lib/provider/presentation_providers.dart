@@ -11,8 +11,7 @@ import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/util/enum/action.dart';
-import 'package:poker_chip/util/enum/host.dart';
-import 'package:poker_chip/util/enum/participant.dart';
+import 'package:poker_chip/util/enum/message.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:poker_chip/util/constant/const.dart';
 import 'package:uuid/uuid.dart';
@@ -70,7 +69,7 @@ class IsConn extends _$IsConn {
         final mes = MessageEntity.fromJson(jsonDecode(json));
         print('host: $mes');
 
-        if (mes.type == ParticipantMessageTypeEnum.join.name) {
+        if (mes.type == MessageTypeEnum.join) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final players = ref.read(playerDataProvider);
           user = UserEntity(
@@ -87,7 +86,7 @@ class IsConn extends _$IsConn {
 
           /// Participantの状態変更
           final res = MessageEntity(
-              type: HostMessageTypeEnum.joined.name, content: user);
+              type: MessageTypeEnum.joined, content: user);
           final cons = ref.read(consProvider);
           for (var conEntity in cons) {
             final conn = conEntity.con;
@@ -96,7 +95,7 @@ class IsConn extends _$IsConn {
 
           final uid = ref.read(uidProvider);
           final host = MessageEntity(
-            type: HostMessageTypeEnum.joined.name,
+            type: MessageTypeEnum.joined,
             content: UserEntity(
               uid: uid,
               assignedId: 1,
@@ -107,7 +106,7 @@ class IsConn extends _$IsConn {
             ),
           );
           conn.send(host.toJson());
-        } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
+        } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _actionMethod(action, ref);
         }
@@ -240,6 +239,16 @@ class PlayerData extends _$PlayerData {
           user.copyWith(isBtn: true)
         else
           user.copyWith(isBtn: false),
+    ];
+  }
+
+  void updateFold(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid)
+          user.copyWith(isFold: true)
+        else
+          user.copyWith(isFold: false),
     ];
   }
 }

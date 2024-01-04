@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 part 'message_entity.freezed.dart';
 part 'message_entity.g.dart';
@@ -9,7 +10,7 @@ class MessageEntity with _$MessageEntity {
     const MessageEntity._();
 
   const factory MessageEntity({
-    required String type,
+    required MessageTypeEnum type,
     required dynamic content,
   }) = _MessageEntity;
 

@@ -14,7 +14,7 @@ import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
-import 'package:poker_chip/util/enum/host.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 class HostPage extends ConsumerStatefulWidget {
   const HostPage({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     final bigId = ref.read(bigIdProvider);
     final btnId = ref.read(btnIdProvider);
     final smallBlind = MessageEntity(
-      type: HostMessageTypeEnum.action.name,
+      type: MessageTypeEnum.action,
       content: GameEntity(
         uid: assignedIdToUid(smallId, ref),
         type: GameTypeEnum.blind,
@@ -65,7 +65,7 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
     );
     final bigBlind = MessageEntity(
-      type: HostMessageTypeEnum.action.name,
+      type: MessageTypeEnum.action,
       content: GameEntity(
         uid: assignedIdToUid(bigId, ref),
         type: GameTypeEnum.blind,
@@ -73,7 +73,7 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
     );
     final btn = MessageEntity(
-      type: HostMessageTypeEnum.action.name,
+      type: MessageTypeEnum.action,
       content: GameEntity(
           uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
     );

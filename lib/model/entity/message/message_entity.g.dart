@@ -8,12 +8,18 @@ part of 'message_entity.dart';
 
 _$_MessageEntity _$$_MessageEntityFromJson(Map<String, dynamic> json) =>
     _$_MessageEntity(
-      type: json['type'] as String,
+      type: $enumDecode(_$MessageTypeEnumEnumMap, json['type']),
       content: json['content'],
     );
 
 Map<String, dynamic> _$$_MessageEntityToJson(_$_MessageEntity instance) =>
     <String, dynamic>{
-      'type': instance.type,
+      'type': _$MessageTypeEnumEnumMap[instance.type]!,
       'content': instance.content,
     };
+
+const _$MessageTypeEnumEnumMap = {
+  MessageTypeEnum.join: 'join',
+  MessageTypeEnum.joined: 'joined',
+  MessageTypeEnum.action: 'action',
+};

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 class ActionButtons extends ConsumerWidget {
   const ActionButtons({super.key});
@@ -32,7 +35,7 @@ class ActionButtons extends ConsumerWidget {
   }
 }
 
-class ActionButton extends StatelessWidget {
+class ActionButton extends ConsumerWidget {
   const ActionButton({
     super.key,
     required this.actionTypeEnum,
@@ -43,11 +46,21 @@ class ActionButton extends StatelessWidget {
   final int maxScore;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cons = ref.watch(consProvider);
+    final uid = ref.watch(uidProvider);
     return ElevatedButton(
       onPressed: () {
         switch (actionTypeEnum) {
           case ActionTypeEnum.fold:
+            ref.read(playerDataProvider.notifier).updateFold(uid);
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final action = ActionEntity(uid: uid, type: actionTypeEnum);
+              final mes = MessageEntity(type: MessageTypeEnum.action, content: action);
+              conn.send(mes.toJson());
+            }
+
             break;
           case ActionTypeEnum.call:
             break;

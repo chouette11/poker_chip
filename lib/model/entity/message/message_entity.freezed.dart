@@ -20,7 +20,7 @@ MessageEntity _$MessageEntityFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$MessageEntity {
-  String get type => throw _privateConstructorUsedError;
+  MessageTypeEnum get type => throw _privateConstructorUsedError;
   dynamic get content => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -35,7 +35,7 @@ abstract class $MessageEntityCopyWith<$Res> {
           MessageEntity value, $Res Function(MessageEntity) then) =
       _$MessageEntityCopyWithImpl<$Res, MessageEntity>;
   @useResult
-  $Res call({String type, dynamic content});
+  $Res call({MessageTypeEnum type, dynamic content});
 }
 
 /// @nodoc
@@ -58,7 +58,7 @@ class _$MessageEntityCopyWithImpl<$Res, $Val extends MessageEntity>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MessageTypeEnum,
       content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,7 @@ abstract class _$$_MessageEntityCopyWith<$Res>
       __$$_MessageEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String type, dynamic content});
+  $Res call({MessageTypeEnum type, dynamic content});
 }
 
 /// @nodoc
@@ -96,7 +96,7 @@ class __$$_MessageEntityCopyWithImpl<$Res>
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
-              as String,
+              as MessageTypeEnum,
       content: freezed == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
@@ -115,7 +115,7 @@ class _$_MessageEntity extends _MessageEntity {
       _$$_MessageEntityFromJson(json);
 
   @override
-  final String type;
+  final MessageTypeEnum type;
   @override
   final dynamic content;
 
@@ -154,7 +154,7 @@ class _$_MessageEntity extends _MessageEntity {
 
 abstract class _MessageEntity extends MessageEntity {
   const factory _MessageEntity(
-      {required final String type,
+      {required final MessageTypeEnum type,
       required final dynamic content}) = _$_MessageEntity;
   const _MessageEntity._() : super._();
 
@@ -162,7 +162,7 @@ abstract class _MessageEntity extends MessageEntity {
       _$_MessageEntity.fromJson;
 
   @override
-  String get type;
+  MessageTypeEnum get type;
   @override
   dynamic get content;
   @override

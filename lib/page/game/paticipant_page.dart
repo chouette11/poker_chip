@@ -15,6 +15,7 @@ import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
   const ParticipantPage({Key? key, required this.id}) : super(key: key);
@@ -124,7 +125,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
           onPressed: () {
             final uid = ref.read(uidProvider);
             final mes = MessageEntity(
-              type: 'join',
+              type: MessageTypeEnum.join,
               content: UserEntity(
                 uid: uid,
                 assignedId: 404,

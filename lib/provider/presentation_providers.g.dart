@@ -21,7 +21,7 @@ final consProvider =
 );
 
 typedef _$Cons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$isConnHash() => r'cc6c73eb1b2b83e947e5df2aa5d695c60fe5aa01';
+String _$isConnHash() => r'c74e2274a22bd64204fe7adf0d8f9e31bf0b4de7';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -182,7 +182,7 @@ final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = AutoDisposeNotifier<int>;
-String _$playerDataHash() => r'e636bbcf5544fd90b9cb5a3adefff0d89a0e2278';
+String _$playerDataHash() => r'c0bf93188226e11df6b661492785412ca44d66cb';
 
 ///
 /// player
