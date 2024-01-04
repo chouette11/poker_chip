@@ -45,7 +45,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     final id = lenToPeerId(players.length);
 
     final peer = ref.read(peerProvider(id));
-    ref.read(isConnProvider(peer).notifier).open(context);
+    ref.read(hostConnOpenProvider(peer).notifier).open(context);
   }
 
   void sendHelloWorld(DataConnection conn) {
@@ -121,12 +121,12 @@ class _GamePageState extends ConsumerState<HostPage> {
     final width = MediaQuery.of(context).size.width;
     final pot = ref.watch(potProvider);
     final len = ref.watch(playerDataProvider).length;
-    final cons = ref.watch(consProvider);
+    final cons = ref.watch(hostConsProvider);
     final peer = ref.watch(peerProvider(lenToPeerId(len)));
     ref.listen(playerDataProvider, (previous, next) {
       final id = lenToPeerId(next.length);
       final peer = ref.read(peerProvider(id));
-      ref.read(isConnProvider(peer).notifier).open(context);
+      ref.read(hostConnOpenProvider(peer).notifier).open(context);
     });
 
     return WillPopScope(

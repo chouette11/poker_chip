@@ -25,12 +25,20 @@ final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
 final potProvider = StateProvider((ref) => 0);
 
+final raiseBetProvider = StateProvider((ref) => 0);
+
 final playersExProvider = StateProvider((ref) => []);
+
+///
+/// Peer
+///
 
 final peerProvider = ProviderFamily((ref, String id) => Peer(id: id));
 
+final participantConProvider = StateProvider<DataConnection?>((ref) => null);
+
 @riverpod
-class Cons extends _$Cons {
+class HostCons extends _$HostCons {
   @override
   List<PeerConEntity> build() {
     return [];
@@ -42,7 +50,7 @@ class Cons extends _$Cons {
 }
 
 @riverpod
-class IsConn extends _$IsConn {
+class HostConnOpen extends _$HostConnOpen {
   @override
   bool build(Peer peer) {
     return false;
@@ -61,7 +69,7 @@ class IsConn extends _$IsConn {
       conn = event;
       print('con!');
       final entity = PeerConEntity(peerId: peer.id ?? '', con: event);
-      ref.read(consProvider.notifier).add(entity);
+      ref.read(hostConsProvider.notifier).add(entity);
 
       conn.on("data").listen((data) {
         print('data!!');
@@ -87,7 +95,7 @@ class IsConn extends _$IsConn {
           /// Participantの状態変更
           final res = MessageEntity(
               type: MessageTypeEnum.joined, content: user);
-          final cons = ref.read(consProvider);
+          final cons = ref.read(hostConsProvider);
           for (var conEntity in cons) {
             final conn = conEntity.con;
             conn.send(res.toJson());

@@ -6,22 +6,22 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$consHash() => r'c98da550b2421a5dc3bc166d503e16dbeb5a1628';
+String _$hostConsHash() => r'97c17673a2c4c37a66d5398710e3bb59a19c2db6';
 
-/// See also [Cons].
-@ProviderFor(Cons)
-final consProvider =
-    AutoDisposeNotifierProvider<Cons, List<PeerConEntity>>.internal(
-  Cons.new,
-  name: r'consProvider',
+/// See also [HostCons].
+@ProviderFor(HostCons)
+final hostConsProvider =
+    AutoDisposeNotifierProvider<HostCons, List<PeerConEntity>>.internal(
+  HostCons.new,
+  name: r'hostConsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$consHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$hostConsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Cons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$isConnHash() => r'c74e2274a22bd64204fe7adf0d8f9e31bf0b4de7';
+typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
+String _$hostConnOpenHash() => r'c75fe809544fc035c57ca882a300caf2bc1359e0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,7 +44,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$IsConn extends BuildlessAutoDisposeNotifier<bool> {
+abstract class _$HostConnOpen extends BuildlessAutoDisposeNotifier<bool> {
   late final Peer peer;
 
   bool build(
@@ -52,27 +52,27 @@ abstract class _$IsConn extends BuildlessAutoDisposeNotifier<bool> {
   );
 }
 
-/// See also [IsConn].
-@ProviderFor(IsConn)
-const isConnProvider = IsConnFamily();
+/// See also [HostConnOpen].
+@ProviderFor(HostConnOpen)
+const hostConnOpenProvider = HostConnOpenFamily();
 
-/// See also [IsConn].
-class IsConnFamily extends Family<bool> {
-  /// See also [IsConn].
-  const IsConnFamily();
+/// See also [HostConnOpen].
+class HostConnOpenFamily extends Family<bool> {
+  /// See also [HostConnOpen].
+  const HostConnOpenFamily();
 
-  /// See also [IsConn].
-  IsConnProvider call(
+  /// See also [HostConnOpen].
+  HostConnOpenProvider call(
     Peer peer,
   ) {
-    return IsConnProvider(
+    return HostConnOpenProvider(
       peer,
     );
   }
 
   @override
-  IsConnProvider getProviderOverride(
-    covariant IsConnProvider provider,
+  HostConnOpenProvider getProviderOverride(
+    covariant HostConnOpenProvider provider,
   ) {
     return call(
       provider.peer,
@@ -91,31 +91,33 @@ class IsConnFamily extends Family<bool> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'isConnProvider';
+  String? get name => r'hostConnOpenProvider';
 }
 
-/// See also [IsConn].
-class IsConnProvider extends AutoDisposeNotifierProviderImpl<IsConn, bool> {
-  /// See also [IsConn].
-  IsConnProvider(
+/// See also [HostConnOpen].
+class HostConnOpenProvider
+    extends AutoDisposeNotifierProviderImpl<HostConnOpen, bool> {
+  /// See also [HostConnOpen].
+  HostConnOpenProvider(
     this.peer,
   ) : super.internal(
-          () => IsConn()..peer = peer,
-          from: isConnProvider,
-          name: r'isConnProvider',
+          () => HostConnOpen()..peer = peer,
+          from: hostConnOpenProvider,
+          name: r'hostConnOpenProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$isConnHash,
-          dependencies: IsConnFamily._dependencies,
-          allTransitiveDependencies: IsConnFamily._allTransitiveDependencies,
+                  : _$hostConnOpenHash,
+          dependencies: HostConnOpenFamily._dependencies,
+          allTransitiveDependencies:
+              HostConnOpenFamily._allTransitiveDependencies,
         );
 
   final Peer peer;
 
   @override
   bool operator ==(Object other) {
-    return other is IsConnProvider && other.peer == peer;
+    return other is HostConnOpenProvider && other.peer == peer;
   }
 
   @override
@@ -128,7 +130,7 @@ class IsConnProvider extends AutoDisposeNotifierProviderImpl<IsConn, bool> {
 
   @override
   bool runNotifierBuild(
-    covariant IsConn notifier,
+    covariant HostConnOpen notifier,
   ) {
     return notifier.build(
       peer,

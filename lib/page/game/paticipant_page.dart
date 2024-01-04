@@ -64,8 +64,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     // });
   }
 
-  void connect() {
+  void connect(WidgetRef ref) {
     final connection = peer.connect(widget.id);
+    ref.read(participantConProvider.notifier).update((state) => connection);
     conn = connection;
     print('con!');
 
@@ -85,14 +86,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         final uid = ref.read(uidProvider);
         final mes = MessageEntity.fromJson(data);
         print('paticipant: $mes');
-        if (mes.type == 'joined') {
+        if (mes.type == MessageTypeEnum.joined) {
           final user = UserEntity.fromJson(mes.content);
           if (user.uid != uid) {
             ref.read(playerDataProvider.notifier).add(user);
           } else {
             ref.read(playerDataProvider.notifier).update(user);
           }
-        } else if (mes.type == 'action') {
+        } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           actionMethod(action, ref);
         }
@@ -164,7 +165,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                     child: UserBoxes(),
                   ),
                 ),
-                ElevatedButton(onPressed: () => connect(), child: Text('con')),
+                ElevatedButton(onPressed: () => connect(ref), child: Text('con')),
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
