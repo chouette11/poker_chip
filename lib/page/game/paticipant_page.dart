@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
   const ParticipantPage({Key? key, required this.id}) : super(key: key);
@@ -202,16 +204,23 @@ void actionMethod(ActionEntity action, WidgetRef ref) {
       break;
     case ActionTypeEnum.check:
       break;
-    case ActionTypeEnum.pot:
-      break;
-    case ActionTypeEnum.anty:
-      break;
-    case ActionTypeEnum.blind:
+  }
+}
+
+void gameMethod(GameEntity game, WidgetRef ref) {
+  final type = game.type;
+  final uid = game.uid;
+  final score = game.score;
+  switch (type) {
+    case GameTypeEnum.blind:
       ref.read(playerDataProvider.notifier).updateStack(uid, score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
-    case ActionTypeEnum.btn:
-      ref.read(playerDataProvider.notifier).updateBtn(uid);
+    case GameTypeEnum.anty:
       break;
+    case GameTypeEnum.btn:
+      break;
+    case GameTypeEnum.pot:
+      break;  
   }
 }

@@ -3,11 +3,7 @@ enum ActionTypeEnum {
   raise('raise'),
   fold('fold'),
   check('check'),
-  bet('bet'),
-  pot('pot'),
-  anty('anty'),
-  btn('btn'),
-  blind('blind');
+  bet('bet');
 
   const ActionTypeEnum(this.displayName);
 

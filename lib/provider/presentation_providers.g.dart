@@ -21,7 +21,7 @@ final consProvider =
 );
 
 typedef _$Cons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$isConnHash() => r'995033f8f993cb9f482918b9a6ec8a151527e564';
+String _$isConnHash() => r'cc6c73eb1b2b83e947e5df2aa5d695c60fe5aa01';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,7 +138,11 @@ class IsConnProvider extends AutoDisposeNotifierProviderImpl<IsConn, bool> {
 
 String _$btnIdHash() => r'fa2319b231ff32ebb76d2f91ac8951b1fe39a3a0';
 
-/// See also [BtnId].
+///
+/// position
+///
+///
+/// Copied from [BtnId].
 @ProviderFor(BtnId)
 final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
   BtnId.new,
@@ -180,7 +184,11 @@ final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
 typedef _$BigId = AutoDisposeNotifier<int>;
 String _$playerDataHash() => r'e636bbcf5544fd90b9cb5a3adefff0d89a0e2278';
 
-/// See also [PlayerData].
+///
+/// player
+///
+///
+/// Copied from [PlayerData].
 @ProviderFor(PlayerData)
 final playerDataProvider =
     AutoDisposeNotifierProvider<PlayerData, List<UserEntity>>.internal(

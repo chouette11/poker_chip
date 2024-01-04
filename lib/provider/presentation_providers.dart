@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
@@ -258,19 +259,14 @@ void _actionMethod(
       break;
     case ActionTypeEnum.check:
       break;
-    case ActionTypeEnum.pot:
-      break;
-    case ActionTypeEnum.anty:
-      break;
-    case ActionTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
-      break;
-    case ActionTypeEnum.btn:
-      ref.read(playerDataProvider.notifier).updateBtn(uid);
-      break;
+
   }
 }
+
+void _gameMethod(
+    GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {
+
+    }
 
 
 

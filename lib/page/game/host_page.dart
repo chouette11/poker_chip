@@ -1,5 +1,6 @@
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
@@ -12,6 +13,7 @@ import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/host.dart';
 
 class HostPage extends ConsumerStatefulWidget {
@@ -56,24 +58,24 @@ class _GamePageState extends ConsumerState<HostPage> {
     final btnId = ref.read(btnIdProvider);
     final smallBlind = MessageEntity(
       type: HostMessageTypeEnum.action.name,
-      content: ActionEntity(
+      content: GameEntity(
         uid: assignedIdToUid(smallId, ref),
-        type: ActionTypeEnum.blind,
+        type: GameTypeEnum.blind,
         score: 10,
       ),
     );
     final bigBlind = MessageEntity(
       type: HostMessageTypeEnum.action.name,
-      content: ActionEntity(
+      content: GameEntity(
         uid: assignedIdToUid(bigId, ref),
-        type: ActionTypeEnum.blind,
+        type: GameTypeEnum.blind,
         score: 20,
       ),
     );
     final btn = MessageEntity(
       type: HostMessageTypeEnum.action.name,
-      content: ActionEntity(
-          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
+      content: GameEntity(
+          uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
     );
 
     /// Participantの状態変更
@@ -85,25 +87,25 @@ class _GamePageState extends ConsumerState<HostPage> {
     }
 
     /// Hostの状態変更
-    actionMethod(
-      ActionEntity(
+    gameMethod(
+      GameEntity(
         uid: assignedIdToUid(smallId, ref),
-        type: ActionTypeEnum.blind,
+        type: GameTypeEnum.blind,
         score: 10,
       ),
       ref,
     );
-    actionMethod(
-      ActionEntity(
+    gameMethod(
+      GameEntity(
         uid: assignedIdToUid(bigId, ref),
-        type: ActionTypeEnum.blind,
+        type: GameTypeEnum.blind,
         score: 20,
       ),
       ref,
     );
-    actionMethod(
-      ActionEntity(
-          uid: assignedIdToUid(btnId, ref), type: ActionTypeEnum.btn, score: 0),
+    gameMethod(
+      GameEntity(
+          uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
       ref,
     );
   }

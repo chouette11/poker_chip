@@ -26,8 +26,4 @@ const _$ActionTypeEnumEnumMap = {
   ActionTypeEnum.fold: 'fold',
   ActionTypeEnum.check: 'check',
   ActionTypeEnum.bet: 'bet',
-  ActionTypeEnum.pot: 'pot',
-  ActionTypeEnum.anty: 'anty',
-  ActionTypeEnum.btn: 'btn',
-  ActionTypeEnum.blind: 'blind',
 };
