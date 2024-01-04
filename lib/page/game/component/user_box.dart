@@ -11,7 +11,7 @@ class UserBoxes extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     List<UserEntity> players = ref.watch(playerDataProvider);
-    players.sort((a, b) => a.assignedId.compareTo(b.assignedId));
+    players.sort((a, b) => b.assignedId.compareTo(a.assignedId));
     final myAssignedId =
         players.firstWhere((e) => e.uid == ref.read(uidProvider)).assignedId;
 
@@ -27,23 +27,9 @@ class UserBoxes extends ConsumerWidget {
       final splitPlayers = splitArrayAroundTarget(players, myAssignedId);
       print(splitPlayers);
       final before = splitPlayers[0];
-      final beforeUsers = before
-          .map((e) => UserBox(
-                name: e.name ?? '',
-                stack: e.stack,
-                score: e.score,
-                isBtn: e.isBtn,
-              ))
-          .toList();
+      final beforeUsers = before.map((e) => UserBox(userEntity: e)).toList();
       final after = splitPlayers[1];
-      final afterUsers = after
-          .map((e) => UserBox(
-                name: e.name ?? '',
-                stack: e.stack,
-                score: e.score,
-                isBtn: e.isBtn,
-              ))
-          .toList();
+      final afterUsers = after.map((e) => UserBox(userEntity: e)).toList();
       List<Widget> child = [];
       List<Widget> children = [];
       // playersが奇数の場合
@@ -85,16 +71,10 @@ class UserBoxes extends ConsumerWidget {
 class UserBox extends StatelessWidget {
   const UserBox({
     super.key,
-    required this.name,
-    required this.stack,
-    this.score,
-    required this.isBtn,
+    required this.userEntity,
   });
 
-  final String name;
-  final int stack;
-  final int? score;
-  final bool isBtn;
+  final UserEntity userEntity;
 
   @override
   Widget build(BuildContext context) {
@@ -108,13 +88,15 @@ class UserBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(name, style: TextStyleConstant.bold14),
-              Text(stack.toString(), style: TextStyleConstant.bold20),
+              Text(userEntity.name!, style: TextStyleConstant.bold14),
+              Text(userEntity.stack.toString(),
+                  style: TextStyleConstant.bold20),
             ],
           ),
         ),
-        Text(score.toString()),
-        Visibility(visible: isBtn, child: Text('D'))
+        Text(userEntity.score.toString()),
+        Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
+        Visibility(visible: userEntity.isBtn, child: Text('D'))
       ],
     );
   }
