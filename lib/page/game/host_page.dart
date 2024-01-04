@@ -43,7 +43,6 @@ class _GamePageState extends ConsumerState<HostPage> {
     final id = lenToPeerId(players.length);
 
     final peer = ref.read(peerProvider(id));
-
     ref.read(isConnProvider(peer).notifier).open(context);
   }
 
@@ -118,7 +117,7 @@ class _GamePageState extends ConsumerState<HostPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final score = ref.watch(scoreProvider);
+    final pot = ref.watch(potProvider);
     final len = ref.watch(playerDataProvider).length;
     final cons = ref.watch(consProvider);
     final peer = ref.watch(peerProvider(lenToPeerId(len)));
@@ -159,7 +158,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                   height: height * 0.4,
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: PotWidget(score: score),
+                    child: PotWidget(score: pot),
                   ),
                 ),
                 ElevatedButton(

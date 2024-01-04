@@ -18,20 +18,12 @@ import 'package:uuid/uuid.dart';
 
 part 'presentation_providers.g.dart';
 
-final messageTextFieldController = Provider((_) => TextEditingController());
-
-final tutorialTextFieldController = Provider((_) => TextEditingController());
-
-final idTextFieldProvider = StateProvider<String>((ref) => '');
-
 final uidProvider = StateProvider<String>((ref) =>
     ref.read(firebaseAuthProvider).currentUser?.uid ?? const Uuid().v4());
 
-final errorTextProvider = StateProvider((ref) => '');
-
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
-final scoreProvider = StateProvider((ref) => 0);
+final potProvider = StateProvider((ref) => 0);
 
 final playersExProvider = StateProvider((ref) => []);
 
@@ -76,30 +68,42 @@ class IsConn extends _$IsConn {
         final json = data as String;
         final mes = MessageEntity.fromJson(jsonDecode(json));
         print('host: $mes');
+
         if (mes.type == ParticipantMessageTypeEnum.join.name) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final players = ref.read(playerDataProvider);
           user = UserEntity(
-              uid: user.uid,
-              assignedId: players.length + 1,
-              name: user.name ?? 'プレイヤー${players.length + 1}',
-              stack: user.stack,
-              isBtn: false);
+            uid: user.uid,
+            assignedId: players.length + 1,
+            name: user.name ?? 'プレイヤー${players.length + 1}',
+            stack: user.stack,
+            isBtn: false,
+          );
+
+          /// Hostの状態変更
           ref.read(playerDataProvider.notifier).add(user);
+
+          /// Participantの状態変更
           final res = MessageEntity(
               type: HostMessageTypeEnum.joined.name, content: user);
-          conn.send(res.toJson());
+          final cons = ref.read(consProvider);
+          for (var conEntity in cons) {
+            final conn = conEntity.con;
+            conn.send(res.toJson());
+          }
 
           final uid = ref.read(uidProvider);
-          conn.send(MessageEntity(
+          final host = MessageEntity(
             type: HostMessageTypeEnum.joined.name,
             content: UserEntity(
-                uid: uid,
-                assignedId: 1,
-                name: 'プレイヤー1',
-                stack: 1000,
-                isBtn: false),
-          ).toJson());
+              uid: uid,
+              assignedId: 1,
+              name: 'プレイヤー1',
+              stack: 1000,
+              isBtn: false,
+            ),
+          );
+          conn.send(host.toJson());
         } else if (mes.type == ParticipantMessageTypeEnum.action.name) {
           final action = ActionEntity.fromJson(mes.content);
           _actionMethod(action, ref);
@@ -113,6 +117,10 @@ class IsConn extends _$IsConn {
     });
   }
 }
+
+///
+/// position
+///
 
 @riverpod
 class BtnId extends _$BtnId {
@@ -177,6 +185,10 @@ class BigId extends _$BigId {
   }
 }
 
+///
+/// player
+///
+
 @riverpod
 class PlayerData extends _$PlayerData {
   @override
@@ -226,38 +238,6 @@ class PlayerData extends _$PlayerData {
   }
 }
 
-@riverpod
-class LimitTime extends _$LimitTime {
-  @override
-  int build() {
-    const flavor = String.fromEnvironment('flavor');
-    if (flavor == 'tes') {
-      return 10;
-    }
-    return 100;
-  }
-
-  void reset() {
-    state = 100;
-    const flavor = String.fromEnvironment('flavor');
-    if (flavor == 'tes') {
-      state = 10;
-    }
-  }
-
-  void startTimer(DateTime startTime) {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      const flavor = String.fromEnvironment('flavor');
-      final time = DateTime.now().difference(startTime);
-      final value = 100 + ROLE_DIALOG_TIME + 3 - time.inSeconds;
-      state = flavor == 'tes' ? state - 1 : (value > 100 ? 100 : value);
-      if (state < 1) {
-        timer.cancel();
-      }
-    });
-  }
-}
-
 void _actionMethod(
     ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
   final type = action.type;
@@ -289,5 +269,48 @@ void _actionMethod(
     case ActionTypeEnum.btn:
       ref.read(playerDataProvider.notifier).updateBtn(uid);
       break;
+  }
+}
+
+
+
+
+final messageTextFieldController = Provider((_) => TextEditingController());
+
+final tutorialTextFieldController = Provider((_) => TextEditingController());
+
+final idTextFieldProvider = StateProvider<String>((ref) => '');
+
+final errorTextProvider = StateProvider((ref) => '');
+
+@riverpod
+class LimitTime extends _$LimitTime {
+  @override
+  int build() {
+    const flavor = String.fromEnvironment('flavor');
+    if (flavor == 'tes') {
+      return 10;
+    }
+    return 100;
+  }
+
+  void reset() {
+    state = 100;
+    const flavor = String.fromEnvironment('flavor');
+    if (flavor == 'tes') {
+      state = 10;
+    }
+  }
+
+  void startTimer(DateTime startTime) {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      const flavor = String.fromEnvironment('flavor');
+      final time = DateTime.now().difference(startTime);
+      final value = 100 + ROLE_DIALOG_TIME + 3 - time.inSeconds;
+      state = flavor == 'tes' ? state - 1 : (value > 100 ? 100 : value);
+      if (state < 1) {
+        timer.cancel();
+      }
+    });
   }
 }
