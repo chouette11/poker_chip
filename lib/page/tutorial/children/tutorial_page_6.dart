@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:poker_chip/page/tutorial/component/tutorial_result_users.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -67,9 +66,6 @@ class _TutorialPage6State extends ConsumerState<TutorialPage6> {
                   size: 152,
                 ),
                 const SizedBox(height: 8),
-                const TutorialResultUsers(
-                  roles: ['電脳体', '人間', 'AI', '人間', '電脳体'],
-                ),
                 const SizedBox(height: 32),
                 AnimatedTextKit(
                   isRepeatingAnimation: false,

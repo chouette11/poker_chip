@@ -131,6 +131,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 name: null,
                 stack: 1000,
                 isBtn: false,
+                isFold: false,
               ),
             );
             conn.send(jsonEncode(mes.toJson()));
@@ -200,7 +201,6 @@ void actionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
-
       break;
     case ActionTypeEnum.check:
       break;
@@ -221,6 +221,6 @@ void gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.btn:
       break;
     case GameTypeEnum.pot:
-      break;  
+      break;
   }
 }

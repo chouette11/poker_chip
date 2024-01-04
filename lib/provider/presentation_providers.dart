@@ -79,6 +79,7 @@ class IsConn extends _$IsConn {
             name: user.name ?? 'プレイヤー${players.length + 1}',
             stack: user.stack,
             isBtn: false,
+            isFold: false,
           );
 
           /// Hostの状態変更
@@ -102,6 +103,7 @@ class IsConn extends _$IsConn {
               name: 'プレイヤー1',
               stack: 1000,
               isBtn: false,
+              isFold: false,
             ),
           );
           conn.send(host.toJson());
@@ -195,7 +197,10 @@ class PlayerData extends _$PlayerData {
   @override
   List<UserEntity> build() {
     final uid = ref.read(uidProvider);
-    return [UserEntity(uid: uid, stack: 1000, assignedId: 1, isBtn: false)];
+    return [
+      UserEntity(
+          uid: uid, stack: 1000, assignedId: 1, isBtn: false, isFold: false)
+    ];
   }
 
   void add(UserEntity user) {
@@ -259,17 +264,10 @@ void _actionMethod(
       break;
     case ActionTypeEnum.check:
       break;
-
   }
 }
 
-void _gameMethod(
-    GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {
-
-    }
-
-
-
+void _gameMethod(GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {}
 
 final messageTextFieldController = Provider((_) => TextEditingController());
 
