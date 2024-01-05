@@ -25,6 +25,7 @@ mixin _$UserEntity {
   String? get name => throw _privateConstructorUsedError;
   int get stack => throw _privateConstructorUsedError;
   bool get isBtn => throw _privateConstructorUsedError;
+  bool get isAction => throw _privateConstructorUsedError;
   bool get isFold => throw _privateConstructorUsedError;
   int? get score => throw _privateConstructorUsedError;
 
@@ -46,6 +47,7 @@ abstract class $UserEntityCopyWith<$Res> {
       String? name,
       int stack,
       bool isBtn,
+      bool isAction,
       bool isFold,
       int? score});
 }
@@ -68,6 +70,7 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
     Object? name = freezed,
     Object? stack = null,
     Object? isBtn = null,
+    Object? isAction = null,
     Object? isFold = null,
     Object? score = freezed,
   }) {
@@ -91,6 +94,10 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
       isBtn: null == isBtn
           ? _value.isBtn
           : isBtn // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isAction: null == isAction
+          ? _value.isAction
+          : isAction // ignore: cast_nullable_to_non_nullable
               as bool,
       isFold: null == isFold
           ? _value.isFold
@@ -118,6 +125,7 @@ abstract class _$$_UserEntityCopyWith<$Res>
       String? name,
       int stack,
       bool isBtn,
+      bool isAction,
       bool isFold,
       int? score});
 }
@@ -138,6 +146,7 @@ class __$$_UserEntityCopyWithImpl<$Res>
     Object? name = freezed,
     Object? stack = null,
     Object? isBtn = null,
+    Object? isAction = null,
     Object? isFold = null,
     Object? score = freezed,
   }) {
@@ -162,6 +171,10 @@ class __$$_UserEntityCopyWithImpl<$Res>
           ? _value.isBtn
           : isBtn // ignore: cast_nullable_to_non_nullable
               as bool,
+      isAction: null == isAction
+          ? _value.isAction
+          : isAction // ignore: cast_nullable_to_non_nullable
+              as bool,
       isFold: null == isFold
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
@@ -183,6 +196,7 @@ class _$_UserEntity extends _UserEntity {
       this.name,
       required this.stack,
       required this.isBtn,
+      required this.isAction,
       required this.isFold,
       this.score})
       : super._();
@@ -201,13 +215,15 @@ class _$_UserEntity extends _UserEntity {
   @override
   final bool isBtn;
   @override
+  final bool isAction;
+  @override
   final bool isFold;
   @override
   final int? score;
 
   @override
   String toString() {
-    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isFold: $isFold, score: $score)';
+    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isAction: $isAction, isFold: $isFold, score: $score)';
   }
 
   @override
@@ -221,14 +237,16 @@ class _$_UserEntity extends _UserEntity {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.stack, stack) || other.stack == stack) &&
             (identical(other.isBtn, isBtn) || other.isBtn == isBtn) &&
+            (identical(other.isAction, isAction) ||
+                other.isAction == isAction) &&
             (identical(other.isFold, isFold) || other.isFold == isFold) &&
             (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, uid, assignedId, name, stack, isBtn, isFold, score);
+  int get hashCode => Object.hash(runtimeType, uid, assignedId, name, stack,
+      isBtn, isAction, isFold, score);
 
   @JsonKey(ignore: true)
   @override
@@ -251,6 +269,7 @@ abstract class _UserEntity extends UserEntity {
       final String? name,
       required final int stack,
       required final bool isBtn,
+      required final bool isAction,
       required final bool isFold,
       final int? score}) = _$_UserEntity;
   const _UserEntity._() : super._();
@@ -268,6 +287,8 @@ abstract class _UserEntity extends UserEntity {
   int get stack;
   @override
   bool get isBtn;
+  @override
+  bool get isAction;
   @override
   bool get isFold;
   @override

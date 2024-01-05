@@ -15,6 +15,7 @@ class UserEntity with _$UserEntity {
     String? name,
     required int stack,
     required bool isBtn,
+    required bool isAction,
     required bool isFold,
     int? score,
   }) = _UserEntity;
