@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -16,7 +17,7 @@ class HostActionButtons extends ConsumerWidget {
 
     Widget children() {
       final players = ref.watch(playerDataProvider);
-      final maxScore = findMaxInList(players.map((e) => e.score ?? 0).toList());
+      final maxScore = findMaxInList(players.map((e) => e.score).toList());
       if (maxScore == 0) {
         return Column(
           children: [
@@ -64,6 +65,7 @@ class _ActionButton extends ConsumerWidget {
     final cons = ref.watch(hostConsProvider);
     final uid = ref.watch(uidProvider);
     final score = ref.watch(raiseBetProvider);
+    final players = ref.watch(playerDataProvider);
     return ElevatedButton(
       onPressed: () {
         /// Optionの変更
@@ -78,7 +80,7 @@ class _ActionButton extends ConsumerWidget {
             ref.read(playerDataProvider.notifier).updateFold(uid);
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final action = ActionEntity(uid: uid, type: actionTypeEnum);
+              final action = ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
               final mes =
                   MessageEntity(type: MessageTypeEnum.action, content: action);
               conn.send(mes.toJson());
@@ -142,6 +144,7 @@ int findMaxInList(List<int> numbers) {
 }
 
 void _hostActionMethod(WidgetRef ref, ActionTypeEnum type, String uid, int maxScore) {
+  ref.read(playerDataProvider.notifier).updateAction(uid);
   final score = ref.read(raiseBetProvider);
   switch (type) {
     case ActionTypeEnum.fold:
@@ -162,4 +165,22 @@ void _hostActionMethod(WidgetRef ref, ActionTypeEnum type, String uid, int maxSc
     case ActionTypeEnum.check:
       break;
   }
+}
+
+bool isAllAction(List<UserEntity> users) {
+  final values = users.map((e) => e.isAction).toList();
+  return values.contains(false);
+}
+
+bool isSameScore(List<UserEntity> users) {
+  final values = users.map((e) => e.score).toList();
+  if (values.isEmpty) return true;
+
+  final first = values.first;
+  for (final value  in values) {
+    if (value != first) {
+      return false;
+    }
+  }
+  return true;
 }

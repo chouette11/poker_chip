@@ -237,7 +237,7 @@ void gameMethod(GameEntity game, WidgetRef ref) {
 void option(WidgetRef ref) {
   final optionId = ref.read(optionAssignedIdProvider);
   final uid = assignedIdToUid(optionId, ref);
-  final game = GameEntity(uid: uid, type: GameTypeEnum.option);
+  final game = GameEntity(uid: uid, type: GameTypeEnum.option, score: 0);
   final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
   final cons = ref.read(hostConsProvider);
 

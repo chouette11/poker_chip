@@ -140,6 +140,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 assignedId: 404,
                 name: null,
                 stack: 1000,
+                score: 0,
                 isBtn: false,
                 isAction: false,
                 isFold: false,
@@ -209,6 +210,7 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
   final uid = action.uid;
   final maxScore = action.score;
   final score = ref.read(raiseBetProvider);
+  ref.read(playerDataProvider.notifier).updateAction(uid);
   switch (type) {
     case ActionTypeEnum.fold:
       ref.read(playerDataProvider.notifier).updateFold(uid);

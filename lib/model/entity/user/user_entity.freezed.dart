@@ -27,7 +27,7 @@ mixin _$UserEntity {
   bool get isBtn => throw _privateConstructorUsedError;
   bool get isAction => throw _privateConstructorUsedError;
   bool get isFold => throw _privateConstructorUsedError;
-  int? get score => throw _privateConstructorUsedError;
+  int get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -49,7 +49,7 @@ abstract class $UserEntityCopyWith<$Res> {
       bool isBtn,
       bool isAction,
       bool isFold,
-      int? score});
+      int score});
 }
 
 /// @nodoc
@@ -72,7 +72,7 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
     Object? isBtn = null,
     Object? isAction = null,
     Object? isFold = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -103,10 +103,10 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
               as bool,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ) as $Val);
   }
 }
@@ -127,7 +127,7 @@ abstract class _$$_UserEntityCopyWith<$Res>
       bool isBtn,
       bool isAction,
       bool isFold,
-      int? score});
+      int score});
 }
 
 /// @nodoc
@@ -148,7 +148,7 @@ class __$$_UserEntityCopyWithImpl<$Res>
     Object? isBtn = null,
     Object? isAction = null,
     Object? isFold = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_$_UserEntity(
       uid: null == uid
@@ -179,10 +179,10 @@ class __$$_UserEntityCopyWithImpl<$Res>
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
               as bool,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -198,7 +198,7 @@ class _$_UserEntity extends _UserEntity {
       required this.isBtn,
       required this.isAction,
       required this.isFold,
-      this.score})
+      required this.score})
       : super._();
 
   factory _$_UserEntity.fromJson(Map<String, dynamic> json) =>
@@ -219,7 +219,7 @@ class _$_UserEntity extends _UserEntity {
   @override
   final bool isFold;
   @override
-  final int? score;
+  final int score;
 
   @override
   String toString() {
@@ -271,7 +271,7 @@ abstract class _UserEntity extends UserEntity {
       required final bool isBtn,
       required final bool isAction,
       required final bool isFold,
-      final int? score}) = _$_UserEntity;
+      required final int score}) = _$_UserEntity;
   const _UserEntity._() : super._();
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
@@ -292,7 +292,7 @@ abstract class _UserEntity extends UserEntity {
   @override
   bool get isFold;
   @override
-  int? get score;
+  int get score;
   @override
   @JsonKey(ignore: true)
   _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>

@@ -10,7 +10,7 @@ _$_GameEntity _$$_GameEntityFromJson(Map<String, dynamic> json) =>
     _$_GameEntity(
       uid: json['uid'] as String,
       type: $enumDecode(_$GameTypeEnumEnumMap, json['type']),
-      score: json['score'] as int?,
+      score: json['score'] as int,
     );
 
 Map<String, dynamic> _$$_GameEntityToJson(_$_GameEntity instance) =>

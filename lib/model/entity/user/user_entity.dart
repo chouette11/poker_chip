@@ -17,7 +17,7 @@ class UserEntity with _$UserEntity {
     required bool isBtn,
     required bool isAction,
     required bool isFold,
-    int? score,
+    required int score,
   }) = _UserEntity;
 
   factory UserEntity.fromJson(Map<String, dynamic> json) =>

@@ -12,7 +12,7 @@ class GameEntity with _$GameEntity {
   const factory GameEntity({
     required String uid,
     required GameTypeEnum type,
-    int? score,
+    required int score,
   }) = _GameEntity;
 
   factory GameEntity.fromJson(Map<String, dynamic> json) =>

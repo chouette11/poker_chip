@@ -10,7 +10,7 @@ _$_ActionEntity _$$_ActionEntityFromJson(Map<String, dynamic> json) =>
     _$_ActionEntity(
       uid: json['uid'] as String,
       type: $enumDecode(_$ActionTypeEnumEnumMap, json['type']),
-      score: json['score'] as int?,
+      score: json['score'] as int,
     );
 
 Map<String, dynamic> _$$_ActionEntityToJson(_$_ActionEntity instance) =>

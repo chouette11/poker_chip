@@ -22,7 +22,7 @@ GameEntity _$GameEntityFromJson(Map<String, dynamic> json) {
 mixin _$GameEntity {
   String get uid => throw _privateConstructorUsedError;
   GameTypeEnum get type => throw _privateConstructorUsedError;
-  int? get score => throw _privateConstructorUsedError;
+  int get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $GameEntityCopyWith<$Res> {
           GameEntity value, $Res Function(GameEntity) then) =
       _$GameEntityCopyWithImpl<$Res, GameEntity>;
   @useResult
-  $Res call({String uid, GameTypeEnum type, int? score});
+  $Res call({String uid, GameTypeEnum type, int score});
 }
 
 /// @nodoc
@@ -54,7 +54,7 @@ class _$GameEntityCopyWithImpl<$Res, $Val extends GameEntity>
   $Res call({
     Object? uid = null,
     Object? type = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -65,10 +65,10 @@ class _$GameEntityCopyWithImpl<$Res, $Val extends GameEntity>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as GameTypeEnum,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$_GameEntityCopyWith<$Res>
       __$$_GameEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, GameTypeEnum type, int? score});
+  $Res call({String uid, GameTypeEnum type, int score});
 }
 
 /// @nodoc
@@ -97,7 +97,7 @@ class __$$_GameEntityCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? type = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_$_GameEntity(
       uid: null == uid
@@ -108,10 +108,10 @@ class __$$_GameEntityCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as GameTypeEnum,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -119,7 +119,8 @@ class __$$_GameEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_GameEntity extends _GameEntity {
-  const _$_GameEntity({required this.uid, required this.type, this.score})
+  const _$_GameEntity(
+      {required this.uid, required this.type, required this.score})
       : super._();
 
   factory _$_GameEntity.fromJson(Map<String, dynamic> json) =>
@@ -130,7 +131,7 @@ class _$_GameEntity extends _GameEntity {
   @override
   final GameTypeEnum type;
   @override
-  final int? score;
+  final int score;
 
   @override
   String toString() {
@@ -169,7 +170,7 @@ abstract class _GameEntity extends GameEntity {
   const factory _GameEntity(
       {required final String uid,
       required final GameTypeEnum type,
-      final int? score}) = _$_GameEntity;
+      required final int score}) = _$_GameEntity;
   const _GameEntity._() : super._();
 
   factory _GameEntity.fromJson(Map<String, dynamic> json) =
@@ -180,7 +181,7 @@ abstract class _GameEntity extends GameEntity {
   @override
   GameTypeEnum get type;
   @override
-  int? get score;
+  int get score;
   @override
   @JsonKey(ignore: true)
   _$$_GameEntityCopyWith<_$_GameEntity> get copyWith =>

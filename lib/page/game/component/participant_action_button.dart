@@ -14,7 +14,7 @@ class ParticipantActionButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Widget children() {
       final players = ref.watch(playerDataProvider);
-      final maxScore = findMaxInList(players.map((e) => e.score ?? 0).toList());
+      final maxScore = findMaxInList(players.map((e) => e.score).toList());
       if (maxScore == 0) {
         return Column(
           children: [
@@ -69,7 +69,7 @@ class _ActionButton extends ConsumerWidget {
         }
         switch (actionTypeEnum) {
           case ActionTypeEnum.fold:
-            final action = ActionEntity(uid: uid, type: actionTypeEnum);
+            final action = ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
             final mes =
                 MessageEntity(type: MessageTypeEnum.action, content: action);
             conn.send(mes.toJson());

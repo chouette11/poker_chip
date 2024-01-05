@@ -22,7 +22,7 @@ ActionEntity _$ActionEntityFromJson(Map<String, dynamic> json) {
 mixin _$ActionEntity {
   String get uid => throw _privateConstructorUsedError;
   ActionTypeEnum get type => throw _privateConstructorUsedError;
-  int? get score => throw _privateConstructorUsedError;
+  int get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +36,7 @@ abstract class $ActionEntityCopyWith<$Res> {
           ActionEntity value, $Res Function(ActionEntity) then) =
       _$ActionEntityCopyWithImpl<$Res, ActionEntity>;
   @useResult
-  $Res call({String uid, ActionTypeEnum type, int? score});
+  $Res call({String uid, ActionTypeEnum type, int score});
 }
 
 /// @nodoc
@@ -54,7 +54,7 @@ class _$ActionEntityCopyWithImpl<$Res, $Val extends ActionEntity>
   $Res call({
     Object? uid = null,
     Object? type = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -65,10 +65,10 @@ class _$ActionEntityCopyWithImpl<$Res, $Val extends ActionEntity>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ActionTypeEnum,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ) as $Val);
   }
 }
@@ -81,7 +81,7 @@ abstract class _$$_ActionEntityCopyWith<$Res>
       __$$_ActionEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, ActionTypeEnum type, int? score});
+  $Res call({String uid, ActionTypeEnum type, int score});
 }
 
 /// @nodoc
@@ -97,7 +97,7 @@ class __$$_ActionEntityCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? type = null,
-    Object? score = freezed,
+    Object? score = null,
   }) {
     return _then(_$_ActionEntity(
       uid: null == uid
@@ -108,10 +108,10 @@ class __$$_ActionEntityCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ActionTypeEnum,
-      score: freezed == score
+      score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
     ));
   }
 }
@@ -119,7 +119,8 @@ class __$$_ActionEntityCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$_ActionEntity extends _ActionEntity {
-  const _$_ActionEntity({required this.uid, required this.type, this.score})
+  const _$_ActionEntity(
+      {required this.uid, required this.type, required this.score})
       : super._();
 
   factory _$_ActionEntity.fromJson(Map<String, dynamic> json) =>
@@ -130,7 +131,7 @@ class _$_ActionEntity extends _ActionEntity {
   @override
   final ActionTypeEnum type;
   @override
-  final int? score;
+  final int score;
 
   @override
   String toString() {
@@ -169,7 +170,7 @@ abstract class _ActionEntity extends ActionEntity {
   const factory _ActionEntity(
       {required final String uid,
       required final ActionTypeEnum type,
-      final int? score}) = _$_ActionEntity;
+      required final int score}) = _$_ActionEntity;
   const _ActionEntity._() : super._();
 
   factory _ActionEntity.fromJson(Map<String, dynamic> json) =
@@ -180,7 +181,7 @@ abstract class _ActionEntity extends ActionEntity {
   @override
   ActionTypeEnum get type;
   @override
-  int? get score;
+  int get score;
   @override
   @JsonKey(ignore: true)
   _$$_ActionEntityCopyWith<_$_ActionEntity> get copyWith =>

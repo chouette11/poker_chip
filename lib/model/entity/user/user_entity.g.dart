@@ -15,7 +15,7 @@ _$_UserEntity _$$_UserEntityFromJson(Map<String, dynamic> json) =>
       isBtn: json['isBtn'] as bool,
       isAction: json['isAction'] as bool,
       isFold: json['isFold'] as bool,
-      score: json['score'] as int?,
+      score: json['score'] as int,
     );
 
 Map<String, dynamic> _$$_UserEntityToJson(_$_UserEntity instance) =>

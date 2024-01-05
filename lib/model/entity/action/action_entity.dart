@@ -12,7 +12,7 @@ class ActionEntity with _$ActionEntity {
   const factory ActionEntity({
     required String uid,
     required ActionTypeEnum type,
-    int? score,
+    required int score,
   }) = _ActionEntity;
 
   factory ActionEntity.fromJson(Map<String, dynamic> json) =>

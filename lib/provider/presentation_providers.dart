@@ -85,6 +85,7 @@ class HostConnOpen extends _$HostConnOpen {
             assignedId: players.length + 1,
             name: user.name ?? 'プレイヤー${players.length + 1}',
             stack: user.stack,
+            score: 0,
             isBtn: false,
             isAction: false,
             isFold: false,
@@ -221,12 +222,14 @@ class PlayerData extends _$PlayerData {
     final uid = ref.read(uidProvider);
     return [
       UserEntity(
-          uid: uid,
-          stack: 1000,
-          assignedId: 1,
-          isBtn: false,
-          isAction: false,
-          isFold: false)
+        uid: uid,
+        stack: 1000,
+        assignedId: 1,
+        score: 0,
+        isBtn: false,
+        isAction: false,
+        isFold: false,
+      )
     ];
   }
 
@@ -253,7 +256,7 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
-  void updateScore(String uid, int? score) {
+  void updateScore(String uid, int score) {
     state = [
       for (final user in state)
         if (user.uid == uid) user.copyWith(score: score) else user,
@@ -267,6 +270,16 @@ class PlayerData extends _$PlayerData {
           user.copyWith(isBtn: true)
         else
           user.copyWith(isBtn: false),
+    ];
+  }
+
+  void updateAction(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid)
+          user.copyWith(isAction: true)
+        else
+          user.copyWith(isAction: false),
     ];
   }
 
@@ -295,6 +308,7 @@ void _actionMethod(
   final type = action.type;
   final uid = action.uid;
   final score = action.score;
+  ref.read(playerDataProvider.notifier).updateAction(uid);
   switch (type) {
     case ActionTypeEnum.fold:
       ref.read(playerDataProvider.notifier).updateFold(uid);
