@@ -52,7 +52,13 @@ class _RootPageState extends ConsumerState<RootPage> {
                     const SizedBox(height: 32),
                     MainButton(
                       onTap: () async {
-                        context.push('/read_qr');
+                        context.go('/participant', extra: 'c78da73a-9b97-4efc-9303-4161de32b84f');
+                      },
+                      text: '参加する',
+                    ),
+                    MainButton(
+                      onTap: () async {
+                        context.go('/participant', extra: '5f865cf4-02d2-4249-812e-d0c5d8eecad3');
                       },
                       text: '参加する',
                     ),

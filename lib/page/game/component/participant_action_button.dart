@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/message.dart';
@@ -11,28 +12,38 @@ class ParticipantActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final players = ref.watch(playerDataProvider);
-    final maxScore = findMaxInList(players.map((e) => e.score ?? 0).toList());
-    if (maxScore == 0) {
-      return Column(
-        children: [
-          _ActionButton(actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
-          _ActionButton(
-              actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
-          _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
-        ],
-      );
-    } else {
-      return Column(
-        children: [
-          _ActionButton(
-              actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
-          _ActionButton(
-              actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
-          _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
-        ],
-      );
+    Widget children() {
+      final players = ref.watch(playerDataProvider);
+      final maxScore = findMaxInList(players.map((e) => e.score ?? 0).toList());
+      if (maxScore == 0) {
+        return Column(
+          children: [
+            _ActionButton(actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
+            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+          ],
+        );
+      } else {
+        return Column(
+          children: [
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
+            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+          ],
+        );
+      }
     }
+
+    bool isVisible(int optAssignedId) {
+      final uid = assignedIdToUid(optAssignedId, ref);
+      return ref.read(uidProvider) == uid;
+    }
+
+    final optAssignedId = ref.watch(optionAssignedIdProvider);
+    return Visibility(visible: isVisible(optAssignedId), child: children());
   }
 }
 
