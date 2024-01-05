@@ -74,8 +74,7 @@ class HostConnOpen extends _$HostConnOpen {
 
       conn.on("data").listen((data) {
         print('data!!');
-        final json = data as String;
-        final mes = MessageEntity.fromJson(jsonDecode(json));
+        final mes = MessageEntity.fromJson(data);
         print('host: $mes');
 
         if (mes.type == MessageTypeEnum.join) {
@@ -149,12 +148,12 @@ class OptionAssignedId extends _$OptionAssignedId  {
     }
   }
 
-  int updateId() {
+  void updateId() {
     final len = ref.read(playerDataProvider).length;
     if ((state + 1) > len) {
-      return 1;
+      state = 1;
     } else {
-      return state + 1;
+      state = state + 1;
     }
   }
 }
@@ -333,6 +332,7 @@ void _gameMethod(GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {
     case GameTypeEnum.anty:
       break;
     case GameTypeEnum.btn:
+      ref.read(playerDataProvider.notifier).updateBtn(uid);
       break;
     case GameTypeEnum.pot:
       break;
