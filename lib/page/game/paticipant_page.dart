@@ -14,7 +14,6 @@ import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
-import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
@@ -96,6 +95,10 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _participantActionMethod(action, ref);
+          ref.read(optionAssignedIdProvider.notifier).updateId();
+        } else if (mes.type == MessageTypeEnum.game) {
+          final game = GameEntity.fromJson(mes.content);
+
         }
       });
       conn.on("binary").listen((data) {
@@ -213,20 +216,3 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
   }
 }
 
-void gameMethod(GameEntity game, WidgetRef ref) {
-  final type = game.type;
-  final uid = game.uid;
-  final score = game.score;
-  switch (type) {
-    case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
-      break;
-    case GameTypeEnum.anty:
-      break;
-    case GameTypeEnum.btn:
-      break;
-    case GameTypeEnum.pot:
-      break;
-  }
-}

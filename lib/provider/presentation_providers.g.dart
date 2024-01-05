@@ -138,13 +138,29 @@ class HostConnOpenProvider
   }
 }
 
-String _$btnIdHash() => r'fa2319b231ff32ebb76d2f91ac8951b1fe39a3a0';
+String _$optionAssignedIdHash() => r'918c75796b0131a06bbffdca9f58ca2dc1b362ae';
 
 ///
 /// position
 ///
 ///
-/// Copied from [BtnId].
+/// Copied from [OptionAssignedId].
+@ProviderFor(OptionAssignedId)
+final optionAssignedIdProvider =
+    AutoDisposeNotifierProvider<OptionAssignedId, int>.internal(
+  OptionAssignedId.new,
+  name: r'optionAssignedIdProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$optionAssignedIdHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
+String _$btnIdHash() => r'b0388b85f1468b1ccc2fd3692d31a22e6bb51b97';
+
+/// See also [BtnId].
 @ProviderFor(BtnId)
 final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
   BtnId.new,
@@ -156,7 +172,7 @@ final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
 );
 
 typedef _$BtnId = AutoDisposeNotifier<int>;
-String _$smallIdHash() => r'a1cf829340e2b3658ac23a7e2c904aa4311b3e48';
+String _$smallIdHash() => r'04166fb8c42fdd423895bbf259d4cb322c9b6928';
 
 /// See also [SmallId].
 @ProviderFor(SmallId)
@@ -170,7 +186,7 @@ final smallIdProvider = AutoDisposeNotifierProvider<SmallId, int>.internal(
 );
 
 typedef _$SmallId = AutoDisposeNotifier<int>;
-String _$bigIdHash() => r'973126f25dcce0ac08b9353a70640e6d5ff97a64';
+String _$bigIdHash() => r'a17468bafb71a3f26494cd4b4bd20c897eff4d99';
 
 /// See also [BigId].
 @ProviderFor(BigId)

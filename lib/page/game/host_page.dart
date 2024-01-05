@@ -1,18 +1,16 @@
 import 'package:peerdart/peerdart.dart';
-import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/host_action_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
-import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
-import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
@@ -57,7 +55,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     final bigId = ref.read(bigIdProvider);
     final btnId = ref.read(btnIdProvider);
     final smallBlind = MessageEntity(
-      type: MessageTypeEnum.action,
+      type: MessageTypeEnum.game,
       content: GameEntity(
         uid: assignedIdToUid(smallId, ref),
         type: GameTypeEnum.blind,
@@ -65,7 +63,7 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
     );
     final bigBlind = MessageEntity(
-      type: MessageTypeEnum.action,
+      type: MessageTypeEnum.game,
       content: GameEntity(
         uid: assignedIdToUid(bigId, ref),
         type: GameTypeEnum.blind,
@@ -73,7 +71,7 @@ class _GamePageState extends ConsumerState<HostPage> {
       ),
     );
     final btn = MessageEntity(
-      type: MessageTypeEnum.action,
+      type: MessageTypeEnum.game,
       content: GameEntity(
           uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
     );
@@ -159,8 +157,16 @@ class _GamePageState extends ConsumerState<HostPage> {
                 Positioned(
                   height: height * 0.4,
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: PotWidget(score: pot),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: HostActionButtons(),
                   ),
                 ),
                 ElevatedButton(
@@ -203,4 +209,42 @@ String lenToPeerId(int len) {
     '3'
   ];
   return ids[len - 1];
+}
+
+void gameMethod(GameEntity game, WidgetRef ref) {
+  final type = game.type;
+  final uid = game.uid;
+  final score = game.score;
+  switch (type) {
+    case GameTypeEnum.blind:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case GameTypeEnum.anty:
+      break;
+    case GameTypeEnum.btn:
+      break;
+    case GameTypeEnum.pot:
+      break;
+    case GameTypeEnum.option:
+      break;
+  }
+}
+
+void option(WidgetRef ref) {
+  final optionId = ref.read(optionAssignedIdProvider);
+  final uid = assignedIdToUid(optionId, ref);
+  final game = GameEntity(uid: uid, type: GameTypeEnum.option);
+  final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
+  final cons = ref.read(hostConsProvider);
+
+  /// Participantの状態変更
+  for (var conEntity in cons) {
+    final conn = conEntity.con;
+    conn.send(mes.toJson());
+  }
+
+  /// Hostの状態変更
+
+
 }

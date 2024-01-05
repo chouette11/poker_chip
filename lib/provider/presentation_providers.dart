@@ -11,6 +11,7 @@ import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:poker_chip/util/constant/const.dart';
@@ -117,6 +118,9 @@ class HostConnOpen extends _$HostConnOpen {
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _actionMethod(action, ref);
+        } else if (mes.type == MessageTypeEnum.game) {
+          final game = GameEntity.fromJson(mes.content);
+          _gameMethod(game, ref);
         }
       });
 
@@ -133,13 +137,36 @@ class HostConnOpen extends _$HostConnOpen {
 ///
 
 @riverpod
+class OptionAssignedId extends _$OptionAssignedId  {
+  @override
+  int build() {
+    final len = ref.read(playerDataProvider).length;
+    final bigId = ref.read(bigIdProvider);
+    if ((bigId + 1) > len) {
+      return 1;
+    } else {
+      return bigId + 1;
+    }
+  }
+
+  int updateId() {
+    final len = ref.read(playerDataProvider).length;
+    if ((state + 1) > len) {
+      return 1;
+    } else {
+      return state + 1;
+    }
+  }
+}
+
+@riverpod
 class BtnId extends _$BtnId {
   @override
   int build() {
     return 1;
   }
 
-  void fixId(int assignedId) {
+  void updateId() {
     final len = ref.read(playerDataProvider).length;
     if ((state + 1) > len) {
       state = 1;
@@ -162,7 +189,7 @@ class SmallId extends _$SmallId {
     }
   }
 
-  void fixId(int assignedId) {
+  void updateId() {
     final len = ref.read(playerDataProvider).length;
     if ((state + 1) > len) {
       state = 1;
@@ -185,7 +212,7 @@ class BigId extends _$BigId {
     }
   }
 
-  void fixId(int assignedId) {
+  void updateId() {
     final len = ref.read(playerDataProvider).length;
     if ((state + 1) > len) {
       state = 1;
@@ -294,7 +321,25 @@ void _actionMethod(
   }
 }
 
-void _gameMethod(GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {}
+void _gameMethod(GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {
+  final type = game.type;
+  final uid = game.uid;
+  final score = game.score;
+  switch (type) {
+    case GameTypeEnum.blind:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case GameTypeEnum.anty:
+      break;
+    case GameTypeEnum.btn:
+      break;
+    case GameTypeEnum.pot:
+      break;
+    case GameTypeEnum.option:
+      break;
+  }
+}
 
 final messageTextFieldController = Provider((_) => TextEditingController());
 

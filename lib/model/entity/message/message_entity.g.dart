@@ -21,5 +21,6 @@ Map<String, dynamic> _$$_MessageEntityToJson(_$_MessageEntity instance) =>
 const _$MessageTypeEnumEnumMap = {
   MessageTypeEnum.join: 'join',
   MessageTypeEnum.joined: 'joined',
+  MessageTypeEnum.game: 'game',
   MessageTypeEnum.action: 'action',
 };

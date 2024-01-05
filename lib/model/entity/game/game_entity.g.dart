@@ -24,5 +24,6 @@ const _$GameTypeEnumEnumMap = {
   GameTypeEnum.pot: 'pot',
   GameTypeEnum.anty: 'anty',
   GameTypeEnum.btn: 'btn',
+  GameTypeEnum.option: 'option',
   GameTypeEnum.blind: 'blind',
 };
