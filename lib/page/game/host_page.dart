@@ -199,6 +199,9 @@ class _GamePageState extends ConsumerState<HostPage> {
 
 String assignedIdToUid(int assignedId, WidgetRef ref) {
   final players = ref.read(playerDataProvider);
+  if (!players.map((e) => e.assignedId).toList().contains(assignedId)) {
+    return '';
+  }
   return players.firstWhere((e) => e.assignedId == assignedId).uid;
 }
 
