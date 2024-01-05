@@ -88,11 +88,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         final mes = MessageEntity.fromJson(data);
         print('paticipant: $mes');
         if (mes.type == MessageTypeEnum.joined) {
-          final user = UserEntity.fromJson(mes.content);
-          if (user.uid != uid) {
-            ref.read(playerDataProvider.notifier).add(user);
-          } else {
-            ref.read(playerDataProvider.notifier).update(user);
+          final data = mes.content as List;
+          final users = data.map((e) => UserEntity.fromJson(e)).toList();
+          for (final user in users) {
+            if (user.uid != uid) {
+              ref.read(playerDataProvider.notifier).add(user);
+            } else {
+              ref.read(playerDataProvider.notifier).update(user);
+            }
           }
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
@@ -138,6 +141,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 name: null,
                 stack: 1000,
                 isBtn: false,
+                isAction: false,
                 isFold: false,
               ),
             );

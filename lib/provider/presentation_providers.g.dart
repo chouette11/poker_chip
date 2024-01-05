@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'c75fe809544fc035c57ca882a300caf2bc1359e0';
+String _$hostConnOpenHash() => r'4b8136957fbf51a8bdedbef685b5af85bb0da945';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,7 +138,7 @@ class HostConnOpenProvider
   }
 }
 
-String _$optionAssignedIdHash() => r'918c75796b0131a06bbffdca9f58ca2dc1b362ae';
+String _$optionAssignedIdHash() => r'ed8314e66376fbff4e925b1b34d47fadbdbb1925';
 
 ///
 /// position
@@ -158,7 +158,7 @@ final optionAssignedIdProvider =
 );
 
 typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
-String _$btnIdHash() => r'b0388b85f1468b1ccc2fd3692d31a22e6bb51b97';
+String _$btnIdHash() => r'3f14d167aae55c7f490e6ef2e58a2b97c5f650a4';
 
 /// See also [BtnId].
 @ProviderFor(BtnId)
@@ -172,7 +172,7 @@ final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
 );
 
 typedef _$BtnId = AutoDisposeNotifier<int>;
-String _$smallIdHash() => r'04166fb8c42fdd423895bbf259d4cb322c9b6928';
+String _$smallIdHash() => r'3464f5f1e14af3574635085017239195ba5518b9';
 
 /// See also [SmallId].
 @ProviderFor(SmallId)
@@ -186,7 +186,7 @@ final smallIdProvider = AutoDisposeNotifierProvider<SmallId, int>.internal(
 );
 
 typedef _$SmallId = AutoDisposeNotifier<int>;
-String _$bigIdHash() => r'a17468bafb71a3f26494cd4b4bd20c897eff4d99';
+String _$bigIdHash() => r'7d021a507c75958e2ce4713d0e5f3ab9bf31058c';
 
 /// See also [BigId].
 @ProviderFor(BigId)

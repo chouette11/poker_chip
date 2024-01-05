@@ -79,13 +79,14 @@ class HostConnOpen extends _$HostConnOpen {
 
         if (mes.type == MessageTypeEnum.join) {
           UserEntity user = UserEntity.fromJson(mes.content);
-          final players = ref.read(playerDataProvider);
+          List<UserEntity> players = ref.read(playerDataProvider);
           user = UserEntity(
             uid: user.uid,
             assignedId: players.length + 1,
             name: user.name ?? 'プレイヤー${players.length + 1}',
             stack: user.stack,
             isBtn: false,
+            isAction: false,
             isFold: false,
           );
 
@@ -93,30 +94,18 @@ class HostConnOpen extends _$HostConnOpen {
           ref.read(playerDataProvider.notifier).add(user);
 
           /// Participantの状態変更
-          final res = MessageEntity(
-              type: MessageTypeEnum.joined, content: user);
+          players = ref.read(playerDataProvider);
+          final res =
+              MessageEntity(type: MessageTypeEnum.joined, content: players);
           final cons = ref.read(hostConsProvider);
           for (var conEntity in cons) {
             final conn = conEntity.con;
             conn.send(res.toJson());
           }
-
-          final uid = ref.read(uidProvider);
-          final host = MessageEntity(
-            type: MessageTypeEnum.joined,
-            content: UserEntity(
-              uid: uid,
-              assignedId: 1,
-              name: 'プレイヤー1',
-              stack: 1000,
-              isBtn: false,
-              isFold: false,
-            ),
-          );
-          conn.send(host.toJson());
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _actionMethod(action, ref);
+          ref.read(optionAssignedIdProvider.notifier).updateId();
         } else if (mes.type == MessageTypeEnum.game) {
           final game = GameEntity.fromJson(mes.content);
           _gameMethod(game, ref);
@@ -136,7 +125,7 @@ class HostConnOpen extends _$HostConnOpen {
 ///
 
 @riverpod
-class OptionAssignedId extends _$OptionAssignedId  {
+class OptionAssignedId extends _$OptionAssignedId {
   @override
   int build() {
     final len = ref.read(playerDataProvider).length;
@@ -232,7 +221,12 @@ class PlayerData extends _$PlayerData {
     final uid = ref.read(uidProvider);
     return [
       UserEntity(
-          uid: uid, stack: 1000, assignedId: 1, isBtn: false, isFold: false)
+          uid: uid,
+          stack: 1000,
+          assignedId: 1,
+          isBtn: false,
+          isAction: false,
+          isFold: false)
     ];
   }
 

@@ -88,7 +88,7 @@ class UserBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(userEntity.name!, style: TextStyleConstant.bold14),
+              Text(userEntity.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
               Text(userEntity.stack.toString(),
                   style: TextStyleConstant.bold20),
             ],
