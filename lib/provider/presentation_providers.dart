@@ -263,11 +263,21 @@ class PlayerData extends _$PlayerData {
 
 void _actionMethod(
     ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
+  /// 他のParticipantの状態変更
+  final cons = ref.read(hostConsProvider);
+  for (final conEntity in cons) {
+    final conn = conEntity.con;
+    final mes = MessageEntity(type: MessageTypeEnum.action, content: action);
+    conn.send(mes.toJson());
+  }
+
+  /// Hostの状態変更
   final type = action.type;
   final uid = action.uid;
   final score = action.score;
   switch (type) {
     case ActionTypeEnum.fold:
+      ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
       ref.read(playerDataProvider.notifier).updateStack(uid, score);

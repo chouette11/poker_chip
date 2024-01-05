@@ -58,14 +58,12 @@ class _ActionButton extends ConsumerWidget {
         }
         switch (actionTypeEnum) {
           case ActionTypeEnum.fold:
-            ref.read(playerDataProvider.notifier).updateFold(uid);
             final action = ActionEntity(uid: uid, type: actionTypeEnum);
             final mes =
                 MessageEntity(type: MessageTypeEnum.action, content: action);
             conn.send(mes.toJson());
             break;
           case ActionTypeEnum.call:
-            ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
             final action =
                 ActionEntity(uid: uid, type: actionTypeEnum, score: maxScore);
             final mes =
@@ -73,7 +71,6 @@ class _ActionButton extends ConsumerWidget {
             conn.send(mes.toJson());
             break;
           case ActionTypeEnum.raise:
-            ref.read(playerDataProvider.notifier).updateScore(uid, score);
             final action =
                 ActionEntity(uid: uid, type: actionTypeEnum, score: score);
             final mes =
@@ -83,7 +80,6 @@ class _ActionButton extends ConsumerWidget {
           case ActionTypeEnum.check:
             break;
           case ActionTypeEnum.bet:
-            ref.read(playerDataProvider.notifier).updateScore(uid, score);
             final action =
                 ActionEntity(uid: uid, type: actionTypeEnum, score: score);
             final mes =

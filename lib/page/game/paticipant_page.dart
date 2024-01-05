@@ -95,7 +95,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
           }
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
-          actionMethod(action, ref);
+          _participantActionMethod(action, ref);
         }
       });
       conn.on("binary").listen((data) {
@@ -187,22 +187,26 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   }
 }
 
-void actionMethod(ActionEntity action, WidgetRef ref) {
+void _participantActionMethod(ActionEntity action, WidgetRef ref) {
   final type = action.type;
   final uid = action.uid;
-  final score = action.score;
+  final maxScore = action.score;
+  final score = ref.read(raiseBetProvider);
   switch (type) {
     case ActionTypeEnum.fold:
+      ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, maxScore);
+      ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
       break;
     case ActionTypeEnum.raise:
       ref.read(playerDataProvider.notifier).updateStack(uid, score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.check:
       break;
