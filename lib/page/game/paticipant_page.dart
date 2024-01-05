@@ -10,10 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/participant_action_button.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
@@ -98,7 +100,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         } else if (mes.type == MessageTypeEnum.game) {
           final game = GameEntity.fromJson(mes.content);
-
+          _gameMethod(game, ref);
         }
       });
       conn.on("binary").listen((data) {
@@ -139,9 +141,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 isFold: false,
               ),
             );
-            conn.send(jsonEncode(mes.toJson()));
+            conn.send(mes.toJson());
             print('send');
-            print(mes.toJson().toString());
+            print(mes.toJson());
           },
         ),
         backgroundColor: ColorConstant.back,
@@ -166,6 +168,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: UserBoxes(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: ParticipantActionButtons(),
                   ),
                 ),
                 ElevatedButton(onPressed: () => connect(ref), child: Text('con')),
@@ -212,6 +222,27 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.check:
+      break;
+  }
+}
+
+void _gameMethod(GameEntity game, WidgetRef ref) {
+  final type = game.type;
+  final uid = game.uid;
+  final score = game.score;
+  switch (type) {
+    case GameTypeEnum.blind:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      break;
+    case GameTypeEnum.anty:
+      break;
+    case GameTypeEnum.btn:
+      ref.read(playerDataProvider.notifier).updateBtn(uid);
+      break;
+    case GameTypeEnum.pot:
+      break;
+    case GameTypeEnum.option:
       break;
   }
 }
