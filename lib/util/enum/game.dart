@@ -3,7 +3,11 @@ enum GameTypeEnum {
   anty('anty'),
   btn('btn'),
   option('option'),
-  blind('blind');
+  blind('blind'),
+  preFlop('preFlop'),
+  flop('flop'),
+  turn('turn'),
+  river('river');
 
   const GameTypeEnum(this.displayName);
 

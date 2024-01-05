@@ -231,6 +231,14 @@ void gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.option:
       break;
+    case GameTypeEnum.preFlop:
+      break;
+    case GameTypeEnum.flop:
+      break;
+    case GameTypeEnum.turn:
+      break;
+    case GameTypeEnum.river:
+      break;
   }
 }
 

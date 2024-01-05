@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
+import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class HostActionButtons extends ConsumerWidget {
@@ -14,17 +16,18 @@ class HostActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = findMaxInList(players.map((e) => e.score).toList());
       if (maxScore == 0) {
         return Column(
           children: [
-            _ActionButton(actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
-            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       } else {
@@ -34,7 +37,8 @@ class HostActionButtons extends ConsumerWidget {
                 actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
-            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       }
@@ -68,11 +72,23 @@ class _ActionButton extends ConsumerWidget {
     final players = ref.watch(playerDataProvider);
     return ElevatedButton(
       onPressed: () {
-        /// Optionの変更
-        ref.read(optionAssignedIdProvider.notifier).updateId();
-
         /// Hostの状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
+
+        /// Optionの変更
+        if (isAllAction(players) && isSameScore(players)) {
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final order = ref.read(orderProvider.notifier).nextOrder();
+            final game =
+                GameEntity(uid: uid, type: order, score: 0);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
+          }
+        } else {
+          ref.read(optionAssignedIdProvider.notifier).updateId();
+        }
 
         /// Participantへの送信
         switch (actionTypeEnum) {
@@ -80,7 +96,8 @@ class _ActionButton extends ConsumerWidget {
             ref.read(playerDataProvider.notifier).updateFold(uid);
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final action = ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
+              final action =
+                  ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
               final mes =
                   MessageEntity(type: MessageTypeEnum.action, content: action);
               conn.send(mes.toJson());
@@ -143,7 +160,8 @@ int findMaxInList(List<int> numbers) {
   return maxValue;
 }
 
-void _hostActionMethod(WidgetRef ref, ActionTypeEnum type, String uid, int maxScore) {
+void _hostActionMethod(
+    WidgetRef ref, ActionTypeEnum type, String uid, int maxScore) {
   ref.read(playerDataProvider.notifier).updateAction(uid);
   final score = ref.read(raiseBetProvider);
   switch (type) {
@@ -177,7 +195,7 @@ bool isSameScore(List<UserEntity> users) {
   if (values.isEmpty) return true;
 
   final first = values.first;
-  for (final value  in values) {
+  for (final value in values) {
     if (value != first) {
       return false;
     }

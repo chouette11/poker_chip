@@ -183,7 +183,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                     child: ParticipantActionButtons(),
                   ),
                 ),
-                ElevatedButton(onPressed: () => connect(ref), child: Text('con')),
+                ElevatedButton(
+                    onPressed: () => connect(ref), child: Text('con')),
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -250,6 +251,13 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.option:
       break;
+    case GameTypeEnum.preFlop:
+      break;
+    case GameTypeEnum.flop:
+      break;
+    case GameTypeEnum.turn:
+      break;
+    case GameTypeEnum.river:
+      break;
   }
 }
-

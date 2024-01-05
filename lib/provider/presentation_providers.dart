@@ -7,6 +7,8 @@ import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/page/game/component/host_action_button.dart';
+import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -105,11 +107,36 @@ class HostConnOpen extends _$HostConnOpen {
           }
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
+
+          /// Hostの状態変更
           _actionMethod(action, ref);
-          ref.read(optionAssignedIdProvider.notifier).updateId();
-        } else if (mes.type == MessageTypeEnum.game) {
-          final game = GameEntity.fromJson(mes.content);
-          _gameMethod(game, ref);
+
+          /// ターンの変更
+          final players = ref.read(playerDataProvider);
+          if (isAllAction(players) && isSameScore(players)) {
+
+            /// Hostの状態変更
+            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            final order = ref.read(orderProvider.notifier).nextOrder();
+            ref.read(playerDataProvider.notifier).clearScore();
+
+            /// Participantの状態変更
+            final cons = ref.read(hostConsProvider);
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final game = GameEntity(uid: '', type: order, score: 0);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
+          } else {
+            final order = ref.read(orderProvider);
+            if (order == GameTypeEnum.preFlop) {
+              ref.read(optionAssignedIdProvider.notifier).updateId();
+            } else {
+              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            }
+          }
         }
       });
 
@@ -124,6 +151,34 @@ class HostConnOpen extends _$HostConnOpen {
 ///
 /// position
 ///
+
+@riverpod
+class Order extends _$Order {
+  @override
+  GameTypeEnum build() {
+    return GameTypeEnum.preFlop;
+  }
+
+  GameTypeEnum nextOrder() {
+    switch (state) {
+      case GameTypeEnum.preFlop:
+        state = GameTypeEnum.flop;
+        return GameTypeEnum.flop;
+      case GameTypeEnum.flop:
+        state = GameTypeEnum.turn;
+        return GameTypeEnum.turn;
+      case GameTypeEnum.turn:
+        state = GameTypeEnum.river;
+        return GameTypeEnum.river;
+      case GameTypeEnum.river:
+        state = GameTypeEnum.preFlop;
+        return GameTypeEnum.preFlop;
+      default:
+        state = GameTypeEnum.preFlop;
+        return GameTypeEnum.preFlop;
+    }
+  }
+}
 
 @riverpod
 class OptionAssignedId extends _$OptionAssignedId {
@@ -145,6 +200,26 @@ class OptionAssignedId extends _$OptionAssignedId {
     } else {
       state = state + 1;
     }
+  }
+
+  void updatePostFlopId() {
+    final btn = ref.read(btnIdProvider);
+    final player = ref.read(playerDataProvider);
+    player.removeWhere((e) => e.isFold == true);
+    final activeIds = player.map((e) => e.assignedId).toList();
+    activeIds.sort();
+    int? firstLargerNumber;
+    int smallestNumber = activeIds[0];
+    for (int id in activeIds) {
+      if (id > btn) {
+        firstLargerNumber = id;
+        break;
+      }
+      if (id < smallestNumber) {
+        smallestNumber = id;
+      }
+    }
+    state = firstLargerNumber ?? smallestNumber;
   }
 }
 
@@ -292,6 +367,13 @@ class PlayerData extends _$PlayerData {
           user.copyWith(isFold: false),
     ];
   }
+
+  void clearScore() {
+    state = [
+      for (final user in state)
+          user.copyWith(score: 0),
+    ];
+  }
 }
 
 void _actionMethod(
@@ -328,26 +410,7 @@ void _actionMethod(
   }
 }
 
-void _gameMethod(GameEntity game, AutoDisposeNotifierProviderRef<bool> ref) {
-  final type = game.type;
-  final uid = game.uid;
-  final score = game.score;
-  switch (type) {
-    case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
-      break;
-    case GameTypeEnum.anty:
-      break;
-    case GameTypeEnum.btn:
-      ref.read(playerDataProvider.notifier).updateBtn(uid);
-      break;
-    case GameTypeEnum.pot:
-      break;
-    case GameTypeEnum.option:
-      break;
-  }
-}
+
 
 final messageTextFieldController = Provider((_) => TextEditingController());
 
