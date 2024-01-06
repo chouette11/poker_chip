@@ -155,6 +155,13 @@ class _GamePageState extends ConsumerState<HostPage> {
                   ),
                 ),
                 Positioned(
+                  height: height * 0.3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
+                  ),
+                ),
+                Positioned(
                   height: height * 0.4,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -229,8 +236,6 @@ void gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.pot:
       break;
-    case GameTypeEnum.option:
-      break;
     case GameTypeEnum.preFlop:
       break;
     case GameTypeEnum.flop:
@@ -240,22 +245,4 @@ void gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.river:
       break;
   }
-}
-
-void option(WidgetRef ref) {
-  final optionId = ref.read(optionAssignedIdProvider);
-  final uid = assignedIdToUid(optionId, ref);
-  final game = GameEntity(uid: uid, type: GameTypeEnum.option, score: 0);
-  final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
-  final cons = ref.read(hostConsProvider);
-
-  /// Participantの状態変更
-  for (var conEntity in cons) {
-    final conn = conEntity.con;
-    conn.send(mes.toJson());
-  }
-
-  /// Hostの状態変更
-
-
 }

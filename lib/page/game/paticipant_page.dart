@@ -100,7 +100,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _participantActionMethod(action, ref);
-          ref.read(optionAssignedIdProvider.notifier).updateId();
+          ref
+              .read(participantOptIdProvider.notifier)
+              .update((state) => action.optId ?? 0);
         } else if (mes.type == MessageTypeEnum.game) {
           final game = GameEntity.fromJson(mes.content);
           _gameMethod(game, ref);
@@ -248,8 +250,6 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateBtn(uid);
       break;
     case GameTypeEnum.pot:
-      break;
-    case GameTypeEnum.option:
       break;
     case GameTypeEnum.preFlop:
       break;
