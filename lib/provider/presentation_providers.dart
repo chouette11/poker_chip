@@ -8,7 +8,6 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/host_action_button.dart';
-import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -28,7 +27,7 @@ final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
 final potProvider = StateProvider((ref) => 0);
 
-final raiseBetProvider = StateProvider((ref) => 0);
+final raiseBetProvider = StateProvider((ref) => 40);
 
 final playersExProvider = StateProvider((ref) => []);
 
@@ -106,35 +105,46 @@ class HostConnOpen extends _$HostConnOpen {
             conn.send(res.toJson());
           }
         } else if (mes.type == MessageTypeEnum.action) {
-          final action = ActionEntity.fromJson(mes.content);
+          ActionEntity action = ActionEntity.fromJson(mes.content);
 
-          /// Hostの状態変更
-          _actionMethod(action, ref);
+          /// HostのStack状態変更
+          _actionStackMethod(action, ref);
 
-          /// ターンの変更
+          /// HostのOption状態変更
           final players = ref.read(playerDataProvider);
           if (isAllAction(players) && isSameScore(players)) {
-
-            /// Hostの状態変更
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-            final order = ref.read(orderProvider.notifier).nextOrder();
+            ref.read(orderProvider.notifier).nextOrder();
             ref.read(playerDataProvider.notifier).clearScore();
-
-            /// Participantの状態変更
-            final cons = ref.read(hostConsProvider);
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final game = GameEntity(uid: '', type: order, score: 0);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.game, content: game);
-              conn.send(mes.toJson());
-            }
           } else {
             final order = ref.read(orderProvider);
             if (order == GameTypeEnum.preFlop) {
               ref.read(optionAssignedIdProvider.notifier).updateId();
             } else {
               ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            }
+          }
+
+          /// ParticipantのStack状態変更
+          final cons = ref.read(hostConsProvider);
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final optId = ref.read(optionAssignedIdProvider);
+            action = action.copyWith.call(optId: optId);
+            final mes = MessageEntity(
+                type: MessageTypeEnum.action, content: action);
+            conn.send(mes.toJson());
+          }
+
+          if (isAllAction(players) && isSameScore(players)) {
+            /// Participantのターン状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final order = ref.read(orderProvider);
+              final game = GameEntity(uid: '', type: order, score: 0);
+              final mes =
+              MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
             }
           }
         }
@@ -159,26 +169,23 @@ class Order extends _$Order {
     return GameTypeEnum.preFlop;
   }
 
-  GameTypeEnum nextOrder() {
+  void nextOrder() {
     switch (state) {
       case GameTypeEnum.preFlop:
         state = GameTypeEnum.flop;
-        return GameTypeEnum.flop;
       case GameTypeEnum.flop:
         state = GameTypeEnum.turn;
-        return GameTypeEnum.turn;
       case GameTypeEnum.turn:
         state = GameTypeEnum.river;
-        return GameTypeEnum.river;
       case GameTypeEnum.river:
         state = GameTypeEnum.preFlop;
-        return GameTypeEnum.preFlop;
       default:
         state = GameTypeEnum.preFlop;
-        return GameTypeEnum.preFlop;
     }
   }
 }
+
+final participantOptIdProvider = StateProvider((ref) => 0);
 
 @riverpod
 class OptionAssignedId extends _$OptionAssignedId {
@@ -204,7 +211,7 @@ class OptionAssignedId extends _$OptionAssignedId {
 
   void updatePostFlopId() {
     final btn = ref.read(btnIdProvider);
-    final player = ref.read(playerDataProvider);
+    final player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.assignedId).toList();
     activeIds.sort();
@@ -376,16 +383,8 @@ class PlayerData extends _$PlayerData {
   }
 }
 
-void _actionMethod(
+void _actionStackMethod(
     ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
-  /// 他のParticipantの状態変更
-  final cons = ref.read(hostConsProvider);
-  for (final conEntity in cons) {
-    final conn = conEntity.con;
-    final mes = MessageEntity(type: MessageTypeEnum.action, content: action);
-    conn.send(mes.toJson());
-  }
-
   /// Hostの状態変更
   final type = action.type;
   final uid = action.uid;

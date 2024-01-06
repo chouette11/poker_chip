@@ -15,13 +15,16 @@ class ParticipantActionButtons extends ConsumerWidget {
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = findMaxInList(players.map((e) => e.score).toList());
-      if (maxScore == 0) {
+      final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
+      if (maxScore == 0 || me.score == maxScore) {
         return Column(
           children: [
-            _ActionButton(actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
-            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       } else {
@@ -31,7 +34,8 @@ class ParticipantActionButtons extends ConsumerWidget {
                 actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
-            _ActionButton(actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
+            _ActionButton(
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       }
@@ -42,7 +46,7 @@ class ParticipantActionButtons extends ConsumerWidget {
       return ref.read(uidProvider) == uid;
     }
 
-    final optAssignedId = ref.watch(optionAssignedIdProvider);
+    final optAssignedId = ref.watch(participantOptIdProvider);
     return Visibility(visible: isVisible(optAssignedId), child: children());
   }
 }
@@ -69,7 +73,8 @@ class _ActionButton extends ConsumerWidget {
         }
         switch (actionTypeEnum) {
           case ActionTypeEnum.fold:
-            final action = ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
+            final action =
+                ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
             final mes =
                 MessageEntity(type: MessageTypeEnum.action, content: action);
             conn.send(mes.toJson());
@@ -89,6 +94,11 @@ class _ActionButton extends ConsumerWidget {
             conn.send(mes.toJson());
             break;
           case ActionTypeEnum.check:
+            final action =
+                ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.action, content: action);
+            conn.send(mes.toJson());
             break;
           case ActionTypeEnum.bet:
             final action =

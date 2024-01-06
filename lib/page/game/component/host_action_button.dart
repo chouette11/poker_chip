@@ -5,7 +5,6 @@ import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/host_page.dart';
-import 'package:poker_chip/page/game/paticipant_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
@@ -19,7 +18,8 @@ class HostActionButtons extends ConsumerWidget {
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = findMaxInList(players.map((e) => e.score).toList());
-      if (maxScore == 0) {
+      final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
+      if (maxScore == 0 || me.score == maxScore) {
         return Column(
           children: [
             _ActionButton(
@@ -68,76 +68,60 @@ class _ActionButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cons = ref.watch(hostConsProvider);
     final uid = ref.watch(uidProvider);
-    final score = ref.watch(raiseBetProvider);
+    final betScore = ref.watch(raiseBetProvider);
     final players = ref.watch(playerDataProvider);
+
     return ElevatedButton(
       onPressed: () {
-        /// Hostの状態変更
+        /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
 
-        /// Optionの変更
+        /// HostのOption状態変更
         if (isAllAction(players) && isSameScore(players)) {
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
-            final order = ref.read(orderProvider.notifier).nextOrder();
-            final game =
-                GameEntity(uid: uid, type: order, score: 0);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.game, content: game);
-            conn.send(mes.toJson());
-          }
+          ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+          ref.read(orderProvider.notifier).nextOrder();
+          ref.read(playerDataProvider.notifier).clearScore();
         } else {
-          ref.read(optionAssignedIdProvider.notifier).updateId();
+          final order = ref.read(orderProvider);
+          if (order == GameTypeEnum.preFlop) {
+            ref.read(optionAssignedIdProvider.notifier).updateId();
+          } else {
+            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+          }
         }
 
-        /// Participantへの送信
-        switch (actionTypeEnum) {
-          case ActionTypeEnum.fold:
-            ref.read(playerDataProvider.notifier).updateFold(uid);
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final action =
-                  ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.action, content: action);
-              conn.send(mes.toJson());
-            }
-            break;
-          case ActionTypeEnum.call:
-            ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final action =
-                  ActionEntity(uid: uid, type: actionTypeEnum, score: maxScore);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.action, content: action);
-              conn.send(mes.toJson());
-            }
-            break;
-          case ActionTypeEnum.raise:
-            ref.read(playerDataProvider.notifier).updateScore(uid, score);
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final action =
-                  ActionEntity(uid: uid, type: actionTypeEnum, score: score);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.action, content: action);
-              conn.send(mes.toJson());
-            }
-            break;
-          case ActionTypeEnum.check:
-            break;
-          case ActionTypeEnum.bet:
-            ref.read(playerDataProvider.notifier).updateScore(uid, score);
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final action =
-                  ActionEntity(uid: uid, type: actionTypeEnum, score: score);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.action, content: action);
-              conn.send(mes.toJson());
-            }
-            break;
+        /// ParticipantのStack状態変更
+        final optId = ref.read(optionAssignedIdProvider);
+        int score = 0;
+        if (actionTypeEnum == ActionTypeEnum.raise ||
+            actionTypeEnum == ActionTypeEnum.bet) {
+          score = betScore;
+        } else if (actionTypeEnum == ActionTypeEnum.call) {
+          score = maxScore;
+        }
+        for (final conEntity in cons) {
+          final conn = conEntity.con;
+          final action = ActionEntity(
+            uid: uid,
+            type: actionTypeEnum,
+            score: score,
+            optId: optId,
+          );
+          final mes =
+              MessageEntity(type: MessageTypeEnum.action, content: action);
+          conn.send(mes.toJson());
+        }
+
+        if (isAllAction(players) && isSameScore(players)) {
+          /// Participantのターン状態変更
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final order = ref.read(orderProvider);
+            final game = GameEntity(uid: '', type: order, score: 0);
+            final mes =
+            MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
+          }
         }
       },
       child: Text(actionTypeEnum.name),
@@ -185,13 +169,17 @@ void _hostActionMethod(
   }
 }
 
-bool isAllAction(List<UserEntity> users) {
-  final values = users.map((e) => e.isAction).toList();
+bool isAllAction(List<UserEntity> players) {
+  final player = List.from(players);
+  player.removeWhere((e) => e.isFold == true);
+  final values = player.map((e) => e.isAction).toList();
   return values.contains(false);
 }
 
-bool isSameScore(List<UserEntity> users) {
-  final values = users.map((e) => e.score).toList();
+bool isSameScore(List<UserEntity> players) {
+  final player = List.from(players);
+  player.removeWhere((e) => e.isFold == true);
+  final values = player.map((e) => e.score).toList();
   if (values.isEmpty) return true;
 
   final first = values.first;
