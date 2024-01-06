@@ -12,6 +12,7 @@ class ActionEntity with _$ActionEntity {
   const factory ActionEntity({
     required String uid,
     required ActionTypeEnum type,
+    int? optId,
     required int score,
   }) = _ActionEntity;
 

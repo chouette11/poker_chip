@@ -22,6 +22,7 @@ ActionEntity _$ActionEntityFromJson(Map<String, dynamic> json) {
 mixin _$ActionEntity {
   String get uid => throw _privateConstructorUsedError;
   ActionTypeEnum get type => throw _privateConstructorUsedError;
+  int? get optId => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -36,7 +37,7 @@ abstract class $ActionEntityCopyWith<$Res> {
           ActionEntity value, $Res Function(ActionEntity) then) =
       _$ActionEntityCopyWithImpl<$Res, ActionEntity>;
   @useResult
-  $Res call({String uid, ActionTypeEnum type, int score});
+  $Res call({String uid, ActionTypeEnum type, int? optId, int score});
 }
 
 /// @nodoc
@@ -54,6 +55,7 @@ class _$ActionEntityCopyWithImpl<$Res, $Val extends ActionEntity>
   $Res call({
     Object? uid = null,
     Object? type = null,
+    Object? optId = freezed,
     Object? score = null,
   }) {
     return _then(_value.copyWith(
@@ -65,6 +67,10 @@ class _$ActionEntityCopyWithImpl<$Res, $Val extends ActionEntity>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ActionTypeEnum,
+      optId: freezed == optId
+          ? _value.optId
+          : optId // ignore: cast_nullable_to_non_nullable
+              as int?,
       score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -81,7 +87,7 @@ abstract class _$$_ActionEntityCopyWith<$Res>
       __$$_ActionEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String uid, ActionTypeEnum type, int score});
+  $Res call({String uid, ActionTypeEnum type, int? optId, int score});
 }
 
 /// @nodoc
@@ -97,6 +103,7 @@ class __$$_ActionEntityCopyWithImpl<$Res>
   $Res call({
     Object? uid = null,
     Object? type = null,
+    Object? optId = freezed,
     Object? score = null,
   }) {
     return _then(_$_ActionEntity(
@@ -108,6 +115,10 @@ class __$$_ActionEntityCopyWithImpl<$Res>
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as ActionTypeEnum,
+      optId: freezed == optId
+          ? _value.optId
+          : optId // ignore: cast_nullable_to_non_nullable
+              as int?,
       score: null == score
           ? _value.score
           : score // ignore: cast_nullable_to_non_nullable
@@ -120,7 +131,7 @@ class __$$_ActionEntityCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ActionEntity extends _ActionEntity {
   const _$_ActionEntity(
-      {required this.uid, required this.type, required this.score})
+      {required this.uid, required this.type, this.optId, required this.score})
       : super._();
 
   factory _$_ActionEntity.fromJson(Map<String, dynamic> json) =>
@@ -131,11 +142,13 @@ class _$_ActionEntity extends _ActionEntity {
   @override
   final ActionTypeEnum type;
   @override
+  final int? optId;
+  @override
   final int score;
 
   @override
   String toString() {
-    return 'ActionEntity(uid: $uid, type: $type, score: $score)';
+    return 'ActionEntity(uid: $uid, type: $type, optId: $optId, score: $score)';
   }
 
   @override
@@ -145,12 +158,13 @@ class _$_ActionEntity extends _ActionEntity {
             other is _$_ActionEntity &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.type, type) || other.type == type) &&
+            (identical(other.optId, optId) || other.optId == optId) &&
             (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, type, score);
+  int get hashCode => Object.hash(runtimeType, uid, type, optId, score);
 
   @JsonKey(ignore: true)
   @override
@@ -170,6 +184,7 @@ abstract class _ActionEntity extends ActionEntity {
   const factory _ActionEntity(
       {required final String uid,
       required final ActionTypeEnum type,
+      final int? optId,
       required final int score}) = _$_ActionEntity;
   const _ActionEntity._() : super._();
 
@@ -180,6 +195,8 @@ abstract class _ActionEntity extends ActionEntity {
   String get uid;
   @override
   ActionTypeEnum get type;
+  @override
+  int? get optId;
   @override
   int get score;
   @override
