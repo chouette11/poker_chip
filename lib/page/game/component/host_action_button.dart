@@ -73,11 +73,12 @@ class _ActionButton extends ConsumerWidget {
 
     return ElevatedButton(
       onPressed: () {
+        final notifier = ref.read(playerDataProvider.notifier);
         /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
 
         /// HostのOption状態変更
-        if (isAllAction(players) && isSameScore(players)) {
+        if (notifier.isAllAction() && notifier.isSameScore()) {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(orderProvider.notifier).nextOrder();
           ref.read(playerDataProvider.notifier).clearScore();
@@ -112,7 +113,7 @@ class _ActionButton extends ConsumerWidget {
           conn.send(mes.toJson());
         }
 
-        if (isAllAction(players) && isSameScore(players)) {
+        if (notifier.isAllAction() && notifier.isSameScore()) {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
@@ -167,26 +168,4 @@ void _hostActionMethod(
     case ActionTypeEnum.check:
       break;
   }
-}
-
-bool isAllAction(List<UserEntity> players) {
-  final player = List.from(players);
-  player.removeWhere((e) => e.isFold == true);
-  final values = player.map((e) => e.isAction).toList();
-  return values.contains(false);
-}
-
-bool isSameScore(List<UserEntity> players) {
-  final player = List.from(players);
-  player.removeWhere((e) => e.isFold == true);
-  final values = player.map((e) => e.score).toList();
-  if (values.isEmpty) return true;
-
-  final first = values.first;
-  for (final value in values) {
-    if (value != first) {
-      return false;
-    }
-  }
-  return true;
 }
