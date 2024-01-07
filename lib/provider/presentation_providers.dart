@@ -77,6 +77,7 @@ class HostConnOpen extends _$HostConnOpen {
         print('data!!');
         final mes = MessageEntity.fromJson(data);
         print('host: $mes');
+        print(mes.type == MessageTypeEnum.action);
 
         if (mes.type == MessageTypeEnum.join) {
           UserEntity user = UserEntity.fromJson(mes.content);
@@ -106,37 +107,22 @@ class HostConnOpen extends _$HostConnOpen {
           }
         } else if (mes.type == MessageTypeEnum.action) {
           ActionEntity action = ActionEntity.fromJson(mes.content);
+          final notifier = ref.read(playerDataProvider.notifier);
 
           /// HostのStack状態変更
           _actionStackMethod(action, ref);
 
           /// HostのOption状態変更
           final players = ref.read(playerDataProvider);
-          if (isAllAction(players) && isSameScore(players)) {
+          final cons = ref.read(hostConsProvider);
+          print('action');
+          if (notifier.isAllAction() && notifier.isSameScore()) {
+            print('change order');
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(orderProvider.notifier).nextOrder();
             ref.read(playerDataProvider.notifier).clearScore();
-          } else {
-            final order = ref.read(orderProvider);
-            if (order == GameTypeEnum.preFlop) {
-              ref.read(optionAssignedIdProvider.notifier).updateId();
-            } else {
-              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-            }
-          }
+            ref.read(playerDataProvider.notifier).clearIsAction();
 
-          /// ParticipantのStack状態変更
-          final cons = ref.read(hostConsProvider);
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
-            final optId = ref.read(optionAssignedIdProvider);
-            action = action.copyWith.call(optId: optId);
-            final mes = MessageEntity(
-                type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-          }
-
-          if (isAllAction(players) && isSameScore(players)) {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
@@ -146,6 +132,24 @@ class HostConnOpen extends _$HostConnOpen {
               MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
+          } else {
+            final order = ref.read(orderProvider);
+            if (order == GameTypeEnum.preFlop) {
+              ref.read(optionAssignedIdProvider.notifier).updateId();
+            } else {
+              print('postFlop');
+              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            }
+          }
+
+          /// ParticipantのStack状態変更
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final optId = ref.read(optionAssignedIdProvider);
+            action = action.copyWith.call(optId: optId);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.action, content: action);
+            conn.send(mes.toJson());
           }
         }
       });
@@ -182,6 +186,10 @@ class Order extends _$Order {
       default:
         state = GameTypeEnum.preFlop;
     }
+  }
+
+  void update(GameTypeEnum gameTypeEnum) {
+    state = gameTypeEnum;
   }
 }
 
@@ -358,28 +366,49 @@ class PlayerData extends _$PlayerData {
   void updateAction(String uid) {
     state = [
       for (final user in state)
-        if (user.uid == uid)
-          user.copyWith(isAction: true)
-        else
-          user.copyWith(isAction: false),
+        if (user.uid == uid) user.copyWith(isAction: true) else user
     ];
   }
 
   void updateFold(String uid) {
     state = [
       for (final user in state)
-        if (user.uid == uid)
-          user.copyWith(isFold: true)
-        else
-          user.copyWith(isFold: false),
+        if (user.uid == uid) user.copyWith(isFold: true) else user
     ];
   }
 
   void clearScore() {
     state = [
-      for (final user in state)
-          user.copyWith(score: 0),
+      for (final user in state) user.copyWith(score: 0),
     ];
+  }
+
+  void clearIsAction() {
+    state = [
+      for (final user in state) user.copyWith(isAction: false),
+    ];
+  }
+
+  bool isAllAction() {
+    final players = List.from(state);
+    players.removeWhere((e) => e.isFold == true);
+    final values = players.map((e) => e.isAction).toList();
+    return !values.contains(false);
+  }
+
+  bool isSameScore() {
+    final player = List.from(state);
+    player.removeWhere((e) => e.isFold == true);
+    final values = player.map((e) => e.score).toList();
+    if (values.isEmpty) return true;
+
+    final first = values.first;
+    for (final value in values) {
+      if (value != first) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 
@@ -408,8 +437,6 @@ void _actionStackMethod(
       break;
   }
 }
-
-
 
 final messageTextFieldController = Provider((_) => TextEditingController());
 
