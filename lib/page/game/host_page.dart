@@ -169,7 +169,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                   height: height * 0.4,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: PotWidget(score: pot),
+                    child: PotWidget(),
                   ),
                 ),
                 Positioned(

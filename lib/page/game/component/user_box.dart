@@ -25,7 +25,6 @@ class UserBoxes extends ConsumerWidget {
       print('players');
       print(players);
       final splitPlayers = splitArrayAroundTarget(players, myAssignedId);
-      print(splitPlayers);
       final before = splitPlayers[0];
       final beforeUsers = before.map((e) => UserBox(userEntity: e)).toList();
       final after = splitPlayers[1];
