@@ -253,6 +253,7 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
 void _gameMethod(GameEntity game, WidgetRef ref) {
   final type = game.type;
   final uid = game.uid;
+  final myUid = ref.read(uidProvider);
   final score = game.score;
   switch (type) {
     case GameTypeEnum.blind:
@@ -270,23 +271,35 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.flop:
       ref.read(orderProvider.notifier).update(type);
-      ref.read(potProvider.notifier).changeOrder();
+      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.turn:
       ref.read(orderProvider.notifier).update(type);
-      ref.read(potProvider.notifier).changeOrder();
+      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.river:
       ref.read(orderProvider.notifier).update(type);
-      ref.read(potProvider.notifier).changeOrder();
+      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
-    case GameTypeEnum.result:
+    case GameTypeEnum.foldOut:
       ref.read(orderProvider.notifier).update(type);
-      ref.read(potProvider.notifier).changeOrder();
+      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
+      final pot = ref.read(potProvider);
+      ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+      if (uid == myUid) {
+        ref.read(isWinProvider.notifier).update((state) => true);
+      }
+    case GameTypeEnum.wtsd:
+      ref.read(orderProvider.notifier).update(type);
+      ref.read(potProvider.notifier).scoreSumToPot();
+      ref.read(playerDataProvider.notifier).clearScore();
+      if (score == 1) {
+        ref.read(isFinalProvider.notifier).update((state) => true);
+      }
       break;
   }
 }

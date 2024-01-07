@@ -7,7 +7,8 @@ enum GameTypeEnum {
   flop('flop'),
   turn('turn'),
   river('river'),
-  result('result');
+  foldOut('foldOut'),
+  wtsd('wtsd');
 
   const GameTypeEnum(this.displayName);
 
