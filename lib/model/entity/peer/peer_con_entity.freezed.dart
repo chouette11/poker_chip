@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$PeerConEntity {
-  String? get uid => throw _privateConstructorUsedError;
+  String get uid => throw _privateConstructorUsedError;
   String get peerId => throw _privateConstructorUsedError;
   DataConnection get con => throw _privateConstructorUsedError;
 
@@ -31,7 +31,7 @@ abstract class $PeerConEntityCopyWith<$Res> {
           PeerConEntity value, $Res Function(PeerConEntity) then) =
       _$PeerConEntityCopyWithImpl<$Res, PeerConEntity>;
   @useResult
-  $Res call({String? uid, String peerId, DataConnection con});
+  $Res call({String uid, String peerId, DataConnection con});
 }
 
 /// @nodoc
@@ -47,15 +47,15 @@ class _$PeerConEntityCopyWithImpl<$Res, $Val extends PeerConEntity>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = freezed,
+    Object? uid = null,
     Object? peerId = null,
     Object? con = null,
   }) {
     return _then(_value.copyWith(
-      uid: freezed == uid
+      uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       peerId: null == peerId
           ? _value.peerId
           : peerId // ignore: cast_nullable_to_non_nullable
@@ -76,7 +76,7 @@ abstract class _$$_PeerConEntityCopyWith<$Res>
       __$$_PeerConEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? uid, String peerId, DataConnection con});
+  $Res call({String uid, String peerId, DataConnection con});
 }
 
 /// @nodoc
@@ -90,15 +90,15 @@ class __$$_PeerConEntityCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = freezed,
+    Object? uid = null,
     Object? peerId = null,
     Object? con = null,
   }) {
     return _then(_$_PeerConEntity(
-      uid: freezed == uid
+      uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
       peerId: null == peerId
           ? _value.peerId
           : peerId // ignore: cast_nullable_to_non_nullable
@@ -114,11 +114,12 @@ class __$$_PeerConEntityCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_PeerConEntity extends _PeerConEntity {
-  const _$_PeerConEntity({this.uid, required this.peerId, required this.con})
+  const _$_PeerConEntity(
+      {required this.uid, required this.peerId, required this.con})
       : super._();
 
   @override
-  final String? uid;
+  final String uid;
   @override
   final String peerId;
   @override
@@ -151,13 +152,13 @@ class _$_PeerConEntity extends _PeerConEntity {
 
 abstract class _PeerConEntity extends PeerConEntity {
   const factory _PeerConEntity(
-      {final String? uid,
+      {required final String uid,
       required final String peerId,
       required final DataConnection con}) = _$_PeerConEntity;
   const _PeerConEntity._() : super._();
 
   @override
-  String? get uid;
+  String get uid;
   @override
   String get peerId;
   @override

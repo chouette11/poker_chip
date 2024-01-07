@@ -68,8 +68,6 @@ class HostConnOpen extends _$HostConnOpen {
     peer.on<DataConnection>("connection").listen((event) {
       conn = event;
       print('con!');
-      final entity = PeerConEntity(peerId: peer.id ?? '', con: event);
-      ref.read(hostConsProvider.notifier).add(entity);
 
       conn.on("data").listen((data) {
         print('data!!');
@@ -79,6 +77,12 @@ class HostConnOpen extends _$HostConnOpen {
 
         if (mes.type == MessageTypeEnum.join) {
           UserEntity user = UserEntity.fromJson(mes.content);
+          final entity = PeerConEntity(
+            uid: user.uid,
+            peerId: peer.id ?? '',
+            con: event,
+          );
+          ref.read(hostConsProvider.notifier).add(entity);
           List<UserEntity> players = ref.read(playerDataProvider);
           user = UserEntity(
             uid: user.uid,

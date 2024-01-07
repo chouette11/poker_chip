@@ -8,7 +8,7 @@ class PeerConEntity with _$PeerConEntity {
   const PeerConEntity._();
 
   const factory PeerConEntity({
-    String? uid,
+    required String uid,
     required String peerId,
     required DataConnection con,
   }) = _PeerConEntity;
