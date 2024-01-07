@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/participant_action_button.dart';
+import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -186,6 +187,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 ),
                 Positioned(
                   height: height * 0.4,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: PotWidget(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -262,14 +270,17 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.flop:
       ref.read(orderProvider.notifier).update(type);
+      ref.read(potProvider.notifier).changeOrder();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.turn:
       ref.read(orderProvider.notifier).update(type);
+      ref.read(potProvider.notifier).changeOrder();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.river:
       ref.read(orderProvider.notifier).update(type);
+      ref.read(potProvider.notifier).changeOrder();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
   }

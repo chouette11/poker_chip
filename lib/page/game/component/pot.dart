@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
-class PotWidget extends StatelessWidget {
-  const PotWidget({super.key, required this.score});
-
-  final int score;
+class PotWidget extends ConsumerWidget {
+  const PotWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final pot = ref.watch(potProvider);
     return SizedBox(
       height: 100,
       width: 200,
@@ -15,7 +16,7 @@ class PotWidget extends StatelessWidget {
         children: [
           Text('Pot'),
           Text(
-            score.toString(),
+            '$pot',
             style: TextStyleConstant.bold20,
           )
         ],

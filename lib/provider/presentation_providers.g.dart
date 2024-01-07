@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'b7680cda827edd0b927598b5962c33eee52ac7f9';
+String _$hostConnOpenHash() => r'0b011dbcc63dca68504f92b2b844a867791fddff';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,13 +138,27 @@ class HostConnOpenProvider
   }
 }
 
-String _$orderHash() => r'f10b98a5f64a6c4d41eb80530ea03a276a31be7f';
+String _$potHash() => r'303ac1efe76f81abd4f43f1d84c0a088b10cfb4a';
 
 ///
-/// position
+/// Game
 ///
 ///
-/// Copied from [Order].
+/// Copied from [Pot].
+@ProviderFor(Pot)
+final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
+  Pot.new,
+  name: r'potProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$potHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Pot = AutoDisposeNotifier<int>;
+String _$orderHash() => r'c2f2cbbb592fd4f679ff02efaf6a17902ce88b33';
+
+/// See also [Order].
 @ProviderFor(Order)
 final orderProvider = AutoDisposeNotifierProvider<Order, GameTypeEnum>.internal(
   Order.new,
@@ -156,7 +170,7 @@ final orderProvider = AutoDisposeNotifierProvider<Order, GameTypeEnum>.internal(
 );
 
 typedef _$Order = AutoDisposeNotifier<GameTypeEnum>;
-String _$optionAssignedIdHash() => r'a46bb386b950c61dcec8448ff66a0a0e1b38e32b';
+String _$optionAssignedIdHash() => r'94e4b6fbe31d590658e4e0e233f537ca80b407bc';
 
 /// See also [OptionAssignedId].
 @ProviderFor(OptionAssignedId)
@@ -174,7 +188,11 @@ final optionAssignedIdProvider =
 typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
 String _$btnIdHash() => r'3f14d167aae55c7f490e6ef2e58a2b97c5f650a4';
 
-/// See also [BtnId].
+///
+/// position
+///
+///
+/// Copied from [BtnId].
 @ProviderFor(BtnId)
 final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
   BtnId.new,
@@ -214,7 +232,7 @@ final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = AutoDisposeNotifier<int>;
-String _$playerDataHash() => r'b2127912f0a4875ae6a42b2a4431141fc6da8448';
+String _$playerDataHash() => r'259188e09fb9e36101b7e0d3d2e9335f1591ddc1';
 
 ///
 /// player
