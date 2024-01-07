@@ -284,7 +284,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
-    case GameTypeEnum.foldOut:
+    case GameTypeEnum.foldout:
       ref.read(orderProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();

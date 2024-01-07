@@ -81,7 +81,7 @@ class _ActionButton extends ConsumerWidget {
         final isChangeOrder = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
           final uid = ref.read(uidProvider);
-          ref.read(orderProvider.notifier).update(GameTypeEnum.foldOut);
+          ref.read(orderProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
           if (notifier.isWinPlayerUid().contains(uid)) {

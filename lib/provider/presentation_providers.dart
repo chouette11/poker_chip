@@ -121,7 +121,7 @@ class HostConnOpen extends _$HostConnOpen {
               notifier.isAllAction() && notifier.isSameScore();
           if (isFoldout) {
             final uid = ref.read(uidProvider);
-            ref.read(orderProvider.notifier).update(GameTypeEnum.foldOut);
+            ref.read(orderProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
             if (notifier.isWinPlayerUid().contains(uid)) {
@@ -134,7 +134,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
             final order = ref.read(orderProvider);
-            if (order == GameTypeEnum.wtsd) {
+            if (order == GameTypeEnum.foldout) {
             } else {
               ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
               ref.read(orderProvider.notifier).nextOrder();
