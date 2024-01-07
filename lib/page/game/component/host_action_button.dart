@@ -76,8 +76,10 @@ class _ActionButton extends ConsumerWidget {
         /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
 
+        final isChangeOrder =
+            notifier.isAllAction() && notifier.isSameScore();
         /// HostのOption状態変更
-        if (notifier.isAllAction() && notifier.isSameScore()) {
+        if (isChangeOrder) {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(orderProvider.notifier).nextOrder();
           ref.read(potProvider.notifier).changeOrder();
@@ -109,7 +111,7 @@ class _ActionButton extends ConsumerWidget {
           conn.send(mes.toJson());
         }
 
-        if (notifier.isAllAction() && notifier.isSameScore()) {
+        if (isChangeOrder) {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
