@@ -85,27 +85,24 @@ class _GamePageState extends ConsumerState<HostPage> {
     }
 
     /// Hostの状態変更
-    gameMethod(
-      GameEntity(
-        uid: assignedIdToUid(smallId, ref),
-        type: GameTypeEnum.blind,
-        score: 10,
-      ),
-      ref,
-    );
-    gameMethod(
-      GameEntity(
-        uid: assignedIdToUid(bigId, ref),
-        type: GameTypeEnum.blind,
-        score: 20,
-      ),
-      ref,
-    );
-    gameMethod(
-      GameEntity(
-          uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
-      ref,
-    );
+    ref
+        .read(playerDataProvider.notifier)
+        .updateStack(assignedIdToUid(smallId, ref), 10);
+    ref
+        .read(playerDataProvider.notifier)
+        .updateScore(assignedIdToUid(smallId, ref), 10);
+    ref
+        .read(playerDataProvider.notifier)
+        .updateStack(assignedIdToUid(bigId, ref), 20);
+    ref
+        .read(playerDataProvider.notifier)
+        .updateScore(assignedIdToUid(bigId, ref), 20);
+    ref
+        .read(playerDataProvider.notifier)
+        .updateStack(assignedIdToUid(btnId, ref), 0);
+    ref
+        .read(playerDataProvider.notifier)
+        .updateScore(assignedIdToUid(btnId, ref), 0);
   }
 
   void closeConnection(String id) {
@@ -152,6 +149,13 @@ class _GamePageState extends ConsumerState<HostPage> {
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
                     child: UserBoxes(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(ref.watch(orderProvider).name),
                   ),
                 ),
                 Positioned(
@@ -219,30 +223,4 @@ String lenToPeerId(int len) {
     '3'
   ];
   return ids[len - 1];
-}
-
-void gameMethod(GameEntity game, WidgetRef ref) {
-  final type = game.type;
-  final uid = game.uid;
-  final score = game.score;
-  switch (type) {
-    case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
-      break;
-    case GameTypeEnum.anty:
-      break;
-    case GameTypeEnum.btn:
-      break;
-    case GameTypeEnum.pot:
-      break;
-    case GameTypeEnum.preFlop:
-      break;
-    case GameTypeEnum.flop:
-      break;
-    case GameTypeEnum.turn:
-      break;
-    case GameTypeEnum.river:
-      break;
-  }
 }
