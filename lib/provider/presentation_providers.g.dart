@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'c991e64efdecadf3af05498e83a30cc5a4b521e8';
+String _$hostConnOpenHash() => r'ac319235bb2e2b00464ddc41b93dad26d736cbd9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,13 +138,9 @@ class HostConnOpenProvider
   }
 }
 
-String _$potHash() => r'559abcb2f632d07a0f4590f93f07e37507844df2';
+String _$potHash() => r'30a58516f69f39d118f87ad09bce1856c320aa9f';
 
-///
-/// Game
-///
-///
-/// Copied from [Pot].
+/// See also [Pot].
 @ProviderFor(Pot)
 final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
   Pot.new,
@@ -156,7 +152,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$orderHash() => r'd8beaece4c381fae4513268b272ca0018036b6ae';
+String _$orderHash() => r'6b2f1b6fc50edffa59edc244556b39ad4db6e2ab';
 
 /// See also [Order].
 @ProviderFor(Order)
@@ -232,7 +228,7 @@ final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = AutoDisposeNotifier<int>;
-String _$playerDataHash() => r'259188e09fb9e36101b7e0d3d2e9335f1591ddc1';
+String _$playerDataHash() => r'b362896244e0ba0373b7f5548dd0112e1c80ea88';
 
 ///
 /// player

@@ -76,15 +76,29 @@ class _ActionButton extends ConsumerWidget {
         /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
 
-        final isChangeOrder =
-            notifier.isAllAction() && notifier.isSameScore();
         /// HostのOption状態変更
-        if (isChangeOrder) {
-          ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-          ref.read(orderProvider.notifier).nextOrder();
-          ref.read(potProvider.notifier).changeOrder();
+        final isFoldout = notifier.isFoldout();
+        final isChangeOrder = notifier.isAllAction() && notifier.isSameScore();
+        if (isFoldout) {
+          final uid = ref.read(uidProvider);
+          ref.read(orderProvider.notifier).update(GameTypeEnum.foldOut);
+          ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
-          ref.read(playerDataProvider.notifier).clearIsAction();
+          if (notifier.isWinPlayerUid().contains(uid)) {
+            ref.read(isWinProvider.notifier).update((state) => true);
+            final pot = ref.read(potProvider);
+            ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+          }
+        } else if (isChangeOrder) {
+          ref.read(potProvider.notifier).scoreSumToPot();
+          ref.read(playerDataProvider.notifier).clearScore();
+          final order = ref.read(orderProvider);
+          if (order == GameTypeEnum.wtsd) {
+          } else {
+            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            ref.read(orderProvider.notifier).nextOrder();
+            ref.read(playerDataProvider.notifier).clearIsAction();
+          }
         } else {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         }
@@ -111,7 +125,18 @@ class _ActionButton extends ConsumerWidget {
           conn.send(mes.toJson());
         }
 
-        if (isChangeOrder) {
+        if (isFoldout) {
+          /// Participantのターン状態変更
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final ids = notifier.isWinPlayerUid();
+            final order = ref.read(orderProvider);
+            final game = GameEntity(uid: ids.first, type: order, score: 0);
+            final mes =
+            MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
+          }
+        } else if (isChangeOrder) {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;

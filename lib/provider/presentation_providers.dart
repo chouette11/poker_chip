@@ -115,22 +115,37 @@ class HostConnOpen extends _$HostConnOpen {
           _actionStackMethod(action, ref);
 
           /// HostのOption状態変更
-          final cons = ref.read(hostConsProvider);
           print('action');
+          final isFoldout = notifier.isFoldout();
           final isChangeOrder =
               notifier.isAllAction() && notifier.isSameScore();
-          if (isChangeOrder) {
-            print('change order');
-            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-            ref.read(orderProvider.notifier).nextOrder();
-            ref.read(potProvider.notifier).changeOrder();
+          if (isFoldout) {
+            final uid = ref.read(uidProvider);
+            ref.read(orderProvider.notifier).update(GameTypeEnum.foldOut);
+            ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
-            ref.read(playerDataProvider.notifier).clearIsAction();
+            if (notifier.isWinPlayerUid().contains(uid)) {
+              ref.read(isWinProvider.notifier).update((state) => true);
+              final pot = ref.read(potProvider);
+              ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+            }
+          } else if (isChangeOrder) {
+            print('change order');
+            ref.read(potProvider.notifier).scoreSumToPot();
+            ref.read(playerDataProvider.notifier).clearScore();
+            final order = ref.read(orderProvider);
+            if (order == GameTypeEnum.wtsd) {
+            } else {
+              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+              ref.read(orderProvider.notifier).nextOrder();
+              ref.read(playerDataProvider.notifier).clearIsAction();
+            }
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();
           }
 
           /// ParticipantのStack状態変更
+          final cons = ref.read(hostConsProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
             final optId = ref.read(optionAssignedIdProvider);
@@ -140,7 +155,18 @@ class HostConnOpen extends _$HostConnOpen {
             conn.send(mes.toJson());
           }
 
-          if (isChangeOrder) {
+          if (isFoldout) {
+            /// Participantのターン状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final ids = notifier.isWinPlayerUid();
+              final order = ref.read(orderProvider);
+              final game = GameEntity(uid: ids.first, type: order, score: 0);
+              final mes =
+              MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
+          } else if (isChangeOrder) {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
@@ -166,6 +192,10 @@ class HostConnOpen extends _$HostConnOpen {
 /// Game
 ///
 
+final isFinalProvider = StateProvider((ref) => false);
+
+final isWinProvider = StateProvider((ref) => false);
+
 @riverpod
 class Pot extends _$Pot {
   @override
@@ -173,7 +203,7 @@ class Pot extends _$Pot {
     return 0;
   }
 
-  void changeOrder() {
+  void scoreSumToPot() {
     final player = ref.read(playerDataProvider);
     final scores = player.map((e) => e.score).toList();
     int totalScore = state;
@@ -200,8 +230,8 @@ class Order extends _$Order {
       case GameTypeEnum.turn:
         state = GameTypeEnum.river;
       case GameTypeEnum.river:
-        state = GameTypeEnum.result;
-      case GameTypeEnum.result:
+        state = GameTypeEnum.wtsd;
+      case GameTypeEnum.wtsd:
         state = GameTypeEnum.preFlop;
       default:
         state = GameTypeEnum.preFlop;
@@ -443,6 +473,18 @@ class PlayerData extends _$PlayerData {
       }
     }
     return true;
+  }
+
+  bool isFoldout() {
+    final player = List.from(state);
+    player.removeWhere((e) => e.isFold == true);
+    return player.length == 1;
+  }
+
+  List<String> isWinPlayerUid() {
+    List<UserEntity> player = List.from(state);
+    player.removeWhere((e) => e.isFold == true);
+    return player.map((e) => e.uid).toList();
   }
 }
 
