@@ -196,6 +196,8 @@ class Order extends _$Order {
       case GameTypeEnum.turn:
         state = GameTypeEnum.river;
       case GameTypeEnum.river:
+        state = GameTypeEnum.result;
+      case GameTypeEnum.result:
         state = GameTypeEnum.preFlop;
       default:
         state = GameTypeEnum.preFlop;
@@ -460,6 +462,8 @@ void _actionStackMethod(
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.check:
       break;

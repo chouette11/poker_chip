@@ -6,7 +6,8 @@ enum GameTypeEnum {
   preFlop('preFlop'),
   flop('flop'),
   turn('turn'),
-  river('river');
+  river('river'),
+  result('result');
 
   const GameTypeEnum(this.displayName);
 

@@ -29,4 +29,5 @@ const _$GameTypeEnumEnumMap = {
   GameTypeEnum.flop: 'flop',
   GameTypeEnum.turn: 'turn',
   GameTypeEnum.river: 'river',
+  GameTypeEnum.result: 'result',
 };

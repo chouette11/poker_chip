@@ -283,5 +283,10 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(potProvider.notifier).changeOrder();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
+    case GameTypeEnum.result:
+      ref.read(orderProvider.notifier).update(type);
+      ref.read(potProvider.notifier).changeOrder();
+      ref.read(playerDataProvider.notifier).clearScore();
+      break;
   }
 }
