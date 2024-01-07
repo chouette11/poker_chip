@@ -14,7 +14,7 @@ class ParticipantActionButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Widget children() {
       final players = ref.watch(playerDataProvider);
-      final maxScore = findMaxInList(players.map((e) => e.score).toList());
+      final maxScore = _findMaxInList(players.map((e) => e.score).toList());
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
       if (maxScore == 0 || me.score == maxScore) {
         return Column(
@@ -65,56 +65,36 @@ class _ActionButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final conn = ref.watch(participantConProvider);
     final uid = ref.watch(uidProvider);
-    final score = ref.watch(raiseBetProvider);
+    final betScore = ref.watch(raiseBetProvider);
     return ElevatedButton(
       onPressed: () {
         if (conn == null) {
           return;
         }
-        switch (actionTypeEnum) {
-          case ActionTypeEnum.fold:
-            final action =
-                ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-            break;
-          case ActionTypeEnum.call:
-            final action =
-                ActionEntity(uid: uid, type: actionTypeEnum, score: maxScore);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-            break;
-          case ActionTypeEnum.raise:
-            final action =
-                ActionEntity(uid: uid, type: actionTypeEnum, score: score);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-            break;
-          case ActionTypeEnum.check:
-            final action =
-                ActionEntity(uid: uid, type: actionTypeEnum, score: 0);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-            break;
-          case ActionTypeEnum.bet:
-            final action =
-                ActionEntity(uid: uid, type: actionTypeEnum, score: score);
-            final mes =
-                MessageEntity(type: MessageTypeEnum.action, content: action);
-            conn.send(mes.toJson());
-            break;
+        final optId = ref.read(optionAssignedIdProvider);
+        int score = 0;
+        if (actionTypeEnum == ActionTypeEnum.raise ||
+            actionTypeEnum == ActionTypeEnum.bet) {
+          score = betScore;
+        } else if (actionTypeEnum == ActionTypeEnum.call) {
+          score = maxScore;
         }
+        final action = ActionEntity(
+          uid: uid,
+          type: actionTypeEnum,
+          score: score,
+          optId: optId,
+        );
+        final mes =
+            MessageEntity(type: MessageTypeEnum.action, content: action);
+        conn.send(mes.toJson());
       },
       child: Text(actionTypeEnum.name),
     );
   }
 }
 
-int findMaxInList(List<int> numbers) {
+int _findMaxInList(List<int> numbers) {
   // リストが空の場合は例外を投げる
   if (numbers.isEmpty) {
     throw ArgumentError("List is empty");

@@ -25,8 +25,6 @@ final uidProvider = StateProvider<String>((ref) =>
 
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
-final potProvider = StateProvider((ref) => 0);
-
 final raiseBetProvider = StateProvider((ref) => 40);
 
 final playersExProvider = StateProvider((ref) => []);
@@ -113,33 +111,19 @@ class HostConnOpen extends _$HostConnOpen {
           _actionStackMethod(action, ref);
 
           /// HostのOption状態変更
-          final players = ref.read(playerDataProvider);
           final cons = ref.read(hostConsProvider);
           print('action');
-          if (notifier.isAllAction() && notifier.isSameScore()) {
+          final isChangeOrder =
+              notifier.isAllAction() && notifier.isSameScore();
+          if (isChangeOrder) {
             print('change order');
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(orderProvider.notifier).nextOrder();
+            ref.read(potProvider.notifier).changeOrder();
             ref.read(playerDataProvider.notifier).clearScore();
             ref.read(playerDataProvider.notifier).clearIsAction();
-
-            /// Participantのターン状態変更
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
-              final order = ref.read(orderProvider);
-              final game = GameEntity(uid: '', type: order, score: 0);
-              final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
-              conn.send(mes.toJson());
-            }
           } else {
-            final order = ref.read(orderProvider);
-            if (order == GameTypeEnum.preFlop) {
-              ref.read(optionAssignedIdProvider.notifier).updateId();
-            } else {
-              print('postFlop');
-              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-            }
+            ref.read(optionAssignedIdProvider.notifier).updateId();
           }
 
           /// ParticipantのStack状態変更
@@ -150,6 +134,18 @@ class HostConnOpen extends _$HostConnOpen {
             final mes =
                 MessageEntity(type: MessageTypeEnum.action, content: action);
             conn.send(mes.toJson());
+          }
+
+          if (isChangeOrder) {
+            /// Participantのターン状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final order = ref.read(orderProvider);
+              final game = GameEntity(uid: '', type: order, score: 0);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
           }
         }
       });
@@ -163,8 +159,26 @@ class HostConnOpen extends _$HostConnOpen {
 }
 
 ///
-/// position
+/// Game
 ///
+
+@riverpod
+class Pot extends _$Pot {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void changeOrder() {
+    final player = ref.read(playerDataProvider);
+    final scores = player.map((e) => e.score).toList();
+    int totalScore = state;
+    for (final score in scores) {
+      totalScore += score;
+    }
+    state = totalScore;
+  }
+}
 
 @riverpod
 class Order extends _$Order {
@@ -209,12 +223,22 @@ class OptionAssignedId extends _$OptionAssignedId {
   }
 
   void updateId() {
-    final len = ref.read(playerDataProvider).length;
-    if ((state + 1) > len) {
-      state = 1;
-    } else {
-      state = state + 1;
+    final player = List.from(ref.read(playerDataProvider));
+    player.removeWhere((e) => e.isFold == true);
+    final activeIds = player.map((e) => e.assignedId).toList();
+    activeIds.sort();
+    int? firstLargerNumber;
+    int smallestNumber = activeIds[0];
+    for (int id in activeIds) {
+      if (id > state) {
+        firstLargerNumber = id;
+        break;
+      }
+      if (id < smallestNumber) {
+        smallestNumber = id;
+      }
     }
+    state = firstLargerNumber ?? smallestNumber;
   }
 
   void updatePostFlopId() {
@@ -237,6 +261,10 @@ class OptionAssignedId extends _$OptionAssignedId {
     state = firstLargerNumber ?? smallestNumber;
   }
 }
+
+///
+/// position
+///
 
 @riverpod
 class BtnId extends _$BtnId {

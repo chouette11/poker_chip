@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
-import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
@@ -17,7 +16,7 @@ class HostActionButtons extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Widget children() {
       final players = ref.watch(playerDataProvider);
-      final maxScore = findMaxInList(players.map((e) => e.score).toList());
+      final maxScore = _findMaxInList(players.map((e) => e.score).toList());
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
       if (maxScore == 0 || me.score == maxScore) {
         return Column(
@@ -69,11 +68,11 @@ class _ActionButton extends ConsumerWidget {
     final cons = ref.watch(hostConsProvider);
     final uid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
-    final players = ref.watch(playerDataProvider);
 
     return ElevatedButton(
       onPressed: () {
         final notifier = ref.read(playerDataProvider.notifier);
+
         /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
 
@@ -81,14 +80,11 @@ class _ActionButton extends ConsumerWidget {
         if (notifier.isAllAction() && notifier.isSameScore()) {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(orderProvider.notifier).nextOrder();
+          ref.read(potProvider.notifier).changeOrder();
           ref.read(playerDataProvider.notifier).clearScore();
+          ref.read(playerDataProvider.notifier).clearIsAction();
         } else {
-          final order = ref.read(orderProvider);
-          if (order == GameTypeEnum.preFlop) {
-            ref.read(optionAssignedIdProvider.notifier).updateId();
-          } else {
-            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-          }
+          ref.read(optionAssignedIdProvider.notifier).updateId();
         }
 
         /// ParticipantのStack状態変更
@@ -120,7 +116,7 @@ class _ActionButton extends ConsumerWidget {
             final order = ref.read(orderProvider);
             final game = GameEntity(uid: '', type: order, score: 0);
             final mes =
-            MessageEntity(type: MessageTypeEnum.game, content: game);
+                MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
         }
@@ -130,7 +126,7 @@ class _ActionButton extends ConsumerWidget {
   }
 }
 
-int findMaxInList(List<int> numbers) {
+int _findMaxInList(List<int> numbers) {
   // リストが空の場合は例外を投げる
   if (numbers.isEmpty) {
     throw ArgumentError("List is empty");
