@@ -178,6 +178,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   ),
                 ),
                 Positioned(
+                  height: height * 0.2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(ref.watch(orderProvider).name),
+                  ),
+                ),
+                Positioned(
                   height: height * 0.4,
                   right: width * 0.2,
                   child: const Padding(
@@ -254,10 +261,16 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.preFlop:
       break;
     case GameTypeEnum.flop:
+      ref.read(orderProvider.notifier).update(type);
+      ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.turn:
+      ref.read(orderProvider.notifier).update(type);
+      ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.river:
+      ref.read(orderProvider.notifier).update(type);
+      ref.read(playerDataProvider.notifier).clearScore();
       break;
   }
 }
