@@ -182,7 +182,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   height: height * 0.2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(ref.watch(orderProvider).name),
+                    child: Text(ref.watch(roundProvider).name),
                   ),
                 ),
                 Positioned(
@@ -270,22 +270,22 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.preFlop:
       break;
     case GameTypeEnum.flop:
-      ref.read(orderProvider.notifier).update(type);
+      ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.turn:
-      ref.read(orderProvider.notifier).update(type);
+      ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.river:
-      ref.read(orderProvider.notifier).update(type);
+      ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.foldout:
-      ref.read(orderProvider.notifier).update(type);
+      ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       final pot = ref.read(potProvider);
@@ -294,7 +294,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
         ref.read(isWinProvider.notifier).update((state) => true);
       }
     case GameTypeEnum.wtsd:
-      ref.read(orderProvider.notifier).update(type);
+      ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       if (score == 1) {

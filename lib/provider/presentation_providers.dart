@@ -117,11 +117,11 @@ class HostConnOpen extends _$HostConnOpen {
           /// HostのOption状態変更
           print('action');
           final isFoldout = notifier.isFoldout();
-          final isChangeOrder =
+          final isChangeRound =
               notifier.isAllAction() && notifier.isSameScore();
           if (isFoldout) {
             final uid = ref.read(uidProvider);
-            ref.read(orderProvider.notifier).update(GameTypeEnum.foldout);
+            ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
             if (notifier.isWinPlayerUid().contains(uid)) {
@@ -129,15 +129,15 @@ class HostConnOpen extends _$HostConnOpen {
               final pot = ref.read(potProvider);
               ref.read(playerDataProvider.notifier).updateStack(uid, pot);
             }
-          } else if (isChangeOrder) {
-            print('change order');
+          } else if (isChangeRound) {
+            print('change round');
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
-            final order = ref.read(orderProvider);
-            if (order == GameTypeEnum.foldout) {
+            final round = ref.read(roundProvider);
+            if (round == GameTypeEnum.foldout) {
             } else {
               ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-              ref.read(orderProvider.notifier).nextOrder();
+              ref.read(roundProvider.notifier).nextRound();
               ref.read(playerDataProvider.notifier).clearIsAction();
             }
           } else {
@@ -160,18 +160,18 @@ class HostConnOpen extends _$HostConnOpen {
             for (final conEntity in cons) {
               final conn = conEntity.con;
               final ids = notifier.isWinPlayerUid();
-              final order = ref.read(orderProvider);
-              final game = GameEntity(uid: ids.first, type: order, score: 0);
+              final round = ref.read(roundProvider);
+              final game = GameEntity(uid: ids.first, type: round, score: 0);
               final mes =
               MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
-          } else if (isChangeOrder) {
+          } else if (isChangeRound) {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final order = ref.read(orderProvider);
-              final game = GameEntity(uid: '', type: order, score: 0);
+              final round = ref.read(roundProvider);
+              final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
@@ -215,13 +215,13 @@ class Pot extends _$Pot {
 }
 
 @riverpod
-class Order extends _$Order {
+class Round extends _$Round {
   @override
   GameTypeEnum build() {
     return GameTypeEnum.preFlop;
   }
 
-  void nextOrder() {
+  void nextRound() {
     switch (state) {
       case GameTypeEnum.preFlop:
         state = GameTypeEnum.flop;

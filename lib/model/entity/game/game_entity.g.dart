@@ -29,6 +29,6 @@ const _$GameTypeEnumEnumMap = {
   GameTypeEnum.flop: 'flop',
   GameTypeEnum.turn: 'turn',
   GameTypeEnum.river: 'river',
-  GameTypeEnum.foldout: 'foldOut',
+  GameTypeEnum.foldout: 'foldout',
   GameTypeEnum.wtsd: 'wtsd',
 };
