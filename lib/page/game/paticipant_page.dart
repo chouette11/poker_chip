@@ -268,6 +268,9 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.pot:
       break;
     case GameTypeEnum.preFlop:
+      ref.read(roundProvider.notifier).update(type);
+      ref.read(potProvider.notifier).clear();
+      ref.read(playerDataProvider.notifier).clearIsFold();
       break;
     case GameTypeEnum.flop:
       ref.read(roundProvider.notifier).update(type);
