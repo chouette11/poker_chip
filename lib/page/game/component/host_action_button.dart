@@ -86,24 +86,28 @@ class _ActionButton extends ConsumerWidget {
         final isChangeRound = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
           final uid = notifier.isWinPlayerUid().first;
+          final myUid = ref.read(uidProvider);
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
           final pot = ref.read(potProvider);
           ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+          ref.read(playerDataProvider.notifier).clearIsFold();
+          ref.read(potProvider.notifier).clear();
+          ref.read(smallIdProvider.notifier).updateId();
+          ref.read(bigIdProvider.notifier).updateId();
+          ref.read(btnIdProvider.notifier).updateId();
+          ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
+          ref.read(roundProvider.notifier).delayPreFlop();
           if (uid == myUid) {
             ref.read(isWinProvider.notifier).update((state) => true);
           }
         } else if (isChangeRound) {
           ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
-          final round = ref.read(roundProvider);
-          if (round == GameTypeEnum.showdown) {
-          } else {
-            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-            ref.read(roundProvider.notifier).nextRound();
-            ref.read(playerDataProvider.notifier).clearIsAction();
-          }
+          ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+          ref.read(roundProvider.notifier).nextRound();
+          ref.read(playerDataProvider.notifier).clearIsAction();
         } else {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         }
@@ -140,6 +144,15 @@ class _ActionButton extends ConsumerWidget {
             final mes =
             MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
+
+            Future.delayed(const Duration(seconds: 4), () {
+              print('timer!');
+              final round = ref.read(roundProvider);
+              final game = GameEntity(uid: '', type: round, score: 0);
+              final mes =
+              MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            });
           }
         } else if (isChangeRound) {
           /// Participantのターン状態変更
