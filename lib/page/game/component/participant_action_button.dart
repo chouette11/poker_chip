@@ -5,6 +5,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/page/game/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class ParticipantActionButtons extends ConsumerWidget {
@@ -12,6 +13,7 @@ class ParticipantActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final round = ref.watch(roundProvider);
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
@@ -42,6 +44,9 @@ class ParticipantActionButtons extends ConsumerWidget {
     }
 
     bool isVisible(int optAssignedId) {
+      if (round == GameTypeEnum.foldout || round == GameTypeEnum.showdown) {
+        return false;
+      }
       final uid = assignedIdToUid(optAssignedId, ref);
       return ref.read(uidProvider) == uid;
     }

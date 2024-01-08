@@ -231,8 +231,8 @@ class Round extends _$Round {
       case GameTypeEnum.turn:
         state = GameTypeEnum.river;
       case GameTypeEnum.river:
-        state = GameTypeEnum.wtsd;
-      case GameTypeEnum.wtsd:
+        state = GameTypeEnum.showdown;
+      case GameTypeEnum.showdown:
         state = GameTypeEnum.preFlop;
       default:
         state = GameTypeEnum.preFlop;

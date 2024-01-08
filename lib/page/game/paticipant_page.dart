@@ -293,7 +293,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       if (uid == myUid) {
         ref.read(isWinProvider.notifier).update((state) => true);
       }
-    case GameTypeEnum.wtsd:
+    case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();

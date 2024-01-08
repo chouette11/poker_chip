@@ -14,6 +14,8 @@ class HostActionButtons extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final round = ref.watch(roundProvider);
+
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
@@ -44,6 +46,9 @@ class HostActionButtons extends ConsumerWidget {
     }
 
     bool isVisible(int optAssignedId) {
+      if (round == GameTypeEnum.foldout || round == GameTypeEnum.showdown) {
+        return false;
+      }
       final uid = assignedIdToUid(optAssignedId, ref);
       return ref.read(uidProvider) == uid;
     }
@@ -93,7 +98,7 @@ class _ActionButton extends ConsumerWidget {
           ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
           final round = ref.read(roundProvider);
-          if (round == GameTypeEnum.wtsd) {
+          if (round == GameTypeEnum.showdown) {
           } else {
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
