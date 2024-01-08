@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
@@ -7,7 +6,6 @@ import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
-import 'package:poker_chip/page/game/component/host_action_button.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -127,6 +125,13 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearScore();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+            ref.read(playerDataProvider.notifier).clearIsFold();
+            ref.read(potProvider.notifier).clear();
+            ref.read(smallIdProvider.notifier).updateId();
+            ref.read(bigIdProvider.notifier).updateId();
+            ref.read(btnIdProvider.notifier).updateId();
+            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
+            ref.read(roundProvider.notifier).delayPreFlop();
             if (uid == myUid) {
               ref.read(isWinProvider.notifier).update((state) => true);
             }
@@ -134,13 +139,9 @@ class HostConnOpen extends _$HostConnOpen {
             print('change round');
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
-            final round = ref.read(roundProvider);
-            if (round == GameTypeEnum.foldout) {
-            } else {
-              ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
-              ref.read(roundProvider.notifier).nextRound();
-              ref.read(playerDataProvider.notifier).clearIsAction();
-            }
+            ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
+            ref.read(roundProvider.notifier).nextRound();
+            ref.read(playerDataProvider.notifier).clearIsAction();
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();
           }
@@ -166,6 +167,15 @@ class HostConnOpen extends _$HostConnOpen {
               final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
+
+              Future.delayed(const Duration(seconds: 4), () {
+                print('timer!');
+                final round = ref.read(roundProvider);
+                final game = GameEntity(uid: '', type: round, score: 0);
+                final mes =
+                    MessageEntity(type: MessageTypeEnum.game, content: game);
+                conn.send(mes.toJson());
+              });
             }
           } else if (isChangeRound) {
             /// Participantのターン状態変更
@@ -213,6 +223,10 @@ class Pot extends _$Pot {
     }
     state = totalScore;
   }
+
+  void clear() {
+    state = 0;
+  }
 }
 
 @riverpod
@@ -233,14 +247,34 @@ class Round extends _$Round {
       case GameTypeEnum.river:
         state = GameTypeEnum.showdown;
       case GameTypeEnum.showdown:
-        state = GameTypeEnum.preFlop;
-      default:
-        state = GameTypeEnum.preFlop;
+        break;
+      case GameTypeEnum.foldout:
+        break;
+      case GameTypeEnum.blind:
+        break;
+      case GameTypeEnum.anty:
+        break;
+      case GameTypeEnum.btn:
+        break;
+      case GameTypeEnum.pot:
     }
   }
 
   void update(GameTypeEnum gameTypeEnum) {
     state = gameTypeEnum;
+  }
+
+  void delayPreFlop() {
+    print('before');
+    Future.delayed(Duration(seconds: 3), () {
+      print('after');
+      state = GameTypeEnum.preFlop;
+    });
+
+    Future.delayed(Duration(seconds: 6), () {
+      final cons = ref.read(hostConsProvider);
+      _game(cons, ref);
+    });
   }
 }
 
@@ -278,6 +312,26 @@ class OptionAssignedId extends _$OptionAssignedId {
     state = firstLargerNumber ?? smallestNumber;
   }
 
+  void updatePreFlopId() {
+    final big = ref.read(bigIdProvider);
+    final player = List.from(ref.read(playerDataProvider));
+    player.removeWhere((e) => e.isFold == true);
+    final activeIds = player.map((e) => e.assignedId).toList();
+    activeIds.sort();
+    int? firstLargerNumber;
+    int smallestNumber = activeIds[0];
+    for (int id in activeIds) {
+      if (id > big) {
+        firstLargerNumber = id;
+        break;
+      }
+      if (id < smallestNumber) {
+        smallestNumber = id;
+      }
+    }
+    state = firstLargerNumber ?? smallestNumber;
+  }
+
   void updatePostFlopId() {
     final btn = ref.read(btnIdProvider);
     final player = List.from(ref.read(playerDataProvider));
@@ -303,7 +357,7 @@ class OptionAssignedId extends _$OptionAssignedId {
 /// position
 ///
 
-@riverpod
+@Riverpod(keepAlive: true)
 class BtnId extends _$BtnId {
   @override
   int build() {
@@ -320,17 +374,11 @@ class BtnId extends _$BtnId {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class SmallId extends _$SmallId {
   @override
   int build() {
-    final btnId = ref.read(btnIdProvider);
-    final len = ref.read(playerDataProvider).length;
-    if ((btnId + 1) > len) {
-      return 1;
-    } else {
-      return btnId + 1;
-    }
+    return 2;
   }
 
   void updateId() {
@@ -343,17 +391,11 @@ class SmallId extends _$SmallId {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 class BigId extends _$BigId {
   @override
   int build() {
-    final smallId = ref.read(smallIdProvider);
-    final len = ref.read(playerDataProvider).length;
-    if ((smallId + 1) > len) {
-      return 1;
-    } else {
-      return smallId + 1;
-    }
+   return 3;
   }
 
   void updateId() {
@@ -454,6 +496,12 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void clearIsFold() {
+    state = [
+      for (final user in state) user.copyWith(isFold: false),
+    ];
+  }
+
   bool isAllAction() {
     final players = List.from(state);
     players.removeWhere((e) => e.isFold == true);
@@ -515,6 +563,71 @@ void _actionStackMethod(
     case ActionTypeEnum.check:
       break;
   }
+}
+
+void _game(List<PeerConEntity> cons,
+    AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
+  final smallId = ref.read(smallIdProvider);
+  final bigId = ref.read(bigIdProvider);
+  final btnId = ref.read(btnIdProvider);
+  final smallBlind = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+      uid: _assignedIdToUid(smallId, ref),
+      type: GameTypeEnum.blind,
+      score: 10,
+    ),
+  );
+  final bigBlind = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+      uid: _assignedIdToUid(bigId, ref),
+      type: GameTypeEnum.blind,
+      score: 20,
+    ),
+  );
+  final btn = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+        uid: _assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
+  );
+
+  /// Participantの状態変更
+  for (var conEntity in cons) {
+    final conn = conEntity.con;
+    conn.send(smallBlind.toJson());
+    conn.send(bigBlind.toJson());
+    conn.send(btn.toJson());
+  }
+
+  /// Hostの状態変更
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(_assignedIdToUid(smallId, ref), 10);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(_assignedIdToUid(smallId, ref), 10);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(_assignedIdToUid(bigId, ref), 20);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(_assignedIdToUid(bigId, ref), 20);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(_assignedIdToUid(btnId, ref), 0);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(_assignedIdToUid(btnId, ref), 0);
+}
+
+String _assignedIdToUid(
+    int assignedId, AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
+  final players = ref.read(playerDataProvider);
+  if (!players.map((e) => e.assignedId).toList().contains(assignedId)) {
+    return '';
+  }
+  return players.firstWhere((e) => e.assignedId == assignedId).uid;
 }
 
 final messageTextFieldController = Provider((_) => TextEditingController());

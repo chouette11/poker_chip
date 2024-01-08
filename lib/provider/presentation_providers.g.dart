@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'fd6032a290d3774116ae281668c5bf66c557cec1';
+String _$hostConnOpenHash() => r'4aa66e6908f60c0c8b21b21e2b35c2ed77bd8ebe';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,7 +138,7 @@ class HostConnOpenProvider
   }
 }
 
-String _$potHash() => r'30a58516f69f39d118f87ad09bce1856c320aa9f';
+String _$potHash() => r'6260fdfad5a036c5747f00b3c459983c0564b45f';
 
 /// See also [Pot].
 @ProviderFor(Pot)
@@ -152,7 +152,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'c01ceb389361ad6940136d7835540d06a98f1c74';
+String _$roundHash() => r'7bb809215385dc77ef0cfd0013950bb02de3e767';
 
 /// See also [Round].
 @ProviderFor(Round)
@@ -182,7 +182,7 @@ final optionAssignedIdProvider =
 );
 
 typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
-String _$btnIdHash() => r'3f14d167aae55c7f490e6ef2e58a2b97c5f650a4';
+String _$btnIdHash() => r'0e67c717ce352ef1c63781a7b937f3c60f412179';
 
 ///
 /// position
@@ -190,7 +190,7 @@ String _$btnIdHash() => r'3f14d167aae55c7f490e6ef2e58a2b97c5f650a4';
 ///
 /// Copied from [BtnId].
 @ProviderFor(BtnId)
-final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
+final btnIdProvider = NotifierProvider<BtnId, int>.internal(
   BtnId.new,
   name: r'btnIdProvider',
   debugGetCreateSourceHash:
@@ -199,12 +199,12 @@ final btnIdProvider = AutoDisposeNotifierProvider<BtnId, int>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$BtnId = AutoDisposeNotifier<int>;
-String _$smallIdHash() => r'3464f5f1e14af3574635085017239195ba5518b9';
+typedef _$BtnId = Notifier<int>;
+String _$smallIdHash() => r'7c39376084a93185b760ccbb89e92fdbc5874567';
 
 /// See also [SmallId].
 @ProviderFor(SmallId)
-final smallIdProvider = AutoDisposeNotifierProvider<SmallId, int>.internal(
+final smallIdProvider = NotifierProvider<SmallId, int>.internal(
   SmallId.new,
   name: r'smallIdProvider',
   debugGetCreateSourceHash:
@@ -213,12 +213,12 @@ final smallIdProvider = AutoDisposeNotifierProvider<SmallId, int>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$SmallId = AutoDisposeNotifier<int>;
-String _$bigIdHash() => r'7d021a507c75958e2ce4713d0e5f3ab9bf31058c';
+typedef _$SmallId = Notifier<int>;
+String _$bigIdHash() => r'9a7c1e78d962b666f05d8caef0cabf2c3b590922';
 
 /// See also [BigId].
 @ProviderFor(BigId)
-final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
+final bigIdProvider = NotifierProvider<BigId, int>.internal(
   BigId.new,
   name: r'bigIdProvider',
   debugGetCreateSourceHash:
@@ -227,8 +227,8 @@ final bigIdProvider = AutoDisposeNotifierProvider<BigId, int>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$BigId = AutoDisposeNotifier<int>;
-String _$playerDataHash() => r'1dbdcb5273d76317e967254072a2471f0ff1fd89';
+typedef _$BigId = Notifier<int>;
+String _$playerDataHash() => r'797b7b762af675add0f8fdc7caf6de3ba839ebd8';
 
 ///
 /// player
