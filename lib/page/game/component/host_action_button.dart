@@ -66,7 +66,7 @@ class _ActionButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cons = ref.watch(hostConsProvider);
-    final uid = ref.watch(uidProvider);
+    final myUid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
 
     return ElevatedButton(
@@ -74,20 +74,20 @@ class _ActionButton extends ConsumerWidget {
         final notifier = ref.read(playerDataProvider.notifier);
 
         /// HostのStack状態変更
-        _hostActionMethod(ref, actionTypeEnum, uid, maxScore);
+        _hostActionMethod(ref, actionTypeEnum, myUid, maxScore);
 
         /// HostのOption状態変更
         final isFoldout = notifier.isFoldout();
         final isChangeRound = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
-          final uid = ref.read(uidProvider);
+          final uid = notifier.isWinPlayerUid().first;
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
-          if (notifier.isWinPlayerUid().contains(uid)) {
+          final pot = ref.read(potProvider);
+          ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+          if (uid == myUid) {
             ref.read(isWinProvider.notifier).update((state) => true);
-            final pot = ref.read(potProvider);
-            ref.read(playerDataProvider.notifier).updateStack(uid, pot);
           }
         } else if (isChangeRound) {
           ref.read(potProvider.notifier).scoreSumToPot();
@@ -115,7 +115,7 @@ class _ActionButton extends ConsumerWidget {
         for (final conEntity in cons) {
           final conn = conEntity.con;
           final action = ActionEntity(
-            uid: uid,
+            uid: myUid,
             type: actionTypeEnum,
             score: score,
             optId: optId,

@@ -120,14 +120,15 @@ class HostConnOpen extends _$HostConnOpen {
           final isChangeRound =
               notifier.isAllAction() && notifier.isSameScore();
           if (isFoldout) {
-            final uid = ref.read(uidProvider);
+            final uid = notifier.isWinPlayerUid().first;
+            final myUid = ref.read(uidProvider);
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
-            if (notifier.isWinPlayerUid().contains(uid)) {
+            final pot = ref.read(potProvider);
+            ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+            if (uid == myUid) {
               ref.read(isWinProvider.notifier).update((state) => true);
-              final pot = ref.read(potProvider);
-              ref.read(playerDataProvider.notifier).updateStack(uid, pot);
             }
           } else if (isChangeRound) {
             print('change round');
@@ -163,7 +164,7 @@ class HostConnOpen extends _$HostConnOpen {
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: ids.first, type: round, score: 0);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
           } else if (isChangeRound) {
