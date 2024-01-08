@@ -50,61 +50,6 @@ class _GamePageState extends ConsumerState<HostPage> {
     conn.send('{"text":"Hello"}');
   }
 
-  void game(List<PeerConEntity> consEntity) {
-    final smallId = ref.read(smallIdProvider);
-    final bigId = ref.read(bigIdProvider);
-    final btnId = ref.read(btnIdProvider);
-    final smallBlind = MessageEntity(
-      type: MessageTypeEnum.game,
-      content: GameEntity(
-        uid: assignedIdToUid(smallId, ref),
-        type: GameTypeEnum.blind,
-        score: 10,
-      ),
-    );
-    final bigBlind = MessageEntity(
-      type: MessageTypeEnum.game,
-      content: GameEntity(
-        uid: assignedIdToUid(bigId, ref),
-        type: GameTypeEnum.blind,
-        score: 20,
-      ),
-    );
-    final btn = MessageEntity(
-      type: MessageTypeEnum.game,
-      content: GameEntity(
-          uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
-    );
-
-    /// Participantの状態変更
-    for (var conEntity in consEntity) {
-      final conn = conEntity.con;
-      conn.send(smallBlind.toJson());
-      conn.send(bigBlind.toJson());
-      conn.send(btn.toJson());
-    }
-
-    /// Hostの状態変更
-    ref
-        .read(playerDataProvider.notifier)
-        .updateStack(assignedIdToUid(smallId, ref), 10);
-    ref
-        .read(playerDataProvider.notifier)
-        .updateScore(assignedIdToUid(smallId, ref), 10);
-    ref
-        .read(playerDataProvider.notifier)
-        .updateStack(assignedIdToUid(bigId, ref), 20);
-    ref
-        .read(playerDataProvider.notifier)
-        .updateScore(assignedIdToUid(bigId, ref), 20);
-    ref
-        .read(playerDataProvider.notifier)
-        .updateStack(assignedIdToUid(btnId, ref), 0);
-    ref
-        .read(playerDataProvider.notifier)
-        .updateScore(assignedIdToUid(btnId, ref), 0);
-  }
-
   void closeConnection(String id) {
     final peer = ref.read(peerProvider(id));
     peer.dispose();
@@ -182,7 +127,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    game(cons);
+                    _game(cons, ref);
                   },
                   child: const Text('ブラインド'),
                 ),
@@ -223,4 +168,59 @@ String lenToPeerId(int len) {
     '3'
   ];
   return ids[len - 1];
+}
+
+void _game(List<PeerConEntity> cons, WidgetRef ref) {
+  final smallId = ref.read(smallIdProvider);
+  final bigId = ref.read(bigIdProvider);
+  final btnId = ref.read(btnIdProvider);
+  final smallBlind = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+      uid: assignedIdToUid(smallId, ref),
+      type: GameTypeEnum.blind,
+      score: 10,
+    ),
+  );
+  final bigBlind = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+      uid: assignedIdToUid(bigId, ref),
+      type: GameTypeEnum.blind,
+      score: 20,
+    ),
+  );
+  final btn = MessageEntity(
+    type: MessageTypeEnum.game,
+    content: GameEntity(
+        uid: assignedIdToUid(btnId, ref), type: GameTypeEnum.btn, score: 0),
+  );
+
+  /// Participantの状態変更
+  for (var conEntity in cons) {
+    final conn = conEntity.con;
+    conn.send(smallBlind.toJson());
+    conn.send(bigBlind.toJson());
+    conn.send(btn.toJson());
+  }
+
+  /// Hostの状態変更
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(assignedIdToUid(smallId, ref), 10);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(assignedIdToUid(smallId, ref), 10);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(assignedIdToUid(bigId, ref), 20);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(assignedIdToUid(bigId, ref), 20);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateStack(assignedIdToUid(btnId, ref), 0);
+  ref
+      .read(playerDataProvider.notifier)
+      .updateScore(assignedIdToUid(btnId, ref), 0);
 }
