@@ -118,7 +118,7 @@ class HostConnOpen extends _$HostConnOpen {
           final isChangeRound =
               notifier.isAllAction() && notifier.isSameScore();
           if (isFoldout) {
-            final uid = notifier.isWinPlayerUid().first;
+            final uid = notifier.finalPlayerUid().first;
             final myUid = ref.read(uidProvider);
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(potProvider.notifier).scoreSumToPot();
@@ -142,6 +142,9 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
             ref.read(playerDataProvider.notifier).clearIsAction();
+            final round = ref.read(roundProvider);
+            if (round == GameTypeEnum.showdown) {
+            }
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();
           }
@@ -161,7 +164,7 @@ class HostConnOpen extends _$HostConnOpen {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final ids = notifier.isWinPlayerUid();
+              final ids = notifier.finalPlayerUid();
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: ids.first, type: round, score: 0);
               final mes =
@@ -395,7 +398,7 @@ class SmallId extends _$SmallId {
 class BigId extends _$BigId {
   @override
   int build() {
-   return 3;
+    return 3;
   }
 
   void updateId() {
@@ -530,10 +533,21 @@ class PlayerData extends _$PlayerData {
     return player.length == 1;
   }
 
-  List<String> isWinPlayerUid() {
+  List<String> finalPlayerUid() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
     return player.map((e) => e.uid).toList();
+  }
+
+  String finalUidString() {
+    List<UserEntity> player = List.from(state);
+    player.removeWhere((e) => e.isFold == true);
+    final uids = player.map((e) => e.uid).toList();
+    String value = '';
+    for (final uid in uids) {
+      value += '$uid ';
+    }
+    return value;
   }
 }
 

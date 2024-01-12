@@ -85,7 +85,7 @@ class _ActionButton extends ConsumerWidget {
         final isFoldout = notifier.isFoldout();
         final isChangeRound = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
-          final uid = notifier.isWinPlayerUid().first;
+          final uid = notifier.finalPlayerUid().first;
           final myUid = ref.read(uidProvider);
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(potProvider.notifier).scoreSumToPot();
@@ -138,7 +138,7 @@ class _ActionButton extends ConsumerWidget {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            final ids = notifier.isWinPlayerUid();
+            final ids = notifier.finalPlayerUid();
             final round = ref.read(roundProvider);
             final game = GameEntity(uid: ids.first, type: round, score: 0);
             final mes =

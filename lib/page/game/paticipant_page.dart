@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:peerdart/peerdart.dart';
@@ -300,9 +299,6 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
-      if (score == 1) {
-        ref.read(isFinalProvider.notifier).update((state) => true);
-      }
       break;
   }
 }
