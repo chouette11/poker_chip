@@ -5,6 +5,7 @@ import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/host_action_button.dart';
+import 'package:poker_chip/page/game/component/host_is_win_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,7 +60,6 @@ class _GamePageState extends ConsumerState<HostPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final pot = ref.watch(potProvider);
     final len = ref.watch(playerDataProvider).length;
     final cons = ref.watch(hostConsProvider);
     final peer = ref.watch(peerProvider(lenToPeerId(len)));
@@ -115,6 +115,14 @@ class _GamePageState extends ConsumerState<HostPage> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: PotWidget(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: HostIsWinButtons(),
                   ),
                 ),
                 Positioned(
