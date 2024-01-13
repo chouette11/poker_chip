@@ -608,15 +608,15 @@ void _actionStackMethod(
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.raise:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.check:
@@ -629,12 +629,14 @@ void _game(List<PeerConEntity> cons,
   final smallId = ref.read(smallIdProvider);
   final bigId = ref.read(bigIdProvider);
   final btnId = ref.read(btnIdProvider);
+  const big = 20;
+  const small = 10;
   final smallBlind = MessageEntity(
     type: MessageTypeEnum.game,
     content: GameEntity(
       uid: _assignedIdToUid(smallId, ref),
       type: GameTypeEnum.blind,
-      score: 10,
+      score: small,
     ),
   );
   final bigBlind = MessageEntity(
@@ -642,7 +644,7 @@ void _game(List<PeerConEntity> cons,
     content: GameEntity(
       uid: _assignedIdToUid(bigId, ref),
       type: GameTypeEnum.blind,
-      score: 20,
+      score: big,
     ),
   );
   final btn = MessageEntity(
@@ -662,16 +664,16 @@ void _game(List<PeerConEntity> cons,
   /// Hostの状態変更
   ref
       .read(playerDataProvider.notifier)
-      .updateStack(_assignedIdToUid(smallId, ref), 10);
+      .updateStack(_assignedIdToUid(smallId, ref), -small);
   ref
       .read(playerDataProvider.notifier)
-      .updateScore(_assignedIdToUid(smallId, ref), 10);
+      .updateScore(_assignedIdToUid(smallId, ref), small);
   ref
       .read(playerDataProvider.notifier)
-      .updateStack(_assignedIdToUid(bigId, ref), 20);
+      .updateStack(_assignedIdToUid(bigId, ref), -big);
   ref
       .read(playerDataProvider.notifier)
-      .updateScore(_assignedIdToUid(bigId, ref), 20);
+      .updateScore(_assignedIdToUid(bigId, ref), big);
   ref
       .read(playerDataProvider.notifier)
       .updateStack(_assignedIdToUid(btnId, ref), 0);
