@@ -248,7 +248,9 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, -maxScore);
+      final curScore = ref.read(playerDataProvider.notifier).curScore(uid);
+      final fixScore = maxScore - curScore;
+      ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
       ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
       break;
     case ActionTypeEnum.raise:
