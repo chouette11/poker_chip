@@ -195,6 +195,44 @@ class HostConnOpen extends _$HostConnOpen {
               conn.send(mes.toJson());
             }
           }
+        } else if (mes.type == MessageTypeEnum.game) {
+          GameEntity game = GameEntity.fromJson(mes.content);
+          final uid = game.uid;
+          final score = game.score;
+
+          if (game.type == GameTypeEnum.showdown) {
+            /// HostのStack状態変更
+            ref.read(playerDataProvider.notifier).updateStack(uid, score);
+
+            final cons = ref.read(hostConsProvider);
+            /// Participantのstack状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final game = GameEntity(
+                  uid: uid, type: GameTypeEnum.showdown, score: score);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
+          }
+
+          /// HostのOption状態変更
+          ref.read(potProvider.notifier).clear();
+          ref.read(playerDataProvider.notifier).clearIsFold();
+          ref.read(roundProvider.notifier).delayPreFlop();
+
+          /// ParticipantのOption状態変更
+          final cons = ref.read(hostConsProvider);
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            Future.delayed(const Duration(seconds: 4), () {
+              final round = ref.read(roundProvider);
+              final game = GameEntity(uid: '', type: round, score: 0);
+              final mes =
+              MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            });
+          }
         }
       });
 
