@@ -210,6 +210,9 @@ final isFinalProvider = StateProvider((ref) => false);
 
 final isWinProvider = StateProvider((ref) => false);
 
+final isSelectedProvider =
+    StateProvider.family((ref, UserEntity user) => false);
+
 @riverpod
 class Pot extends _$Pot {
   @override

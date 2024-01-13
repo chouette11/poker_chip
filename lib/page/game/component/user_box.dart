@@ -4,6 +4,7 @@ import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/enum/game.dart';
 
 class UserBoxes extends ConsumerWidget {
   const UserBoxes({super.key});
@@ -67,7 +68,7 @@ class UserBoxes extends ConsumerWidget {
   }
 }
 
-class UserBox extends StatelessWidget {
+class UserBox extends ConsumerWidget {
   const UserBox({
     super.key,
     required this.userEntity,
@@ -76,7 +77,12 @@ class UserBox extends StatelessWidget {
   final UserEntity userEntity;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final round = ref.watch(roundProvider);
+    final isSelected = ref.watch(isSelectedProvider(userEntity));
+    final player = List.from(ref.read(playerDataProvider));
+    player.removeWhere((e) => e.isFold == true);
+    final activeIds = player.map((e) => e.uid).toList();
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -87,7 +93,8 @@ class UserBox extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(userEntity.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
+              Text(userEntity.name ?? 'プレイヤー1',
+                  style: TextStyleConstant.bold14),
               Text(userEntity.stack.toString(),
                   style: TextStyleConstant.bold20),
             ],
@@ -95,7 +102,19 @@ class UserBox extends StatelessWidget {
         ),
         Text(userEntity.score.toString()),
         Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
-        Visibility(visible: userEntity.isBtn, child: Text('D'))
+        Visibility(visible: userEntity.isBtn, child: Text('D')),
+        Visibility(
+          visible: round == GameTypeEnum.showdown &&
+              activeIds.contains(userEntity.uid),
+          child: Checkbox(
+            value: isSelected,
+            onChanged: (value) {
+              ref
+                  .read(isSelectedProvider(userEntity).notifier)
+                  .update((state) => !state);
+            },
+          ),
+        ),
       ],
     );
   }
