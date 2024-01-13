@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/participant_action_button.dart';
+import 'package:poker_chip/page/game/component/participant_who_win_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -30,6 +31,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   Peer peer = Peer(options: PeerOptions(debug: LogLevel.All));
   bool isChanged = false;
   late DataConnection conn;
+  MessageEntity preMes =
+      const MessageEntity(type: MessageTypeEnum.game, content: 'content');
   bool connected = false;
 
   @override
@@ -86,6 +89,10 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       conn.on("data").listen((data) {
         final uid = ref.read(uidProvider);
         final mes = MessageEntity.fromJson(data);
+        if (mes == preMes) {
+          return;
+        }
+        preMes = mes;
         print('paticipant: $mes');
         if (mes.type == MessageTypeEnum.joined) {
           final data = mes.content as List;
@@ -196,6 +203,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
+                    child: ParticipantWhoWinButton(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: ParticipantActionButtons(),
                   ),
                 ),
@@ -233,15 +248,15 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, maxScore);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -maxScore);
       ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
       break;
     case ActionTypeEnum.raise:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.bet:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.check:
@@ -256,7 +271,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
   final score = game.score;
   switch (type) {
     case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case GameTypeEnum.anty:
@@ -299,6 +314,9 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
+      if (uid != '') {
+        ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      }
       break;
   }
 }

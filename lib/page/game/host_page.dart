@@ -6,6 +6,7 @@ import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/host_action_button.dart';
 import 'package:poker_chip/page/game/component/host_is_win_button.dart';
+import 'package:poker_chip/page/game/component/host_who_win_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -122,7 +123,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: HostIsWinButtons(),
+                    child: HostWhoWinButton(),
                   ),
                 ),
                 Positioned(
@@ -182,12 +183,14 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   final smallId = ref.read(smallIdProvider);
   final bigId = ref.read(bigIdProvider);
   final btnId = ref.read(btnIdProvider);
+  const big = 20;
+  const small = 10;
   final smallBlind = MessageEntity(
     type: MessageTypeEnum.game,
     content: GameEntity(
       uid: assignedIdToUid(smallId, ref),
       type: GameTypeEnum.blind,
-      score: 10,
+      score: small,
     ),
   );
   final bigBlind = MessageEntity(
@@ -195,7 +198,7 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
     content: GameEntity(
       uid: assignedIdToUid(bigId, ref),
       type: GameTypeEnum.blind,
-      score: 20,
+      score: big,
     ),
   );
   final btn = MessageEntity(
@@ -215,16 +218,16 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   /// Hostの状態変更
   ref
       .read(playerDataProvider.notifier)
-      .updateStack(assignedIdToUid(smallId, ref), 10);
+      .updateStack(assignedIdToUid(smallId, ref), -small);
   ref
       .read(playerDataProvider.notifier)
-      .updateScore(assignedIdToUid(smallId, ref), 10);
+      .updateScore(assignedIdToUid(smallId, ref), small);
   ref
       .read(playerDataProvider.notifier)
-      .updateStack(assignedIdToUid(bigId, ref), 20);
+      .updateStack(assignedIdToUid(bigId, ref), -big);
   ref
       .read(playerDataProvider.notifier)
-      .updateScore(assignedIdToUid(bigId, ref), 20);
+      .updateScore(assignedIdToUid(bigId, ref), big);
   ref
       .read(playerDataProvider.notifier)
       .updateStack(assignedIdToUid(btnId, ref), 0);
