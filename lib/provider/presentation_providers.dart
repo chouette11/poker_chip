@@ -594,6 +594,11 @@ class PlayerData extends _$PlayerData {
     }
     return value;
   }
+
+  int curScore(String uid) {
+    final player = state.firstWhere((e) => e.uid == uid);
+    return player.score;
+  }
 }
 
 void _actionStackMethod(
@@ -608,7 +613,9 @@ void _actionStackMethod(
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
+      final curScore = ref.read(playerDataProvider.notifier).curScore(uid);
+      final fixScore = score - curScore;
+      ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
       break;
     case ActionTypeEnum.raise:
