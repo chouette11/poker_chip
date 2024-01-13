@@ -144,6 +144,10 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearIsAction();
             final round = ref.read(roundProvider);
             if (round == GameTypeEnum.showdown) {
+              ref.read(smallIdProvider.notifier).updateId();
+              ref.read(bigIdProvider.notifier).updateId();
+              ref.read(btnIdProvider.notifier).updateId();
+              ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
             }
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();

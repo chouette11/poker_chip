@@ -108,6 +108,14 @@ class _ActionButton extends ConsumerWidget {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(roundProvider.notifier).nextRound();
           ref.read(playerDataProvider.notifier).clearIsAction();
+          final round = ref.read(roundProvider);
+          if (round == GameTypeEnum.showdown) {
+            ref.read(playerDataProvider.notifier).clearIsFold();
+            ref.read(smallIdProvider.notifier).updateId();
+            ref.read(bigIdProvider.notifier).updateId();
+            ref.read(btnIdProvider.notifier).updateId();
+            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
+          }
         } else {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         }
