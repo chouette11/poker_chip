@@ -12,13 +12,14 @@ class Hole extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // 自分のデータ
     final uid = ref.watch(uidProvider);
-    final myData = ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
+    final myData =
+        ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
     final round = ref.watch(roundProvider);
     final isSelected = ref.watch(isSelectedProvider(myData));
     final player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.uid).toList();
-    
+
     return SizedBox(
       height: 220,
       child: Column(
@@ -54,19 +55,27 @@ class Hole extends ConsumerWidget {
               ),
             ],
           ),
-          Container(
-            height: 64,
-            width: 100,
-            decoration: const BoxDecoration(color: ColorConstant.black60),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(myData.name ?? 'プレイヤー1',
-                    style: TextStyleConstant.bold14),
-                Text(myData.stack.toString(),
-                    style: TextStyleConstant.bold20),
-              ],
-            ),
+          Row(
+            children: [
+              Container(
+                height: 64,
+                width: 100,
+                decoration: const BoxDecoration(color: ColorConstant.black60),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
+                    Text(myData.stack.toString(), style: TextStyleConstant.bold20),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  ref.read(raiseBetProvider.notifier).update((state) => 0);
+                },
+                child: Text('クリア'),
+              )
+            ],
           ),
         ],
       ),
