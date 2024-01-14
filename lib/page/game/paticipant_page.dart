@@ -308,9 +308,6 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).clearScore();
       final pot = ref.read(potProvider);
       ref.read(playerDataProvider.notifier).updateStack(uid, pot);
-      if (uid == myUid) {
-        ref.read(isWinProvider.notifier).update((state) => true);
-      }
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
       ref.read(playerDataProvider.notifier).clearScore();

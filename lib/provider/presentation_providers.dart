@@ -47,6 +47,7 @@ class HostCons extends _$HostCons {
   }
 }
 
+@Riverpod(keepAlive: true)
 @riverpod
 class HostConnOpen extends _$HostConnOpen {
   @override
@@ -119,21 +120,15 @@ class HostConnOpen extends _$HostConnOpen {
               notifier.isAllAction() && notifier.isSameScore();
           if (isFoldout) {
             final uid = notifier.finalPlayerUid().first;
-            final myUid = ref.read(uidProvider);
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(playerDataProvider.notifier).clearScore();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(uid, pot);
-            ref.read(playerDataProvider.notifier).clearIsFold();
-            ref.read(potProvider.notifier).clear();
             ref.read(smallIdProvider.notifier).updateId();
             ref.read(bigIdProvider.notifier).updateId();
             ref.read(btnIdProvider.notifier).updateId();
             ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
             ref.read(roundProvider.notifier).delayPreFlop();
-            if (uid == myUid) {
-              ref.read(isWinProvider.notifier).update((state) => true);
-            }
           } else if (isChangeRound) {
             print('change round');
             ref.read(playerDataProvider.notifier).clearScore();
@@ -215,8 +210,6 @@ class HostConnOpen extends _$HostConnOpen {
           }
 
           /// HostのOption状態変更
-          ref.read(potProvider.notifier).clear();
-          ref.read(playerDataProvider.notifier).clearIsFold();
           ref.read(roundProvider.notifier).delayPreFlop();
 
           /// ParticipantのOption状態変更
@@ -247,8 +240,6 @@ class HostConnOpen extends _$HostConnOpen {
 ///
 
 final isFinalProvider = StateProvider((ref) => false);
-
-final isWinProvider = StateProvider((ref) => false);
 
 final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
@@ -315,9 +306,12 @@ class Round extends _$Round {
   }
 
   void delayPreFlop() {
-    print('before');
+    /// foldを初期化
+    ref.read(playerDataProvider.notifier).clearIsFold();
+    /// potを初期化
+    ref.read(potProvider.notifier).clear();
+
     Future.delayed(Duration(seconds: 3), () {
-      print('after');
       state = GameTypeEnum.preFlop;
     });
 
@@ -481,7 +475,7 @@ class PlayerData extends _$PlayerData {
     return [
       UserEntity(
         uid: uid,
-        stack: 1000,
+        stack: 500,
         assignedId: 1,
         score: 0,
         isBtn: false,
@@ -615,7 +609,7 @@ class PlayerData extends _$PlayerData {
 }
 
 void _actionStackMethod(
-    ActionEntity action, AutoDisposeNotifierProviderRef<bool> ref) {
+    ActionEntity action, NotifierProviderRef<bool> ref) {
   /// Hostの状態変更
   final type = action.type;
   final uid = action.uid;

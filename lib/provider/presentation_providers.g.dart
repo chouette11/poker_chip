@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'4aa66e6908f60c0c8b21b21e2b35c2ed77bd8ebe';
+String _$hostConnOpenHash() => r'7c6fd687ca4561fd914d4b0b75935605505f55b5';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -44,7 +44,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$HostConnOpen extends BuildlessAutoDisposeNotifier<bool> {
+abstract class _$HostConnOpen extends BuildlessNotifier<bool> {
   late final Peer peer;
 
   bool build(
@@ -95,8 +95,7 @@ class HostConnOpenFamily extends Family<bool> {
 }
 
 /// See also [HostConnOpen].
-class HostConnOpenProvider
-    extends AutoDisposeNotifierProviderImpl<HostConnOpen, bool> {
+class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
   /// See also [HostConnOpen].
   HostConnOpenProvider(
     this.peer,
@@ -138,7 +137,7 @@ class HostConnOpenProvider
   }
 }
 
-String _$potHash() => r'6260fdfad5a036c5747f00b3c459983c0564b45f';
+String _$potHash() => r'a4f29bd4a01706422862ab08707daa1763f32999';
 
 /// See also [Pot].
 @ProviderFor(Pot)
@@ -152,7 +151,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'7bb809215385dc77ef0cfd0013950bb02de3e767';
+String _$roundHash() => r'6c89e604c774b11cb8af9b3658527274222e977e';
 
 /// See also [Round].
 @ProviderFor(Round)
@@ -166,7 +165,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$optionAssignedIdHash() => r'5a5d5ec94049e2d114b6b3d47300be13bf928f47';
+String _$optionAssignedIdHash() => r'896f2f884ca9d10bc7b01f1b798ca3b90ea659cc';
 
 /// See also [OptionAssignedId].
 @ProviderFor(OptionAssignedId)
@@ -182,7 +181,7 @@ final optionAssignedIdProvider =
 );
 
 typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
-String _$btnIdHash() => r'0e67c717ce352ef1c63781a7b937f3c60f412179';
+String _$btnIdHash() => r'8e99823213080ab071c77cd4822eb415c3f43ebf';
 
 ///
 /// position
@@ -200,7 +199,7 @@ final btnIdProvider = NotifierProvider<BtnId, int>.internal(
 );
 
 typedef _$BtnId = Notifier<int>;
-String _$smallIdHash() => r'7c39376084a93185b760ccbb89e92fdbc5874567';
+String _$smallIdHash() => r'2abea5ee88749f5ccfe245f4466d7918294b6fda';
 
 /// See also [SmallId].
 @ProviderFor(SmallId)
@@ -214,7 +213,7 @@ final smallIdProvider = NotifierProvider<SmallId, int>.internal(
 );
 
 typedef _$SmallId = Notifier<int>;
-String _$bigIdHash() => r'9a7c1e78d962b666f05d8caef0cabf2c3b590922';
+String _$bigIdHash() => r'cb21cb4537823a420479c46637d7bdd7fcac805e';
 
 /// See also [BigId].
 @ProviderFor(BigId)
@@ -228,7 +227,7 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-String _$playerDataHash() => r'797b7b762af675add0f8fdc7caf6de3ba839ebd8';
+String _$playerDataHash() => r'6d7a49685645018508dac2193a3c2ae7eb9943ac';
 
 ///
 /// player

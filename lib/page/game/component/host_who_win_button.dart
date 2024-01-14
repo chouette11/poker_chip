@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -44,8 +43,6 @@ class HostWhoWinButton extends ConsumerWidget {
           }
 
           /// HostのOption状態変更
-          ref.read(potProvider.notifier).clear();
-          ref.read(playerDataProvider.notifier).clearIsFold();
           ref.read(roundProvider.notifier).delayPreFlop();
 
           /// ParticipantのOption状態変更

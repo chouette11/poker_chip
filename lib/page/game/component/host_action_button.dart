@@ -87,21 +87,15 @@ class _ActionButton extends ConsumerWidget {
         final isChangeRound = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
           final uid = notifier.finalPlayerUid().first;
-          final myUid = ref.read(uidProvider);
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(playerDataProvider.notifier).clearScore();
           final pot = ref.read(potProvider);
           ref.read(playerDataProvider.notifier).updateStack(uid, pot);
-          ref.read(playerDataProvider.notifier).clearIsFold();
-          ref.read(potProvider.notifier).clear();
           ref.read(smallIdProvider.notifier).updateId();
           ref.read(bigIdProvider.notifier).updateId();
           ref.read(btnIdProvider.notifier).updateId();
           ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
           ref.read(roundProvider.notifier).delayPreFlop();
-          if (uid == myUid) {
-            ref.read(isWinProvider.notifier).update((state) => true);
-          }
         } else if (isChangeRound) {
           ref.read(playerDataProvider.notifier).clearScore();
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
