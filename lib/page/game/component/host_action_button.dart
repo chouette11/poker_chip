@@ -110,7 +110,6 @@ class _ActionButton extends ConsumerWidget {
           ref.read(playerDataProvider.notifier).clearIsAction();
           final round = ref.read(roundProvider);
           if (round == GameTypeEnum.showdown) {
-            ref.read(playerDataProvider.notifier).clearIsFold();
             ref.read(smallIdProvider.notifier).updateId();
             ref.read(bigIdProvider.notifier).updateId();
             ref.read(btnIdProvider.notifier).updateId();
@@ -150,7 +149,7 @@ class _ActionButton extends ConsumerWidget {
             final round = ref.read(roundProvider);
             final game = GameEntity(uid: ids.first, type: round, score: 0);
             final mes =
-            MessageEntity(type: MessageTypeEnum.game, content: game);
+                MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
 
             Future.delayed(const Duration(seconds: 4), () {
@@ -158,7 +157,7 @@ class _ActionButton extends ConsumerWidget {
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             });
           }
@@ -173,8 +172,19 @@ class _ActionButton extends ConsumerWidget {
             conn.send(mes.toJson());
           }
         }
+
+        /// bet額リセット
+        ref.read(raiseBetProvider.notifier).update((state) => 0);
       },
-      child: Text(actionTypeEnum.name),
+      child: Column(
+        children: [
+          Text(actionTypeEnum.name),
+          Visibility(
+              visible: actionTypeEnum == ActionTypeEnum.bet ||
+                  actionTypeEnum == ActionTypeEnum.raise,
+              child: Text(ref.watch(raiseBetProvider).toString()))
+        ],
+      ),
     );
   }
 }
