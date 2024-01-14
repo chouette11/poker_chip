@@ -12,31 +12,35 @@ class ParticipantWhoWinButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () {
-        final players = ref.read(playerDataProvider);
-        final List<String> values = [];
+    final round = ref.watch(roundProvider);
+    return Visibility(
+      visible: round == GameTypeEnum.showdown,
+      child: ElevatedButton(
+        onPressed: () {
+          final players = ref.read(playerDataProvider);
+          final List<String> values = [];
 
-        for (final player in players) {
-          if (ref.read(isSelectedProvider(player))) {
-            values.add(player.uid);
+          for (final player in players) {
+            if (ref.read(isSelectedProvider(player))) {
+              values.add(player.uid);
+            }
           }
-        }
 
-        final score = ref.read(potProvider) ~/ values.length;
+          final score = ref.read(potProvider) ~/ values.length;
 
-        for (final uid in values) {
-          final conn = ref.read(participantConProvider);
-          if (conn == null) {
-            return;
+          for (final uid in values) {
+            final conn = ref.read(participantConProvider);
+            if (conn == null) {
+              return;
+            }
+            final game =
+            GameEntity(uid: uid, type: GameTypeEnum.showdown, score: score);
+            final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
           }
-          final game =
-          GameEntity(uid: uid, type: GameTypeEnum.showdown, score: score);
-          final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
-          conn.send(mes.toJson());
-        }
-      },
-      child: Text('確定'),
+        },
+        child: Text('確定'),
+      ),
     );
   }
 }
