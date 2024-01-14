@@ -92,9 +92,21 @@ class _ActionButton extends ConsumerWidget {
         );
         final mes =
             MessageEntity(type: MessageTypeEnum.action, content: action);
+        print('send: $mes');
         conn.send(mes.toJson());
+
+        /// bet額リセット
+        ref.read(raiseBetProvider.notifier).update((state) => 0);
       },
-      child: Text(actionTypeEnum.name),
+      child: Column(
+        children: [
+          Text(actionTypeEnum.name),
+          Visibility(
+              visible: actionTypeEnum == ActionTypeEnum.bet ||
+                  actionTypeEnum == ActionTypeEnum.raise,
+              child: Text(ref.watch(raiseBetProvider).toString()))
+        ],
+      ),
     );
   }
 }
