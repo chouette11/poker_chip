@@ -240,8 +240,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 void _participantActionMethod(ActionEntity action, WidgetRef ref) {
   final type = action.type;
   final uid = action.uid;
-  final maxScore = action.score;
-  final score = ref.read(raiseBetProvider);
+  final score = action.score;
   ref.read(playerDataProvider.notifier).updateAction(uid);
   switch (type) {
     case ActionTypeEnum.fold:
@@ -249,17 +248,20 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       break;
     case ActionTypeEnum.call:
       final curScore = ref.read(playerDataProvider.notifier).curScore(uid);
-      final fixScore = maxScore - curScore;
+      final fixScore = score - curScore;
       ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
-      ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(fixScore);
       break;
     case ActionTypeEnum.raise:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.bet:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
       break;
@@ -275,6 +277,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.blind:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case GameTypeEnum.anty:
       break;
@@ -290,22 +293,18 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.flop:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.turn:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.river:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       break;
     case GameTypeEnum.foldout:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       final pot = ref.read(potProvider);
       ref.read(playerDataProvider.notifier).updateStack(uid, pot);
@@ -314,7 +313,6 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       }
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(potProvider.notifier).scoreSumToPot();
       ref.read(playerDataProvider.notifier).clearScore();
       if (uid != '') {
         ref.read(playerDataProvider.notifier).updateStack(uid, score);

@@ -23,7 +23,7 @@ final uidProvider = StateProvider<String>((ref) =>
 
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
-final raiseBetProvider = StateProvider((ref) => 40);
+final raiseBetProvider = StateProvider((ref) => 0);
 
 final playersExProvider = StateProvider((ref) => []);
 
@@ -121,7 +121,6 @@ class HostConnOpen extends _$HostConnOpen {
             final uid = notifier.finalPlayerUid().first;
             final myUid = ref.read(uidProvider);
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
-            ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(uid, pot);
@@ -137,7 +136,6 @@ class HostConnOpen extends _$HostConnOpen {
             }
           } else if (isChangeRound) {
             print('change round');
-            ref.read(potProvider.notifier).scoreSumToPot();
             ref.read(playerDataProvider.notifier).clearScore();
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
@@ -229,7 +227,7 @@ class HostConnOpen extends _$HostConnOpen {
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             });
           }
@@ -262,7 +260,7 @@ class Pot extends _$Pot {
     return 0;
   }
 
-  void scoreSumToPot() {
+  void scoreSumToPo() {
     final player = ref.read(playerDataProvider);
     final scores = player.map((e) => e.score).toList();
     int totalScore = state;
@@ -270,6 +268,10 @@ class Pot extends _$Pot {
       totalScore += score;
     }
     state = totalScore;
+  }
+
+  void potUpdate(int score) {
+    state = state + score;
   }
 
   void clear() {
@@ -363,7 +365,6 @@ class OptionAssignedId extends _$OptionAssignedId {
   void updatePreFlopId() {
     final big = ref.read(bigIdProvider);
     final player = List.from(ref.read(playerDataProvider));
-    player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
@@ -617,14 +618,17 @@ void _actionStackMethod(
       final fixScore = score - curScore;
       ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(fixScore);
       break;
     case ActionTypeEnum.raise:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.bet:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
       break;
@@ -681,12 +685,8 @@ void _game(List<PeerConEntity> cons,
   ref
       .read(playerDataProvider.notifier)
       .updateScore(_assignedIdToUid(bigId, ref), big);
-  ref
-      .read(playerDataProvider.notifier)
-      .updateStack(_assignedIdToUid(btnId, ref), 0);
-  ref
-      .read(playerDataProvider.notifier)
-      .updateScore(_assignedIdToUid(btnId, ref), 0);
+  ref.read(playerDataProvider.notifier).updateBtn(_assignedIdToUid(btnId, ref));
+  ref.read(potProvider.notifier).potUpdate(small + big);
 }
 
 String _assignedIdToUid(

@@ -228,10 +228,6 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   ref
       .read(playerDataProvider.notifier)
       .updateScore(assignedIdToUid(bigId, ref), big);
-  ref
-      .read(playerDataProvider.notifier)
-      .updateStack(assignedIdToUid(btnId, ref), 0);
-  ref
-      .read(playerDataProvider.notifier)
-      .updateScore(assignedIdToUid(btnId, ref), 0);
+  ref.read(playerDataProvider.notifier).updateBtn(assignedIdToUid(btnId, ref));
+  ref.read(potProvider.notifier).potUpdate(small + big);
 }
