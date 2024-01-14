@@ -421,6 +421,10 @@ class BtnId extends _$BtnId {
       state = state + 1;
     }
   }
+
+  void fixHeads() {
+    state = 1;
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -438,6 +442,10 @@ class SmallId extends _$SmallId {
       state = state + 1;
     }
   }
+
+  void fixHeads() {
+    state = 1;
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -454,6 +462,10 @@ class BigId extends _$BigId {
     } else {
       state = state + 1;
     }
+  }
+
+  void fixHeads() {
+    state = 2;
   }
 }
 
