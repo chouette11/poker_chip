@@ -73,6 +73,7 @@ class _ActionButton extends ConsumerWidget {
     final cons = ref.watch(hostConsProvider);
     final myUid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
+    final myScore = ref.watch(playerDataProvider.notifier).curScore(myUid);
 
     return ElevatedButton(
       onPressed: () {
@@ -88,7 +89,6 @@ class _ActionButton extends ConsumerWidget {
           final uid = notifier.finalPlayerUid().first;
           final myUid = ref.read(uidProvider);
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
-          ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
           final pot = ref.read(potProvider);
           ref.read(playerDataProvider.notifier).updateStack(uid, pot);
@@ -103,7 +103,6 @@ class _ActionButton extends ConsumerWidget {
             ref.read(isWinProvider.notifier).update((state) => true);
           }
         } else if (isChangeRound) {
-          ref.read(potProvider.notifier).scoreSumToPot();
           ref.read(playerDataProvider.notifier).clearScore();
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(roundProvider.notifier).nextRound();
@@ -180,9 +179,14 @@ class _ActionButton extends ConsumerWidget {
         children: [
           Text(actionTypeEnum.name),
           Visibility(
-              visible: actionTypeEnum == ActionTypeEnum.bet ||
-                  actionTypeEnum == ActionTypeEnum.raise,
-              child: Text(ref.watch(raiseBetProvider).toString()))
+            visible: actionTypeEnum == ActionTypeEnum.bet ||
+                actionTypeEnum == ActionTypeEnum.raise,
+            child: Text(ref.watch(raiseBetProvider).toString()),
+          ),
+          Visibility(
+            visible: actionTypeEnum == ActionTypeEnum.call,
+            child: Text((maxScore - myScore).toString()),
+          )
         ],
       ),
     );
@@ -213,16 +217,21 @@ void _hostActionMethod(
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
-      ref.read(playerDataProvider.notifier).updateStack(uid, -maxScore);
+      final curScore = ref.read(playerDataProvider.notifier).curScore(uid);
+      final fixScore = maxScore - curScore;
+      ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
       ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
+      ref.read(potProvider.notifier).potUpdate(fixScore);
       break;
     case ActionTypeEnum.raise:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.bet:
       ref.read(playerDataProvider.notifier).updateStack(uid, -score);
       ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
       break;

@@ -18,6 +18,7 @@ class ParticipantActionButtons extends ConsumerWidget {
       final players = ref.watch(playerDataProvider);
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
+
       if (maxScore == 0 || me.score == maxScore) {
         return Column(
           children: [
@@ -71,6 +72,8 @@ class _ActionButton extends ConsumerWidget {
     final conn = ref.watch(participantConProvider);
     final uid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
+    final myScore = ref.watch(playerDataProvider.notifier).curScore(uid);
+
     return ElevatedButton(
       onPressed: () {
         if (conn == null) {
@@ -102,9 +105,14 @@ class _ActionButton extends ConsumerWidget {
         children: [
           Text(actionTypeEnum.name),
           Visibility(
-              visible: actionTypeEnum == ActionTypeEnum.bet ||
-                  actionTypeEnum == ActionTypeEnum.raise,
-              child: Text(ref.watch(raiseBetProvider).toString()))
+            visible: actionTypeEnum == ActionTypeEnum.bet ||
+                actionTypeEnum == ActionTypeEnum.raise,
+            child: Text(ref.watch(raiseBetProvider).toString()),
+          ),
+          Visibility(
+            visible: actionTypeEnum == ActionTypeEnum.call,
+            child: Text((maxScore - myScore).toString()),
+          )
         ],
       ),
     );
