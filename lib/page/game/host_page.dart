@@ -5,7 +5,6 @@ import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/host_action_button.dart';
-import 'package:poker_chip/page/game/component/host_is_win_button.dart';
 import 'package:poker_chip/page/game/component/host_who_win_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
