@@ -25,6 +25,8 @@ final qrCodeDataProvider = StateProvider<String>((ref) => '');
 
 final raiseBetProvider = StateProvider((ref) => 0);
 
+final stackProvider = StateProvider((ref) => 1000);
+
 final playersExProvider = StateProvider((ref) => []);
 
 ///
@@ -169,7 +171,6 @@ class HostConnOpen extends _$HostConnOpen {
               conn.send(mes.toJson());
 
               Future.delayed(const Duration(seconds: 4), () {
-                print('timer!');
                 final round = ref.read(roundProvider);
                 final game = GameEntity(uid: '', type: round, score: 0);
                 final mes =
@@ -238,8 +239,6 @@ class HostConnOpen extends _$HostConnOpen {
 ///
 /// Game
 ///
-
-final isFinalProvider = StateProvider((ref) => false);
 
 final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
@@ -474,7 +473,7 @@ class PlayerData extends _$PlayerData {
     return [
       UserEntity(
         uid: uid,
-        stack: 500,
+        stack: ref.read(stackProvider),
         assignedId: 1,
         score: 0,
         isBtn: false,
