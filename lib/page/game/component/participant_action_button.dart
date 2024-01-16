@@ -73,6 +73,8 @@ class _ActionButton extends ConsumerWidget {
     final uid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
     final myScore = ref.watch(playerDataProvider.notifier).curScore(uid);
+    final myStack = ref.watch(playerDataProvider.notifier).curStack(uid);
+    final score = _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack);
 
     return ElevatedButton(
       onPressed: () {
@@ -80,13 +82,6 @@ class _ActionButton extends ConsumerWidget {
           return;
         }
         final optId = ref.read(optionAssignedIdProvider);
-        int score = 0;
-        if (actionTypeEnum == ActionTypeEnum.raise ||
-            actionTypeEnum == ActionTypeEnum.bet) {
-          score = betScore;
-        } else if (actionTypeEnum == ActionTypeEnum.call) {
-          score = maxScore;
-        }
         final action = ActionEntity(
           uid: uid,
           type: actionTypeEnum,
@@ -107,16 +102,31 @@ class _ActionButton extends ConsumerWidget {
           Visibility(
             visible: actionTypeEnum == ActionTypeEnum.bet ||
                 actionTypeEnum == ActionTypeEnum.raise,
-            child: Text(ref.watch(raiseBetProvider).toString()),
+            child: Text(score.toString()),
           ),
           Visibility(
             visible: actionTypeEnum == ActionTypeEnum.call,
-            child: Text((maxScore - myScore).toString()),
+            child: Text((score - myScore).toString()),
           )
         ],
       ),
     );
   }
+}
+
+int _fixScoreSize(
+    ActionTypeEnum actionTypeEnum, int betScore, int maxScore, int stack) {
+  int score = 0;
+  if (actionTypeEnum == ActionTypeEnum.raise ||
+      actionTypeEnum == ActionTypeEnum.bet) {
+    score = betScore;
+  } else if (actionTypeEnum == ActionTypeEnum.call) {
+    score = maxScore;
+  }
+  if (score > stack) {
+    score = stack;
+  }
+  return score;
 }
 
 int _findMaxInList(List<int> numbers) {

@@ -74,13 +74,15 @@ class _ActionButton extends ConsumerWidget {
     final myUid = ref.watch(uidProvider);
     final betScore = ref.watch(raiseBetProvider);
     final myScore = ref.watch(playerDataProvider.notifier).curScore(myUid);
+    final myStack = ref.watch(playerDataProvider.notifier).curStack(myUid);
+    final score = _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack);
 
     return ElevatedButton(
       onPressed: () {
         final notifier = ref.read(playerDataProvider.notifier);
 
         /// HostのStack状態変更
-        _hostActionMethod(ref, actionTypeEnum, myUid, maxScore);
+        _hostActionMethod(ref, actionTypeEnum, myUid, score);
 
         /// HostのOption状態変更
         final isFoldout = notifier.isFoldout();
@@ -114,13 +116,6 @@ class _ActionButton extends ConsumerWidget {
 
         /// ParticipantのStack状態変更
         final optId = ref.read(optionAssignedIdProvider);
-        int score = 0;
-        if (actionTypeEnum == ActionTypeEnum.raise ||
-            actionTypeEnum == ActionTypeEnum.bet) {
-          score = betScore;
-        } else if (actionTypeEnum == ActionTypeEnum.call) {
-          score = maxScore;
-        }
         for (final conEntity in cons) {
           final conn = conEntity.con;
           final action = ActionEntity(
@@ -146,7 +141,6 @@ class _ActionButton extends ConsumerWidget {
             conn.send(mes.toJson());
 
             Future.delayed(const Duration(seconds: 4), () {
-              print('timer!');
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
@@ -175,16 +169,31 @@ class _ActionButton extends ConsumerWidget {
           Visibility(
             visible: actionTypeEnum == ActionTypeEnum.bet ||
                 actionTypeEnum == ActionTypeEnum.raise,
-            child: Text(ref.watch(raiseBetProvider).toString()),
+            child: Text(score.toString()),
           ),
           Visibility(
             visible: actionTypeEnum == ActionTypeEnum.call,
-            child: Text((maxScore - myScore).toString()),
+            child: Text((score - myScore).toString()),
           )
         ],
       ),
     );
   }
+}
+
+int _fixScoreSize(
+    ActionTypeEnum actionTypeEnum, int betScore, int maxScore, int stack) {
+  int score = 0;
+  if (actionTypeEnum == ActionTypeEnum.raise ||
+      actionTypeEnum == ActionTypeEnum.bet) {
+    score = betScore;
+  } else if (actionTypeEnum == ActionTypeEnum.call) {
+    score = maxScore;
+  }
+  if (score > stack) {
+    score = stack;
+  }
+  return score;
 }
 
 int _findMaxInList(List<int> numbers) {
@@ -203,18 +212,17 @@ int _findMaxInList(List<int> numbers) {
 }
 
 void _hostActionMethod(
-    WidgetRef ref, ActionTypeEnum type, String uid, int maxScore) {
+    WidgetRef ref, ActionTypeEnum type, String uid, int score) {
   ref.read(playerDataProvider.notifier).updateAction(uid);
-  final score = ref.read(raiseBetProvider);
   switch (type) {
     case ActionTypeEnum.fold:
       ref.read(playerDataProvider.notifier).updateFold(uid);
       break;
     case ActionTypeEnum.call:
       final curScore = ref.read(playerDataProvider.notifier).curScore(uid);
-      final fixScore = maxScore - curScore;
+      final fixScore = score - curScore;
       ref.read(playerDataProvider.notifier).updateStack(uid, -fixScore);
-      ref.read(playerDataProvider.notifier).updateScore(uid, maxScore);
+      ref.read(playerDataProvider.notifier).updateScore(uid, score);
       ref.read(potProvider.notifier).potUpdate(fixScore);
       break;
     case ActionTypeEnum.raise:
