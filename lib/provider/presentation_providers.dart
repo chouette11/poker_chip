@@ -306,12 +306,11 @@ class Round extends _$Round {
   }
 
   void delayPreFlop() {
-    /// foldを初期化
-    ref.read(playerDataProvider.notifier).clearIsFold();
-    /// potを初期化
-    ref.read(potProvider.notifier).clear();
-
     Future.delayed(Duration(seconds: 3), () {
+      /// foldを初期化
+      ref.read(playerDataProvider.notifier).clearIsFold();
+      /// potを初期化
+      ref.read(potProvider.notifier).clear();
       state = GameTypeEnum.preFlop;
     });
 
