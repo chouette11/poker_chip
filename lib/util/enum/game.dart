@@ -1,5 +1,5 @@
 enum GameTypeEnum {
-  pot('pot'),
+  sidePot('sidePot'),
   anty('anty'),
   btn('btn'),
   blind('blind'),

@@ -21,7 +21,7 @@ Map<String, dynamic> _$$_GameEntityToJson(_$_GameEntity instance) =>
     };
 
 const _$GameTypeEnumEnumMap = {
-  GameTypeEnum.pot: 'pot',
+  GameTypeEnum.sidePot: 'sidePot',
   GameTypeEnum.anty: 'anty',
   GameTypeEnum.btn: 'btn',
   GameTypeEnum.blind: 'blind',
