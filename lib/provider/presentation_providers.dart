@@ -244,6 +244,30 @@ final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
 
 @riverpod
+class HostSidePots extends _$HostSidePots {
+  @override
+  List<SidePotEntity> build() {
+    return [];
+  }
+
+  void addSidePots(List<SidePotEntity> sidePots) {
+    state = [...state, ...sidePots];
+  }
+}
+
+@riverpod
+class SidePots extends _$SidePots {
+  @override
+  List<int> build() {
+    return [];
+  }
+
+  void addSidePot(int sidePotValue) {
+    state = [...state, sidePotValue];
+  }
+}
+
+@riverpod
 class Pot extends _$Pot {
   @override
   int build() {
@@ -296,7 +320,7 @@ class Round extends _$Round {
         break;
       case GameTypeEnum.btn:
         break;
-      case GameTypeEnum.pot:
+      case GameTypeEnum.sidePot:
     }
   }
 
@@ -308,6 +332,7 @@ class Round extends _$Round {
     Future.delayed(Duration(seconds: 3), () {
       /// foldを初期化
       ref.read(playerDataProvider.notifier).clearIsFold();
+
       /// potを初期化
       ref.read(potProvider.notifier).clear();
       state = GameTypeEnum.preFlop;

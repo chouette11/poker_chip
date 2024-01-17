@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'7c6fd687ca4561fd914d4b0b75935605505f55b5';
+String _$hostConnOpenHash() => r'209d7ad7aa8e9d9c12f8ec320de478e313c3fd94';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -137,6 +137,36 @@ class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
   }
 }
 
+String _$hostSidePotsHash() => r'23a0db14f676ad9f54c225043288555a7fc0842a';
+
+/// See also [HostSidePots].
+@ProviderFor(HostSidePots)
+final hostSidePotsProvider =
+    AutoDisposeNotifierProvider<HostSidePots, List<SidePotEntity>>.internal(
+  HostSidePots.new,
+  name: r'hostSidePotsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$hostSidePotsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$HostSidePots = AutoDisposeNotifier<List<SidePotEntity>>;
+String _$sidePotsHash() => r'67b7fe545a0169e9b42849d2a72b9251be9f467c';
+
+/// See also [SidePots].
+@ProviderFor(SidePots)
+final sidePotsProvider =
+    AutoDisposeNotifierProvider<SidePots, List<int>>.internal(
+  SidePots.new,
+  name: r'sidePotsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$sidePotsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SidePots = AutoDisposeNotifier<List<int>>;
 String _$potHash() => r'a4f29bd4a01706422862ab08707daa1763f32999';
 
 /// See also [Pot].
@@ -151,7 +181,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'6c89e604c774b11cb8af9b3658527274222e977e';
+String _$roundHash() => r'81cb2a3f037736e4696c136d557ca68647c57133';
 
 /// See also [Round].
 @ProviderFor(Round)
@@ -165,7 +195,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$optionAssignedIdHash() => r'896f2f884ca9d10bc7b01f1b798ca3b90ea659cc';
+String _$optionAssignedIdHash() => r'd56395ef8e6b9512ca9ecf5691569b2ebfe3790c';
 
 /// See also [OptionAssignedId].
 @ProviderFor(OptionAssignedId)
@@ -227,7 +257,7 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-String _$playerDataHash() => r'6d7a49685645018508dac2193a3c2ae7eb9943ac';
+String _$playerDataHash() => r'764ed40792da2488b0b9283dda3d4155839d72e4';
 
 ///
 /// player
