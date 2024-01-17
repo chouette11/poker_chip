@@ -1,0 +1,13 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'side_pot_entity.freezed.dart';
+
+@freezed
+class SidePotEntity with _$SidePotEntity {
+  const SidePotEntity._();
+
+  const factory SidePotEntity({
+    required List<String> uids,
+    required int value,
+  }) = _SidePotEntity;
+}
