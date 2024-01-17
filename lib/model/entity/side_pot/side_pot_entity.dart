@@ -8,6 +8,6 @@ class SidePotEntity with _$SidePotEntity {
 
   const factory SidePotEntity({
     required List<String> uids,
-    required int value,
+    required int size,
   }) = _SidePotEntity;
 }
