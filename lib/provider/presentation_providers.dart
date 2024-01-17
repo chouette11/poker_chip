@@ -614,6 +614,37 @@ class PlayerData extends _$PlayerData {
     return player.map((e) => e.uid).toList();
   }
 
+  List<SidePotEntity> calculateSidePots() {
+    List<UserEntity> users = List.from(state);
+    // ユーザーをベット額の昇順にソート
+    users.sort((a, b) => a.score.compareTo(b.score));
+
+    List<SidePotEntity> sidePots = [];
+    int previousScore = 0;
+
+    for (var i = 0; i < users.length; i++) {
+      int contribution = users[i].score - previousScore;
+
+      // 各ユーザーが作るサイドポットの計算
+      if (contribution > 0) {
+        int sidePotValue = 0;
+        List<String> involvedUsers = [];
+
+        for (var j = i; j < users.length; j++) {
+          sidePotValue += contribution; // 各ユーザーの寄与額を加算
+          involvedUsers.add(users[j].uid);
+        }
+
+        final sidePot = SidePotEntity(uids: involvedUsers, value: sidePotValue);
+        sidePots.add(sidePot);
+
+        previousScore = users[i].score;
+      }
+    }
+
+    return sidePots.sublist(0, sidePots.length - 1);
+  }
+
   String finalUidString() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
