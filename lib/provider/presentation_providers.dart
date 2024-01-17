@@ -629,10 +629,14 @@ class PlayerData extends _$PlayerData {
     final player = state.firstWhere((e) => e.uid == uid);
     return player.score;
   }
+
+  int curStack(String uid) {
+    final player = state.firstWhere((e) => e.uid == uid);
+    return player.stack;
+  }
 }
 
-void _actionStackMethod(
-    ActionEntity action, NotifierProviderRef<bool> ref) {
+void _actionStackMethod(ActionEntity action, NotifierProviderRef<bool> ref) {
   /// Hostの状態変更
   final type = action.type;
   final uid = action.uid;
