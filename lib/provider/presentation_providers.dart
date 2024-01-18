@@ -138,6 +138,18 @@ class HostConnOpen extends _$HostConnOpen {
               final sidePots =
                   ref.read(playerDataProvider.notifier).calculateSidePots();
               ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+
+              final cons = ref.read(hostConsProvider);
+              for (final con in cons) {
+                final conn = con.con;
+                for (final sidePot in sidePots) {
+                  final game = GameEntity(
+                      uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
+                  final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+                  conn.send(mes.toJson());
+                }
+              }
             }
             ref.read(playerDataProvider.notifier).clearScore();
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
