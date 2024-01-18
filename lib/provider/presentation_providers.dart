@@ -647,6 +647,25 @@ class PlayerData extends _$PlayerData {
 
   List<SidePotEntity> calculateSidePots() {
     List<UserEntity> users = List.from(state);
+
+    // allin userが前のラウンドと変わっていない場合サイドポットを作成しない
+    final noneUids = stackNoneUids();
+    final prevSidePots = ref.read(hostSidePotsProvider);
+    if (prevSidePots.isNotEmpty) {
+      final lastSidePot = prevSidePots[prevSidePots.length - 1];
+      if (!hasUniqueElements(lastSidePot.allinUids, noneUids)) {
+        return [];
+      }
+    }
+
+    final pot = ref.read(potProvider);
+    int count = 0;
+    final prevPot = pot -
+        ref.read(hostSidePotsProvider.notifier).totalValue() -
+        ref.read(playerDataProvider.notifier).totalScore();
+
+    print(prevPot);
+
     // ユーザーをベット額の昇順にソート
     users.sort((a, b) => a.score.compareTo(b.score));
 
@@ -666,14 +685,21 @@ class PlayerData extends _$PlayerData {
           involvedUsers.add(users[j].uid);
         }
 
-        final sidePot = SidePotEntity(uids: involvedUsers, value: sidePotValue);
+        if (count == 0) {
+          sidePotValue += prevPot;
+        }
+
+        final sidePot = SidePotEntity(
+            uids: involvedUsers, size: sidePotValue, allinUids: noneUids);
         sidePots.add(sidePot);
+        print(sidePot);
+        count++;
 
         previousScore = users[i].score;
       }
     }
 
-    return sidePots.sublist(0, sidePots.length - 1);
+    return sidePots;
   }
 
   String finalUidString() {
