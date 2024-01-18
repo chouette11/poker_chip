@@ -99,6 +99,11 @@ class _ActionButton extends ConsumerWidget {
           ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
           ref.read(roundProvider.notifier).delayPreFlop();
         } else if (isChangeRound) {
+          if (notifier.isStackNone()) {
+            final sidePots =
+            ref.read(playerDataProvider.notifier).calculateSidePots();
+            ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+          }
           ref.read(playerDataProvider.notifier).clearScore();
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(roundProvider.notifier).nextRound();

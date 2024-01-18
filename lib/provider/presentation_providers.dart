@@ -5,6 +5,7 @@ import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
+import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter/material.dart';
@@ -133,6 +134,11 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(roundProvider.notifier).delayPreFlop();
           } else if (isChangeRound) {
             print('change round');
+            if (notifier.isStackNone()) {
+              final sidePots =
+                  ref.read(playerDataProvider.notifier).calculateSidePots();
+              ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+            }
             ref.read(playerDataProvider.notifier).clearScore();
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
@@ -200,6 +206,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).updateStack(uid, score);
 
             final cons = ref.read(hostConsProvider);
+
             /// Participantのstack状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
