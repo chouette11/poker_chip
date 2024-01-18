@@ -1,41 +1,52 @@
-List<int> rotateToMiddle(List<int> arr, int target) {
-  int index = arr.indexOf(target);
-  if (index != -1) {
-    int midIndex = arr.length ~/ 2; // 中央のインデックス
-    int shift = index - midIndex; // 必要なシフト量
+class UserEntity {
+  String uid;
+  int score; // このユーザーがベットしたチップ数
 
-    if (shift > 0) {
-      // targetを中央に移動するために右にシフト
-      return arr.sublist(shift) + arr.sublist(0, shift);
-    } else if (shift < 0) {
-      // targetを中央に移動するために左にシフト
-      return arr.sublist(arr.length + shift) + arr.sublist(0, arr.length + shift);
-    }
-  }
-  return arr;
+  UserEntity(this.uid, this.score);
 }
 
-void splitArrayAroundTarget(List<int> arr, int target) {
-  int index = arr.indexOf(target);
+List<Map<String, dynamic>> calculateSidePots(List<UserEntity> users) {
+  // ユーザーをベット額の昇順にソート
+  users.sort((a, b) => a.score.compareTo(b.score));
 
-  if (index != -1) {
-    // targetの前までの要素を含む配列
-    List<int> beforeTarget = arr.sublist(0, index);
+  List<Map<String, dynamic>> sidePots = [];
+  int previousScore = 0;
 
-    // targetの後の要素を含む配列
-    List<int> afterTarget = arr.sublist(index + 1);
+  for (var i = 0; i < users.length; i++) {
+    int contribution = users[i].score - previousScore;
 
-    print("Before Target: $beforeTarget");
-    print("After Target: $afterTarget");
-  } else {
-    print("Target not found in the array.");
+    // 各ユーザーが作るサイドポットの計算
+    if (contribution > 0) {
+      int sidePot = 0;
+      List<String> involvedUsers = [];
+
+      for (var j = i; j < users.length; j++) {
+        sidePot += contribution; // 各ユーザーの寄与額を加算
+        involvedUsers.add(users[j].uid);
+      }
+
+      sidePots.add({
+        'size': sidePot,
+        'users': involvedUsers
+      });
+
+      previousScore = users[i].score;
+    }
   }
+
+  return sidePots;
 }
 
 void main() {
-  List<int> arr = [1, 2, 3, 4, 5];
-  int target = 5;
-  List<int> rotatedArr = rotateToMiddle(arr, target);
-  print(rotatedArr);
-  splitArrayAroundTarget(rotatedArr, target);
+  // 例: ユーザーリストの作成
+  var users = [
+    UserEntity("uid1", 100),
+    UserEntity("uid2", 100),
+    UserEntity("uid3", 100),
+    UserEntity("uid4", 100),
+  ];
+
+  // サイドポットの計算
+  var sidePots = calculateSidePots(users);
+  print(sidePots);
 }

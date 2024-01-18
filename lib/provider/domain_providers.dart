@@ -1,7 +1,7 @@
-import 'package:poker_chip/page/game/host.dart';
-import 'package:poker_chip/page/game/host_page.dart';
-import 'package:poker_chip/page/game/ori.dart';
-import 'package:poker_chip/page/game/paticipant_page.dart';
+import 'package:poker_chip/page/game/host/host.dart';
+import 'package:poker_chip/page/game/host/host_page.dart';
+import 'package:poker_chip/page/game/participant/ori.dart';
+import 'package:poker_chip/page/game/participant/paticipant_page.dart';
 import 'package:poker_chip/page/read_qr/read_qr_page.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_1.dart';
 import 'package:poker_chip/page/tutorial/children/tutorial_page_2.dart';

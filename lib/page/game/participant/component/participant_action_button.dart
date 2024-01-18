@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
-import 'package:poker_chip/page/game/host_page.dart';
+import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
