@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'209d7ad7aa8e9d9c12f8ec320de478e313c3fd94';
+String _$hostConnOpenHash() => r'361b07b91089667879f14a49a2844525984e8a5a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -137,7 +137,7 @@ class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
   }
 }
 
-String _$hostSidePotsHash() => r'23a0db14f676ad9f54c225043288555a7fc0842a';
+String _$hostSidePotsHash() => r'6bbdf45236861c3232571af05806f0ee5b524fa6';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -152,6 +152,21 @@ final hostSidePotsProvider =
 );
 
 typedef _$HostSidePots = AutoDisposeNotifier<List<SidePotEntity>>;
+String _$rankingHash() => r'5bf3f6aa7feb7ca739059931db8b6a970b9d353c';
+
+/// See also [Ranking].
+@ProviderFor(Ranking)
+final rankingProvider =
+    AutoDisposeNotifierProvider<Ranking, List<List<String>>>.internal(
+  Ranking.new,
+  name: r'rankingProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$rankingHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Ranking = AutoDisposeNotifier<List<List<String>>>;
 String _$sidePotsHash() => r'67b7fe545a0169e9b42849d2a72b9251be9f467c';
 
 /// See also [SidePots].
@@ -257,7 +272,7 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-String _$playerDataHash() => r'764ed40792da2488b0b9283dda3d4155839d72e4';
+String _$playerDataHash() => r'3976273fd02e58fa58acc04f2865c72a7a1fc871';
 
 ///
 /// player

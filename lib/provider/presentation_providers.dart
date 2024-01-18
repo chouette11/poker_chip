@@ -254,6 +254,32 @@ class HostSidePots extends _$HostSidePots {
   void addSidePots(List<SidePotEntity> sidePots) {
     state = [...state, ...sidePots];
   }
+
+  void clear() {
+    state = [];
+  }
+}
+
+@riverpod
+class Ranking extends _$Ranking {
+  @override
+  List<List<String>> build() {
+    return [];
+  }
+
+  void addUserUids(List<String> uids) {
+    state = [...state, uids];
+  }
+
+  int selectedLength() {
+    int length = 0;
+    for (final uids in state) {
+      for (final _ in uids) {
+        length = length + 1;
+      }
+    }
+    return length;
+  }
 }
 
 @riverpod
@@ -265,6 +291,10 @@ class SidePots extends _$SidePots {
 
   void addSidePot(int sidePotValue) {
     state = [...state, sidePotValue];
+  }
+
+  void clear() {
+    state = [];
   }
 }
 
