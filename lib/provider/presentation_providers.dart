@@ -255,6 +255,14 @@ class HostSidePots extends _$HostSidePots {
     state = [...state, ...sidePots];
   }
 
+  int totalValue() {
+    int value = 0;
+    for (final pot in state) {
+      value += pot.size;
+    }
+    return value;
+  }
+
   void clear() {
     state = [];
   }
@@ -303,16 +311,6 @@ class Pot extends _$Pot {
   @override
   int build() {
     return 0;
-  }
-
-  void scoreSumToPo() {
-    final player = ref.read(playerDataProvider);
-    final scores = player.map((e) => e.score).toList();
-    int totalScore = state;
-    for (final score in scores) {
-      totalScore += score;
-    }
-    state = totalScore;
   }
 
   void potUpdate(int score) {
@@ -366,6 +364,7 @@ class Round extends _$Round {
 
       /// potを初期化
       ref.read(potProvider.notifier).clear();
+      ref.read(hostSidePotsProvider.notifier).clear();
       state = GameTypeEnum.preFlop;
     });
 
@@ -392,8 +391,9 @@ class OptionAssignedId extends _$OptionAssignedId {
   }
 
   void updateId() {
-    final player = List.from(ref.read(playerDataProvider));
+    final List<UserEntity> player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
+    player.removeWhere((e) => e.stack == 0);
     final activeIds = player.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
@@ -413,6 +413,7 @@ class OptionAssignedId extends _$OptionAssignedId {
   void updatePreFlopId() {
     final big = ref.read(bigIdProvider);
     final player = List.from(ref.read(playerDataProvider));
+    player.removeWhere((e) => e.stack == 0);
     final activeIds = player.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
@@ -433,6 +434,7 @@ class OptionAssignedId extends _$OptionAssignedId {
     final btn = ref.read(btnIdProvider);
     final player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
+    player.removeWhere((e) => e.stack == 0);
     final activeIds = player.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
@@ -611,9 +613,18 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  int totalScore() {
+    int total = 0;
+    for (final user in state) {
+      total += user.score;
+    }
+    return total;
+  }
+
   bool isAllAction() {
-    final players = List.from(state);
+    final List<UserEntity> players = List.from(state);
     players.removeWhere((e) => e.isFold == true);
+    players.removeWhere((e) => e.stack == 0);
     final values = players.map((e) => e.isAction).toList();
     return !values.contains(false);
   }
@@ -621,6 +632,7 @@ class PlayerData extends _$PlayerData {
   bool isSameScore() {
     final player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
+    player.removeWhere((e) => e.stack == 0);
     final values = player.map((e) => e.score).toList();
     if (values.isEmpty) return true;
 
@@ -637,6 +649,20 @@ class PlayerData extends _$PlayerData {
     final player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
     return player.length == 1;
+  }
+
+  bool isStackNone() {
+    final List<UserEntity> players = List.from(state);
+    players.removeWhere((e) => e.isFold == true);
+    final result = players.indexWhere((e) => e.stack == 0);
+    return result != -1;
+  }
+
+  List<String> stackNoneUids() {
+    final List<UserEntity> player = List.from(state);
+    player.removeWhere((e) => e.isFold == true);
+    player.removeWhere((e) => e.stack != 0);
+    return player.map((e) => e.uid).toList();
   }
 
   List<String> finalPlayerUid() {
@@ -857,4 +883,17 @@ class LimitTime extends _$LimitTime {
       }
     });
   }
+}
+
+bool hasUniqueElements(List<String> a, List<String> b) {
+  // Aの要素を簡単に検索できるようにSetに変換
+  var setA = a.toSet();
+
+  // Bの各要素に対して、それがAに含まれていないかどうかをチェック
+  for (var element in b) {
+    if (!setA.contains(element)) {
+      return true; // Aに含まれていない要素が見つかった
+    }
+  }
+  return false; // すべてのBの要素がAに含まれている
 }
