@@ -12,23 +12,24 @@ class HostWhoWinButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final round = ref.watch(roundProvider);
+    final sidePots = ref.watch(hostSidePotsProvider);
     return Visibility(
-      visible: round == GameTypeEnum.showdown,
+      visible: round == GameTypeEnum.showdown && sidePots.isEmpty,
       child: ElevatedButton(
         onPressed: () {
           final players = ref.read(playerDataProvider);
-          final List<String> values = [];
+          final List<String> uids = [];
           final cons = ref.read(hostConsProvider);
 
           for (final player in players) {
             if (ref.read(isSelectedProvider(player))) {
-              values.add(player.uid);
+              uids.add(player.uid);
             }
           }
 
-          final score = ref.read(potProvider) ~/ values.length;
+          final score = ref.read(potProvider) ~/ uids.length;
 
-          for (final uid in values) {
+          for (final uid in uids) {
             /// HostのStack状態変更
             ref.read(playerDataProvider.notifier).updateStack(uid, score);
 
