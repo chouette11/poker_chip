@@ -90,11 +90,11 @@ class _ActionButton extends ConsumerWidget {
         final isFoldout = notifier.isFoldout();
         final isChangeRound = notifier.isAllAction() && notifier.isSameScore();
         if (isFoldout) {
-          final uid = notifier.finalPlayerUid().first;
+          final winner = notifier.activePlayers().first;
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(playerDataProvider.notifier).clearScore();
           final pot = ref.read(potProvider);
-          ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+          ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
           ref.read(smallIdProvider.notifier).updateId();
           ref.read(bigIdProvider.notifier).updateId();
           ref.read(btnIdProvider.notifier).updateId();
@@ -110,6 +110,10 @@ class _ActionButton extends ConsumerWidget {
             for (final con in cons) {
               final conn = con.con;
               for (final sidePot in sidePots) {
+                /// Hostの状態変更
+                ref.read(sidePotsProvider.notifier).addSidePot(sidePot.size);
+
+                /// Participantの状態変更
                 final game = GameEntity(
                     uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
                 final mes =
@@ -152,9 +156,9 @@ class _ActionButton extends ConsumerWidget {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            final ids = notifier.finalPlayerUid();
+            final uids = notifier.activePlayers().map((e) => e.uid).toList();
             final round = ref.read(roundProvider);
-            final game = GameEntity(uid: ids.first, type: round, score: 0);
+            final game = GameEntity(uid: uids.first, type: round, score: 0);
             final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());

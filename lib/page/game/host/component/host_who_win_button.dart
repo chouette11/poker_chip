@@ -13,7 +13,7 @@ class HostWhoWinButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final round = ref.watch(roundProvider);
-    final sidePots = ref.watch(hostSidePotsProvider);
+    final sidePots = ref.watch(sidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePots.isEmpty,
       child: ElevatedButton(

@@ -66,14 +66,6 @@ class HostSidePots extends _$HostSidePots {
     state = [...state, ...sidePots];
   }
 
-  int totalValue() {
-    int value = 0;
-    for (final pot in state) {
-      value += pot.size;
-    }
-    return value;
-  }
-
   void clear() {
     state = [];
   }
@@ -110,6 +102,14 @@ class SidePots extends _$SidePots {
 
   void addSidePot(int sidePotValue) {
     state = [...state, sidePotValue];
+  }
+
+  int totalValue() {
+    int value = 0;
+    for (final pot in state) {
+      value += pot;
+    }
+    return value;
   }
 
   void clear() {
@@ -176,6 +176,7 @@ class Round extends _$Round {
       /// potを初期化
       ref.read(potProvider.notifier).clear();
       ref.read(hostSidePotsProvider.notifier).clear();
+      ref.read(sidePotsProvider.notifier).clear();
       state = GameTypeEnum.preFlop;
     });
 

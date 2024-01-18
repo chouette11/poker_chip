@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
-class ParticipantPotWidget extends ConsumerWidget {
-  const ParticipantPotWidget({super.key});
+class SidePotsWidget extends ConsumerWidget {
+  const SidePotsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -9,9 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
-import 'package:poker_chip/page/game/participant/component/participant_pot.dart';
-import 'package:poker_chip/page/game/participant/component/participant_side_pots.dart';
+import 'package:poker_chip/page/game/component/side_pot.dart';
 import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
@@ -198,7 +198,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   height: height * 0.4,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: ParticipantPotWidget(),
+                    child: PotWidget(),
                   ),
                 ),
                 Positioned(
@@ -206,7 +206,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   right: width * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: ParticipantSidePotsWidget(),
+                    child: SidePotsWidget(),
                   ),
                 ),
                 Positioned(

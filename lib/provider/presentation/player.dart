@@ -147,10 +147,10 @@ class PlayerData extends _$PlayerData {
     return player.map((e) => e.uid).toList();
   }
 
-  List<String> finalPlayerUid() {
+  List<UserEntity> activePlayers() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
-    return player.map((e) => e.uid).toList();
+    return player;
   }
 
   List<SidePotEntity> calculateSidePots() {
@@ -169,7 +169,7 @@ class PlayerData extends _$PlayerData {
     final pot = ref.read(potProvider);
     int count = 0;
     final prevPot = pot -
-        ref.read(hostSidePotsProvider.notifier).totalValue() -
+        ref.read(sidePotsProvider.notifier).totalValue() -
         ref.read(playerDataProvider.notifier).totalScore();
 
     print(prevPot);

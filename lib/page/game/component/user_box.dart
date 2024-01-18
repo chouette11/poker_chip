@@ -81,9 +81,10 @@ class UserBox extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final round = ref.watch(roundProvider);
     final isSelected = ref.watch(isSelectedProvider(userEntity));
-    final player = List.from(ref.read(playerDataProvider));
+    final player = List.from(ref.watch(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.uid).toList();
+    final isSidePot = ref.watch(sidePotsProvider);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
