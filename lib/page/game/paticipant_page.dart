@@ -306,8 +306,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.foldout:
       ref.read(roundProvider.notifier).update(type);
       ref.read(playerDataProvider.notifier).clearScore();
-      final pot = ref.read(potProvider);
-      ref.read(playerDataProvider.notifier).updateStack(uid, pot);
+      ref.read(playerDataProvider.notifier).updateStack(uid, score);
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
       ref.read(playerDataProvider.notifier).clearScore();

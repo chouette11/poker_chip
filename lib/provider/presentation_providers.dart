@@ -165,7 +165,8 @@ class HostConnOpen extends _$HostConnOpen {
               final conn = conEntity.con;
               final ids = notifier.finalPlayerUid();
               final round = ref.read(roundProvider);
-              final game = GameEntity(uid: ids.first, type: round, score: 0);
+              final pot = ref.read(potProvider);
+              final game = GameEntity(uid: ids.first, type: round, score: pot);
               final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
