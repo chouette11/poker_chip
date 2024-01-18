@@ -5,8 +5,10 @@ import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/host_action_button.dart';
+import 'package:poker_chip/page/game/component/host_ranking_button.dart';
+import 'package:poker_chip/page/game/component/host_side_pots.dart';
 import 'package:poker_chip/page/game/component/host_who_win_button.dart';
-import 'package:poker_chip/page/game/component/pot.dart';
+import 'package:poker_chip/page/game/component/host_pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
@@ -114,7 +116,15 @@ class _GamePageState extends ConsumerState<HostPage> {
                   height: height * 0.4,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: PotWidget(),
+                    child: HostPotWidget(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  left: width * 0.3,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: HostSidePotsWidget(),
                   ),
                 ),
                 Positioned(
@@ -123,6 +133,14 @@ class _GamePageState extends ConsumerState<HostPage> {
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: HostWhoWinButton(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.2,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: HostRankingButton(),
                   ),
                 ),
                 Positioned(

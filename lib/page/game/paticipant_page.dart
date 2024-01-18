@@ -10,8 +10,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/participant_action_button.dart';
+import 'package:poker_chip/page/game/component/participant_pot.dart';
+import 'package:poker_chip/page/game/component/participant_side_pots.dart';
 import 'package:poker_chip/page/game/component/participant_who_win_button.dart';
-import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -195,7 +196,15 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   height: height * 0.4,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: PotWidget(),
+                    child: ParticipantPotWidget(),
+                  ),
+                ),
+                Positioned(
+                  height: height * 0.4,
+                  right: width * 0.3,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: ParticipantSidePotsWidget(),
                   ),
                 ),
                 Positioned(
@@ -271,7 +280,6 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
 void _gameMethod(GameEntity game, WidgetRef ref) {
   final type = game.type;
   final uid = game.uid;
-  final myUid = ref.read(uidProvider);
   final score = game.score;
   switch (type) {
     case GameTypeEnum.blind:
@@ -284,11 +292,13 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.btn:
       ref.read(playerDataProvider.notifier).updateBtn(uid);
       break;
-    case GameTypeEnum.pot:
+    case GameTypeEnum.sidePot:
+      ref.read(sidePotsProvider.notifier).addSidePot(score);
       break;
     case GameTypeEnum.preFlop:
       ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).clear();
+      ref.read(sidePotsProvider.notifier).clear();
       ref.read(playerDataProvider.notifier).clearIsFold();
       break;
     case GameTypeEnum.flop:

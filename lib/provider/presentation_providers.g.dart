@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'361b07b91089667879f14a49a2844525984e8a5a';
+String _$hostConnOpenHash() => r'dd5e2d687088a8059242bfcf14bfab09e5d0cea0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -137,7 +137,7 @@ class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
   }
 }
 
-String _$hostSidePotsHash() => r'6bbdf45236861c3232571af05806f0ee5b524fa6';
+String _$hostSidePotsHash() => r'8865538fb991034a65a06f18f563e80fd91dce0a';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -152,7 +152,7 @@ final hostSidePotsProvider =
 );
 
 typedef _$HostSidePots = AutoDisposeNotifier<List<SidePotEntity>>;
-String _$rankingHash() => r'5bf3f6aa7feb7ca739059931db8b6a970b9d353c';
+String _$rankingHash() => r'c13f6b57cf6574b114f69a3159509e53319fd894';
 
 /// See also [Ranking].
 @ProviderFor(Ranking)
@@ -167,7 +167,7 @@ final rankingProvider =
 );
 
 typedef _$Ranking = AutoDisposeNotifier<List<List<String>>>;
-String _$sidePotsHash() => r'67b7fe545a0169e9b42849d2a72b9251be9f467c';
+String _$sidePotsHash() => r'3b652a84218353db0d75b383bcb344bb9de217c3';
 
 /// See also [SidePots].
 @ProviderFor(SidePots)
@@ -196,7 +196,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'81cb2a3f037736e4696c136d557ca68647c57133';
+String _$roundHash() => r'9ca0f60a9ebf732351f4cdc1ae61872d27f8f145';
 
 /// See also [Round].
 @ProviderFor(Round)
@@ -210,7 +210,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$optionAssignedIdHash() => r'd56395ef8e6b9512ca9ecf5691569b2ebfe3790c';
+String _$optionAssignedIdHash() => r'617299c47d2c32db7f9022c7ffd58ae6bab23d75';
 
 /// See also [OptionAssignedId].
 @ProviderFor(OptionAssignedId)
@@ -272,7 +272,7 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-String _$playerDataHash() => r'3976273fd02e58fa58acc04f2865c72a7a1fc871';
+String _$playerDataHash() => r'c98a5f7f0856e8e2f34522e69f6f2261645799dd';
 
 ///
 /// player
