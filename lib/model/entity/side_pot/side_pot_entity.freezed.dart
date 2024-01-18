@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SidePotEntity {
   List<String> get uids => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
+  List<String> get allinUids => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SidePotEntityCopyWith<SidePotEntity> get copyWith =>
@@ -30,7 +31,7 @@ abstract class $SidePotEntityCopyWith<$Res> {
           SidePotEntity value, $Res Function(SidePotEntity) then) =
       _$SidePotEntityCopyWithImpl<$Res, SidePotEntity>;
   @useResult
-  $Res call({List<String> uids, int size});
+  $Res call({List<String> uids, int size, List<String> allinUids});
 }
 
 /// @nodoc
@@ -48,6 +49,7 @@ class _$SidePotEntityCopyWithImpl<$Res, $Val extends SidePotEntity>
   $Res call({
     Object? uids = null,
     Object? size = null,
+    Object? allinUids = null,
   }) {
     return _then(_value.copyWith(
       uids: null == uids
@@ -58,6 +60,10 @@ class _$SidePotEntityCopyWithImpl<$Res, $Val extends SidePotEntity>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
+      allinUids: null == allinUids
+          ? _value.allinUids
+          : allinUids // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -70,7 +76,7 @@ abstract class _$$_SidePotEntityCopyWith<$Res>
       __$$_SidePotEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> uids, int size});
+  $Res call({List<String> uids, int size, List<String> allinUids});
 }
 
 /// @nodoc
@@ -86,6 +92,7 @@ class __$$_SidePotEntityCopyWithImpl<$Res>
   $Res call({
     Object? uids = null,
     Object? size = null,
+    Object? allinUids = null,
   }) {
     return _then(_$_SidePotEntity(
       uids: null == uids
@@ -96,6 +103,10 @@ class __$$_SidePotEntityCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as int,
+      allinUids: null == allinUids
+          ? _value._allinUids
+          : allinUids // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -103,8 +114,12 @@ class __$$_SidePotEntityCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_SidePotEntity extends _SidePotEntity {
-  const _$_SidePotEntity({required final List<String> uids, required this.size})
+  const _$_SidePotEntity(
+      {required final List<String> uids,
+      required this.size,
+      required final List<String> allinUids})
       : _uids = uids,
+        _allinUids = allinUids,
         super._();
 
   final List<String> _uids;
@@ -117,10 +132,17 @@ class _$_SidePotEntity extends _SidePotEntity {
 
   @override
   final int size;
+  final List<String> _allinUids;
+  @override
+  List<String> get allinUids {
+    if (_allinUids is EqualUnmodifiableListView) return _allinUids;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allinUids);
+  }
 
   @override
   String toString() {
-    return 'SidePotEntity(uids: $uids, size: $size)';
+    return 'SidePotEntity(uids: $uids, size: $size, allinUids: $allinUids)';
   }
 
   @override
@@ -129,12 +151,17 @@ class _$_SidePotEntity extends _SidePotEntity {
         (other.runtimeType == runtimeType &&
             other is _$_SidePotEntity &&
             const DeepCollectionEquality().equals(other._uids, _uids) &&
-            (identical(other.size, size) || other.size == size));
+            (identical(other.size, size) || other.size == size) &&
+            const DeepCollectionEquality()
+                .equals(other._allinUids, _allinUids));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_uids), size);
+      runtimeType,
+      const DeepCollectionEquality().hash(_uids),
+      size,
+      const DeepCollectionEquality().hash(_allinUids));
 
   @JsonKey(ignore: true)
   @override
@@ -146,13 +173,16 @@ class _$_SidePotEntity extends _SidePotEntity {
 abstract class _SidePotEntity extends SidePotEntity {
   const factory _SidePotEntity(
       {required final List<String> uids,
-      required final int size}) = _$_SidePotEntity;
+      required final int size,
+      required final List<String> allinUids}) = _$_SidePotEntity;
   const _SidePotEntity._() : super._();
 
   @override
   List<String> get uids;
   @override
   int get size;
+  @override
+  List<String> get allinUids;
   @override
   @JsonKey(ignore: true)
   _$$_SidePotEntityCopyWith<_$_SidePotEntity> get copyWith =>
