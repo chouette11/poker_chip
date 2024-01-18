@@ -21,123 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'dd5e2d687088a8059242bfcf14bfab09e5d0cea0';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$HostConnOpen extends BuildlessNotifier<bool> {
-  late final Peer peer;
-
-  bool build(
-    Peer peer,
-  );
-}
-
-/// See also [HostConnOpen].
-@ProviderFor(HostConnOpen)
-const hostConnOpenProvider = HostConnOpenFamily();
-
-/// See also [HostConnOpen].
-class HostConnOpenFamily extends Family<bool> {
-  /// See also [HostConnOpen].
-  const HostConnOpenFamily();
-
-  /// See also [HostConnOpen].
-  HostConnOpenProvider call(
-    Peer peer,
-  ) {
-    return HostConnOpenProvider(
-      peer,
-    );
-  }
-
-  @override
-  HostConnOpenProvider getProviderOverride(
-    covariant HostConnOpenProvider provider,
-  ) {
-    return call(
-      provider.peer,
-    );
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'hostConnOpenProvider';
-}
-
-/// See also [HostConnOpen].
-class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
-  /// See also [HostConnOpen].
-  HostConnOpenProvider(
-    this.peer,
-  ) : super.internal(
-          () => HostConnOpen()..peer = peer,
-          from: hostConnOpenProvider,
-          name: r'hostConnOpenProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$hostConnOpenHash,
-          dependencies: HostConnOpenFamily._dependencies,
-          allTransitiveDependencies:
-              HostConnOpenFamily._allTransitiveDependencies,
-        );
-
-  final Peer peer;
-
-  @override
-  bool operator ==(Object other) {
-    return other is HostConnOpenProvider && other.peer == peer;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, peer.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-
-  @override
-  bool runNotifierBuild(
-    covariant HostConnOpen notifier,
-  ) {
-    return notifier.build(
-      peer,
-    );
-  }
-}
-
-String _$hostSidePotsHash() => r'8865538fb991034a65a06f18f563e80fd91dce0a';
+String _$hostSidePotsHash() => r'57fc190fc1d21d559b79c7239ac39a29879f40dd';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -182,7 +66,7 @@ final sidePotsProvider =
 );
 
 typedef _$SidePots = AutoDisposeNotifier<List<int>>;
-String _$potHash() => r'a4f29bd4a01706422862ab08707daa1763f32999';
+String _$potHash() => r'b5de5d1217ad2b5ffed1c690a593052ef7881283';
 
 /// See also [Pot].
 @ProviderFor(Pot)
@@ -210,22 +94,6 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$optionAssignedIdHash() => r'617299c47d2c32db7f9022c7ffd58ae6bab23d75';
-
-/// See also [OptionAssignedId].
-@ProviderFor(OptionAssignedId)
-final optionAssignedIdProvider =
-    AutoDisposeNotifierProvider<OptionAssignedId, int>.internal(
-  OptionAssignedId.new,
-  name: r'optionAssignedIdProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$optionAssignedIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$OptionAssignedId = AutoDisposeNotifier<int>;
 String _$btnIdHash() => r'8e99823213080ab071c77cd4822eb415c3f43ebf';
 
 ///
@@ -272,37 +140,4 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-String _$playerDataHash() => r'c98a5f7f0856e8e2f34522e69f6f2261645799dd';
-
-///
-/// player
-///
-///
-/// Copied from [PlayerData].
-@ProviderFor(PlayerData)
-final playerDataProvider =
-    AutoDisposeNotifierProvider<PlayerData, List<UserEntity>>.internal(
-  PlayerData.new,
-  name: r'playerDataProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$PlayerData = AutoDisposeNotifier<List<UserEntity>>;
-String _$limitTimeHash() => r'71d4c1309866b62184df56c11be77e8ad0567d73';
-
-/// See also [LimitTime].
-@ProviderFor(LimitTime)
-final limitTimeProvider = AutoDisposeNotifierProvider<LimitTime, int>.internal(
-  LimitTime.new,
-  name: r'limitTimeProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$limitTimeHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$LimitTime = AutoDisposeNotifier<int>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
