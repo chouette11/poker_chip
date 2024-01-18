@@ -10,7 +10,7 @@ class ParticipantSidePotsWidget extends ConsumerWidget {
     final sidePots = ref.watch(sidePotsProvider);
     return SizedBox(
       height: 400,
-      width: 200,
+      width: 40,
       child: ListView.builder(
         itemCount: sidePots.length,
         itemBuilder: (context, index) {
