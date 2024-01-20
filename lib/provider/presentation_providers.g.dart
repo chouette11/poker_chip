@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostSidePotsHash() => r'8865538fb991034a65a06f18f563e80fd91dce0a';
+String _$hostSidePotsHash() => r'57fc190fc1d21d559b79c7239ac39a29879f40dd';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -65,7 +65,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'082e7b22118fabb654738c8bfe5b64d9c57e7b8e';
+String _$roundHash() => r'ee7f9f51214f1645fd749adb5dd886d6fbaf854f';
 
 /// See also [Round].
 @ProviderFor(Round)

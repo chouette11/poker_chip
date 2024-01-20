@@ -149,6 +149,9 @@ class Round extends _$Round {
       case GameTypeEnum.btn:
         break;
       case GameTypeEnum.sidePot:
+        break;
+      case GameTypeEnum.ranking:
+        break;
     }
   }
 
