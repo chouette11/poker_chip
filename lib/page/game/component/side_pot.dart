@@ -1,35 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
-import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class SidePotsWidget extends ConsumerWidget {
   const SidePotsWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final pot = ref.watch(potProvider);
-    final sidePots = ref.watch(sidePotsProvider);
+    final sidePots = ref.watch(hostSidePotsProvider);
     return SizedBox(
-      height: 100,
-      width: 200,
-      child: Column(
-        children: [
-          Text('Pot'),
-          Text(
-            '${pot - _sidePotsValue(sidePots)}',
-            style: TextStyleConstant.bold20,
-          )
-        ],
+      height: 400,
+      width: 40,
+      child: ListView.builder(
+        itemCount: sidePots.length,
+        itemBuilder: (context, index) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Pot ${index + 1}'),
+              Text('${sidePots[index].size}')
+            ],
+          );
+        },
       ),
     );
   }
-}
-
-int _sidePotsValue(List<int> sidePots) {
-  int value = 0;
-  for (final pot in sidePots) {
-    value += pot;
-  }
-  return value;
 }
