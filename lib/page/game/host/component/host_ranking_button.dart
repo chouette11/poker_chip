@@ -20,58 +20,44 @@ class HostRankingButton extends ConsumerWidget {
       visible: round == GameTypeEnum.showdown && sidePots.isNotEmpty,
       child: ElevatedButton(
         onPressed: () {
-          final List<UserEntity> players =
-              List.from(ref.read(playerDataProvider));
-          players.removeWhere((e) => e.isFold == true);
-          final cons = ref.read(hostConsProvider);
-          final List<String> uids = [];
-
+          Map<String, int> rankingMap = {};
+          final players = ref.read(playerDataProvider);
           for (final player in players) {
-            if (ref.read(isSelectedProvider(player))) {
-              uids.add(player.uid);
-            }
+            final rank = ref.read(rankingProvider(player));
+            rankingMap[player.uid] = rank;
           }
-          ref.read(rankingProvider.notifier).addUserUids(uids);
+          final distributionMap = _distributeSidePots(sidePots, rankingMap);
+          final uids = distributionMap.keys.toList();
 
-          final selectedLen =
-              ref.read(rankingProvider.notifier).selectedLength();
-          bool isAllSelected = players.length == selectedLen;
+          final cons = ref.read(hostConsProvider);
+          for (final uid in uids) {
+            final score = distributionMap[uid] ?? 0;
 
-          if (isAllSelected) {
-            final ranking = ref.read(rankingProvider);
-            final sidePots = ref.read(hostSidePotsProvider);
-            final distributionMap = _distributeSidePots(sidePots, ranking);
-            final uids = distributionMap.keys.toList();
+            /// HostのStack状態変更
+            ref.read(playerDataProvider.notifier).updateStack(uid, score);
 
-            for (final uid in uids) {
-              final score = distributionMap[uid] ?? 0;
-
-              /// HostのStack状態変更
-              ref.read(playerDataProvider.notifier).updateStack(uid, score);
-
-              /// Participantのstack状態変更
-              for (final conEntity in cons) {
-                final conn = conEntity.con;
-                final game = GameEntity(
-                    uid: uid, type: GameTypeEnum.showdown, score: score);
-                final mes =
-                    MessageEntity(type: MessageTypeEnum.game, content: game);
-                conn.send(mes.toJson());
-              }
-            }
-
-            /// HostのOption状態変更
-            ref.read(roundProvider.notifier).delayPreFlop();
-
-            /// ParticipantのOption状態変更
+            /// Participantのstack状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              const game =
-                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-              const mes =
+              final game = GameEntity(
+                  uid: uid, type: GameTypeEnum.showdown, score: score);
+              final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
+          }
+
+          /// HostのOption状態変更
+          ref.read(roundProvider.notifier).delayPreFlop();
+
+          /// ParticipantのOption状態変更
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            const game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
+            const mes =
+                MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
           }
         },
         child: const Text('確定'),
@@ -82,18 +68,26 @@ class HostRankingButton extends ConsumerWidget {
 
 /// { uid: score }
 Map<String, int> _distributeSidePots(
-    List<SidePotEntity> sidePots, List<List<String>> rankings) {
+    List<SidePotEntity> sidePots, Map<String, int> userRankings) {
   // 各ユーザーに分配されるチップの量を記録するマップ
   Map<String, int> distributions = {};
+
+  // ランキング順にソートされたユーザーIDのリストを作成
+  var sortedUsers = userRankings.keys.toList();
+  sortedUsers.sort((a, b) => userRankings[a]!.compareTo(userRankings[b]!));
 
   // 各サイドポットに対して
   for (var pot in sidePots) {
     // このポットを獲得できる最高ランクを見つける
     List<String> eligibleWinners = [];
-    for (var rank in rankings) {
-      eligibleWinners = rank.where((uid) => pot.uids.contains(uid)).toList();
-      if (eligibleWinners.isNotEmpty) {
-        break;
+    for (var uid in sortedUsers) {
+      if (pot.uids.contains(uid)) {
+        if (eligibleWinners.isEmpty ||
+            userRankings[uid] == userRankings[eligibleWinners[0]]) {
+          eligibleWinners.add(uid);
+        } else {
+          break;
+        }
       }
     }
 
