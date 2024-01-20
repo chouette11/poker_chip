@@ -169,7 +169,7 @@ class PlayerData extends _$PlayerData {
     final pot = ref.read(potProvider);
     int count = 0;
     final prevPot = pot -
-        ref.read(sidePotsProvider.notifier).totalValue() -
+        ref.read(hostSidePotsProvider.notifier).totalValue() -
         ref.read(playerDataProvider.notifier).totalScore();
 
     print(prevPot);

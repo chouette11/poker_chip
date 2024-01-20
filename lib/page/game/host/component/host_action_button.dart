@@ -110,9 +110,6 @@ class _ActionButton extends ConsumerWidget {
             for (final con in cons) {
               final conn = con.con;
               for (final sidePot in sidePots) {
-                /// Hostの状態変更
-                ref.read(sidePotsProvider.notifier).addSidePot(sidePot.size);
-
                 /// Participantの状態変更
                 final game = GameEntity(
                     uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
