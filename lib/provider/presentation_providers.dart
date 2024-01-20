@@ -55,6 +55,8 @@ class HostCons extends _$HostCons {
 final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
 
+final rankingProvider = StateProvider.family((ref, UserEntity _) => 0);
+
 @riverpod
 class HostSidePots extends _$HostSidePots {
   @override
@@ -68,28 +70,6 @@ class HostSidePots extends _$HostSidePots {
 
   void clear() {
     state = [];
-  }
-}
-
-@riverpod
-class Ranking extends _$Ranking {
-  @override
-  List<List<String>> build() {
-    return [];
-  }
-
-  void addUserUids(List<String> uids) {
-    state = [...state, uids];
-  }
-
-  int selectedLength() {
-    int length = 0;
-    for (final uids in state) {
-      for (final _ in uids) {
-        length = length + 1;
-      }
-    }
-    return length;
   }
 }
 

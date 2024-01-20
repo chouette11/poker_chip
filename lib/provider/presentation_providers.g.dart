@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostSidePotsHash() => r'57fc190fc1d21d559b79c7239ac39a29879f40dd';
+String _$hostSidePotsHash() => r'8865538fb991034a65a06f18f563e80fd91dce0a';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -36,22 +36,7 @@ final hostSidePotsProvider =
 );
 
 typedef _$HostSidePots = AutoDisposeNotifier<List<SidePotEntity>>;
-String _$rankingHash() => r'c13f6b57cf6574b114f69a3159509e53319fd894';
-
-/// See also [Ranking].
-@ProviderFor(Ranking)
-final rankingProvider =
-    AutoDisposeNotifierProvider<Ranking, List<List<String>>>.internal(
-  Ranking.new,
-  name: r'rankingProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$rankingHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Ranking = AutoDisposeNotifier<List<List<String>>>;
-String _$sidePotsHash() => r'3b652a84218353db0d75b383bcb344bb9de217c3';
+String _$sidePotsHash() => r'efb9b31300d60d941a22acc0cc7e411d6f151982';
 
 /// See also [SidePots].
 @ProviderFor(SidePots)
@@ -80,7 +65,7 @@ final potProvider = AutoDisposeNotifierProvider<Pot, int>.internal(
 );
 
 typedef _$Pot = AutoDisposeNotifier<int>;
-String _$roundHash() => r'9ca0f60a9ebf732351f4cdc1ae61872d27f8f145';
+String _$roundHash() => r'082e7b22118fabb654738c8bfe5b64d9c57e7b8e';
 
 /// See also [Round].
 @ProviderFor(Round)
