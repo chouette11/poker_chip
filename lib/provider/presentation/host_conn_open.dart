@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
@@ -7,6 +8,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -176,6 +178,7 @@ class HostConnOpen extends _$HostConnOpen {
           }
         } else if (mes.type == MessageTypeEnum.game) {
           GameEntity game = GameEntity.fromJson(mes.content);
+          print(game);
           final uid = game.uid;
           final score = game.score;
 
@@ -194,6 +197,28 @@ class HostConnOpen extends _$HostConnOpen {
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
+          } else if (game.type == GameTypeEnum.ranking) {
+            final rankingMap = jsonDecode(game.uid);
+            final sidePots = ref.read(hostSidePotsProvider);
+            final distributionMap = distributeSidePots(sidePots, rankingMap);
+            final uids = distributionMap.keys.toList();
+            final cons = ref.read(hostConsProvider);
+            for (final uid in uids) {
+              final score = distributionMap[uid] ?? 0;
+
+              /// HostのStack状態変更
+              ref.read(playerDataProvider.notifier).updateStack(uid, score);
+
+              /// Participantのstack状態変更
+              for (final conEntity in cons) {
+                final conn = conEntity.con;
+                final game = GameEntity(
+                    uid: uid, type: GameTypeEnum.showdown, score: score);
+                final mes =
+                    MessageEntity(type: MessageTypeEnum.game, content: game);
+                conn.send(mes.toJson());
+              }
+            }
           }
 
           /// HostのOption状態変更
@@ -203,13 +228,11 @@ class HostConnOpen extends _$HostConnOpen {
           final cons = ref.read(hostConsProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            Future.delayed(const Duration(seconds: 4), () {
-              final round = ref.read(roundProvider);
-              final game = GameEntity(uid: '', type: round, score: 0);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.game, content: game);
-              conn.send(mes.toJson());
-            });
+            const game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
+            const mes =
+                MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
           }
         }
       });
