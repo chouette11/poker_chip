@@ -184,7 +184,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 const Positioned(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: UserBoxes(),
+                    child: UserBoxes(false),
                   ),
                 ),
                 Positioned(
@@ -198,7 +198,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   height: height * 0.4,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: PotWidget(),
+                    child: PotWidget(false),
                   ),
                 ),
                 Positioned(
@@ -206,7 +206,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   right: width * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: SidePotsWidget(),
+                    child: SidePotsWidget(false),
                   ),
                 ),
                 Positioned(
@@ -235,7 +235,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //     width: 200,
                 //   ),
                 // ),
-                Positioned(bottom: height * 0.2, child: const Hole()),
+                Positioned(bottom: height * 0.2, child: const Hole(false)),
                 Positioned(
                     bottom: height * 0.2, child: Text(connected.toString())),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
@@ -295,6 +295,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(playerDataProvider.notifier).updateBtn(uid);
       break;
     case GameTypeEnum.sidePot:
+      print(score);
       ref.read(sidePotsProvider.notifier).addSidePot(score);
       break;
     case GameTypeEnum.preFlop:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -7,7 +8,9 @@ import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 
 class Hole extends ConsumerWidget {
-  const Hole({super.key});
+  const Hole(this.isHost, {super.key});
+
+  final bool isHost;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,6 +23,9 @@ class Hole extends ConsumerWidget {
     final player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.uid).toList();
+    final isSidePot = isHost
+        ? ref.watch(hostSidePotsProvider).isNotEmpty
+        : ref.watch(sidePotsProvider).isNotEmpty;
 
     return SizedBox(
       height: 220,
@@ -45,14 +51,16 @@ class Hole extends ConsumerWidget {
               Visibility(
                 visible: round == GameTypeEnum.showdown &&
                     activeIds.contains(myData.uid),
-                child: Checkbox(
-                  value: isSelected,
-                  onChanged: (value) {
-                    ref
-                        .read(isSelectedProvider(myData).notifier)
-                        .update((state) => !state);
-                  },
-                ),
+                child: isSidePot
+                    ? RankingSelectButton(myData)
+                    : Checkbox(
+                        value: isSelected,
+                        onChanged: (value) {
+                          ref
+                              .read(isSelectedProvider(myData).notifier)
+                              .update((state) => !state);
+                        },
+                      ),
               ),
             ],
           ),
@@ -65,8 +73,10 @@ class Hole extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
-                    Text(myData.stack.toString(), style: TextStyleConstant.bold20),
+                    Text(myData.name ?? 'プレイヤー1',
+                        style: TextStyleConstant.bold14),
+                    Text(myData.stack.toString(),
+                        style: TextStyleConstant.bold20),
                   ],
                 ),
               ),

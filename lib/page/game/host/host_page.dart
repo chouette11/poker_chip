@@ -4,6 +4,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/page/game/component/side_pot.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
@@ -98,7 +99,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                 const Positioned(
                   child: Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: UserBoxes(),
+                    child: UserBoxes(true),
                   ),
                 ),
                 Positioned(
@@ -119,15 +120,15 @@ class _GamePageState extends ConsumerState<HostPage> {
                   height: height * 0.4,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: PotWidget(),
+                    child: PotWidget(true),
                   ),
                 ),
                 Positioned(
                   height: height * 0.4,
                   left: width * 0.3,
-                  child: const Padding(
+                  child:  const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: SidePotsWidget(),
+                    child: SidePotsWidget(true),
                   ),
                 ),
                 Positioned(
@@ -169,7 +170,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                 //     width: 200,
                 //   ),
                 // ),
-                Positioned(bottom: height * 0.2, child: const Hole()),
+                Positioned(bottom: height * 0.2, child: const Hole(true)),
                 Positioned(
                     bottom: height * 0.2, child: Text(connected.toString())),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),

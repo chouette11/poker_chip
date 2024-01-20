@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -8,7 +9,9 @@ import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 
 class UserBoxes extends ConsumerWidget {
-  const UserBoxes({super.key});
+  const UserBoxes(this.isHost, {super.key});
+
+  final bool isHost;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -28,9 +31,11 @@ class UserBoxes extends ConsumerWidget {
       print(players);
       final splitPlayers = splitArrayAroundTarget(players, myAssignedId);
       final before = splitPlayers[0];
-      final beforeUsers = before.map((e) => UserBox(userEntity: e)).toList();
+      final beforeUsers =
+          before.map((e) => UserBox(isHost: isHost, userEntity: e)).toList();
       final after = splitPlayers[1];
-      final afterUsers = after.map((e) => UserBox(userEntity: e)).toList();
+      final afterUsers =
+          after.map((e) => UserBox(isHost: isHost, userEntity: e)).toList();
       List<Widget> child = [];
       List<Widget> children = [];
       // playersが奇数の場合
@@ -38,7 +43,7 @@ class UserBoxes extends ConsumerWidget {
         for (int i = 0; i < afterUsers.length; i++) {
           child.add(beforeUsers[i]);
           child.add(afterUsers[afterUsers.length - i - 1]);
-          children.add(SizedBox(height: 16));
+          children.add(const SizedBox(height: 16));
           children.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: child,
@@ -49,7 +54,7 @@ class UserBoxes extends ConsumerWidget {
         for (int i = 0; i < afterUsers.length; i++) {
           child.add(beforeUsers[i + 1]);
           child.add(afterUsers[afterUsers.length - i - 1]);
-          children.add(SizedBox(height: 16));
+          children.add(const SizedBox(height: 16));
           children.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: child,
@@ -72,9 +77,11 @@ class UserBoxes extends ConsumerWidget {
 class UserBox extends ConsumerWidget {
   const UserBox({
     super.key,
+    required this.isHost,
     required this.userEntity,
   });
 
+  final bool isHost;
   final UserEntity userEntity;
 
   @override
@@ -84,7 +91,9 @@ class UserBox extends ConsumerWidget {
     final player = List.from(ref.watch(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     final activeIds = player.map((e) => e.uid).toList();
-    final isSidePot = ref.watch(sidePotsProvider);
+    final isSidePot = isHost
+        ? ref.watch(hostSidePotsProvider).isNotEmpty
+        : ref.watch(sidePotsProvider).isNotEmpty;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -104,18 +113,20 @@ class UserBox extends ConsumerWidget {
         ),
         Text(userEntity.score.toString()),
         Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
-        Visibility(visible: userEntity.isBtn, child: Text('D')),
+        Visibility(visible: userEntity.isBtn, child: const Text('D')),
         Visibility(
           visible: round == GameTypeEnum.showdown &&
               activeIds.contains(userEntity.uid),
-          child: Checkbox(
-            value: isSelected,
-            onChanged: (value) {
-              ref
-                  .read(isSelectedProvider(userEntity).notifier)
-                  .update((state) => !state);
-            },
-          ),
+          child: isSidePot
+              ? RankingSelectButton(userEntity)
+              : Checkbox(
+                  value: isSelected,
+                  onChanged: (value) {
+                    ref
+                        .read(isSelectedProvider(userEntity).notifier)
+                        .update((state) => !state);
+                  },
+                ),
         ),
       ],
     );
