@@ -13,8 +13,9 @@ class ParticipantWhoWinButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final round = ref.watch(roundProvider);
+    final sidePots = ref.watch(sidePotsProvider);
     return Visibility(
-      visible: round == GameTypeEnum.showdown,
+      visible: round == GameTypeEnum.showdown && sidePots.isEmpty,
       child: ElevatedButton(
         onPressed: () {
           final players = ref.read(playerDataProvider);
