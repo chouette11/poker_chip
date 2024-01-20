@@ -62,7 +62,7 @@ class OptionAssignedId extends _$OptionAssignedId {
   }
 
   void updatePostFlopId() {
-    final btn = ref.read(btnIdProvider);
+    final btn = ref.read(bigIdProvider.notifier).btnId();
     final player = List.from(ref.read(playerDataProvider));
     player.removeWhere((e) => e.isFold == true);
     player.removeWhere((e) => e.stack == 0);

@@ -25,7 +25,7 @@ class HostRankingButton extends ConsumerWidget {
             final rank = ref.read(rankingProvider(player));
             rankingMap[player.uid] = rank;
           }
-          final distributionMap = _distributeSidePots(sidePots, rankingMap);
+          final distributionMap = distributeSidePots(sidePots, rankingMap);
           final uids = distributionMap.keys.toList();
 
           final cons = ref.read(hostConsProvider);
@@ -66,8 +66,8 @@ class HostRankingButton extends ConsumerWidget {
 }
 
 /// { uid: score }
-Map<String, int> _distributeSidePots(
-    List<SidePotEntity> sidePots, Map<String, int> userRankings) {
+Map<String, int> distributeSidePots(
+    List<SidePotEntity> sidePots, Map userRankings) {
   // 各ユーザーに分配されるチップの量を記録するマップ
   Map<String, int> distributions = {};
 

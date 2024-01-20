@@ -47,7 +47,6 @@ class HostCons extends _$HostCons {
   }
 }
 
-
 ///
 /// Game
 ///
@@ -182,7 +181,7 @@ class Round extends _$Round {
 ///
 
 @Riverpod(keepAlive: true)
-class BtnId extends _$BtnId {
+class BigId extends _$BigId {
   @override
   int build() {
     return 1;
@@ -197,46 +196,47 @@ class BtnId extends _$BtnId {
     }
   }
 
-  void fixHeads() {
-    state = 1;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class SmallId extends _$SmallId {
-  @override
-  int build() {
-    return 2;
-  }
-
-  void updateId() {
-    final len = ref.read(playerDataProvider).length;
-    if ((state + 1) > len) {
-      state = 1;
-    } else {
-      state = state + 1;
+  int smallId() {
+    final players = ref.read(playerDataProvider);
+    int id = state - 1;
+    if (id == 0) {
+      id = players.length;
     }
-  }
-
-  void fixHeads() {
-    state = 1;
-  }
-}
-
-@Riverpod(keepAlive: true)
-class BigId extends _$BigId {
-  @override
-  int build() {
-    return 3;
-  }
-
-  void updateId() {
-    final len = ref.read(playerDataProvider).length;
-    if ((state + 1) > len) {
-      state = 1;
-    } else {
-      state = state + 1;
+    final stack = ref
+        .read(playerDataProvider.notifier)
+        .curStack(_assignedIdToUid2(id, ref));
+    while (stack == 0) {
+      final len = players.length;
+      if (id == 0) {
+        id = len;
+      } else {
+        id = state - 1;
+      }
     }
+    return id;
+  }
+
+  int btnId() {
+    final players = ref.read(playerDataProvider);
+    int id = state - 2;
+    if (id == -1) {
+      id = players.length - 1;
+    } else if (id == 0) {
+      id = players.length;
+    } else {
+      final stack = ref
+          .read(playerDataProvider.notifier)
+          .curStack(_assignedIdToUid2(id, ref));
+      while (stack == 0) {
+        final len = players.length;
+        if (id == 0) {
+          id = len;
+        } else {
+          id = state - 1;
+        }
+      }
+    }
+    return id;
   }
 
   void fixHeads() {
@@ -246,9 +246,9 @@ class BigId extends _$BigId {
 
 void _game(List<PeerConEntity> cons,
     AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
-  final smallId = ref.read(smallIdProvider);
   final bigId = ref.read(bigIdProvider);
-  final btnId = ref.read(btnIdProvider);
+  final smallId = ref.read(bigIdProvider.notifier).smallId();
+  final btnId = ref.read(bigIdProvider.notifier).btnId();
   const big = 20;
   const small = 10;
   final smallBlind = MessageEntity(
@@ -300,6 +300,14 @@ void _game(List<PeerConEntity> cons,
 
 String _assignedIdToUid(
     int assignedId, AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
+  final players = ref.read(playerDataProvider);
+  if (!players.map((e) => e.assignedId).toList().contains(assignedId)) {
+    return '';
+  }
+  return players.firstWhere((e) => e.assignedId == assignedId).uid;
+}
+
+String _assignedIdToUid2(int assignedId, NotifierProviderRef<int> ref) {
   final players = ref.read(playerDataProvider);
   if (!players.map((e) => e.assignedId).toList().contains(assignedId)) {
     return '';

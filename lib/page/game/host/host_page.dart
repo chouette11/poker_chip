@@ -202,12 +202,10 @@ String lenToPeerId(int len) {
 void _game(List<PeerConEntity> cons, WidgetRef ref) {
   if (ref.read(playerDataProvider).length == 2) {
     ref.read(bigIdProvider.notifier).fixHeads();
-    ref.read(btnIdProvider.notifier).fixHeads();
-    ref.read(smallIdProvider.notifier).fixHeads();
   }
-  final smallId = ref.read(smallIdProvider);
   final bigId = ref.read(bigIdProvider);
-  final btnId = ref.read(btnIdProvider);
+  final smallId = ref.read(bigIdProvider.notifier).smallId();
+  final btnId = ref.read(bigIdProvider.notifier).btnId();
   const big = 20;
   const small = 10;
   final smallBlind = MessageEntity(

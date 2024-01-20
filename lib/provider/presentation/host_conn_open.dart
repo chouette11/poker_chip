@@ -96,9 +96,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearScore();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
-            ref.read(smallIdProvider.notifier).updateId();
             ref.read(bigIdProvider.notifier).updateId();
-            ref.read(btnIdProvider.notifier).updateId();
             ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
             ref.read(roundProvider.notifier).delayPreFlop();
           } else if (isChangeRound) {
@@ -127,9 +125,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearIsAction();
             final round = ref.read(roundProvider);
             if (round == GameTypeEnum.showdown) {
-              ref.read(smallIdProvider.notifier).updateId();
               ref.read(bigIdProvider.notifier).updateId();
-              ref.read(btnIdProvider.notifier).updateId();
               ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
             }
           } else {

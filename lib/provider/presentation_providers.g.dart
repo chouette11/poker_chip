@@ -79,41 +79,13 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$btnIdHash() => r'8e99823213080ab071c77cd4822eb415c3f43ebf';
+String _$bigIdHash() => r'cb21cb4537823a420479c46637d7bdd7fcac805e';
 
 ///
 /// position
 ///
 ///
-/// Copied from [BtnId].
-@ProviderFor(BtnId)
-final btnIdProvider = NotifierProvider<BtnId, int>.internal(
-  BtnId.new,
-  name: r'btnIdProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$btnIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$BtnId = Notifier<int>;
-String _$smallIdHash() => r'2abea5ee88749f5ccfe245f4466d7918294b6fda';
-
-/// See also [SmallId].
-@ProviderFor(SmallId)
-final smallIdProvider = NotifierProvider<SmallId, int>.internal(
-  SmallId.new,
-  name: r'smallIdProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$smallIdHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$SmallId = Notifier<int>;
-String _$bigIdHash() => r'cb21cb4537823a420479c46637d7bdd7fcac805e';
-
-/// See also [BigId].
+/// Copied from [BigId].
 @ProviderFor(BigId)
 final bigIdProvider = NotifierProvider<BigId, int>.internal(
   BigId.new,
