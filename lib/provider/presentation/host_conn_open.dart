@@ -70,7 +70,7 @@ class HostConnOpen extends _$HostConnOpen {
           /// Participantの状態変更
           players = ref.read(playerDataProvider);
           final res =
-          MessageEntity(type: MessageTypeEnum.joined, content: players);
+              MessageEntity(type: MessageTypeEnum.joined, content: players);
           final cons = ref.read(hostConsProvider);
           for (var conEntity in cons) {
             final conn = conEntity.con;
@@ -103,21 +103,18 @@ class HostConnOpen extends _$HostConnOpen {
             print('change round');
             if (notifier.isStackNone()) {
               final sidePots =
-              ref.read(playerDataProvider.notifier).calculateSidePots();
+                  ref.read(playerDataProvider.notifier).calculateSidePots();
               ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
 
               final cons = ref.read(hostConsProvider);
               for (final con in cons) {
                 final conn = con.con;
                 for (final sidePot in sidePots) {
-                  /// Hostの状態変更
-                  ref.read(sidePotsProvider.notifier).addSidePot(sidePot.size);
-
                   /// Participantの状態変更
                   final game = GameEntity(
                       uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
                   final mes =
-                  MessageEntity(type: MessageTypeEnum.game, content: game);
+                      MessageEntity(type: MessageTypeEnum.game, content: game);
                   conn.send(mes.toJson());
                 }
               }
@@ -144,7 +141,7 @@ class HostConnOpen extends _$HostConnOpen {
             final optId = ref.read(optionAssignedIdProvider);
             action = action.copyWith.call(optId: optId);
             final mes =
-            MessageEntity(type: MessageTypeEnum.action, content: action);
+                MessageEntity(type: MessageTypeEnum.action, content: action);
             conn.send(mes.toJson());
           }
 
@@ -157,16 +154,14 @@ class HostConnOpen extends _$HostConnOpen {
               final pot = ref.read(potProvider);
               final game = GameEntity(uid: uids.first, type: round, score: pot);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
 
-              Future.delayed(const Duration(seconds: 4), () {
-                final round = ref.read(roundProvider);
-                final game = GameEntity(uid: '', type: round, score: 0);
-                final mes =
-                MessageEntity(type: MessageTypeEnum.game, content: game);
-                conn.send(mes.toJson());
-              });
+              const gam =
+                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
+              const mess =
+                  MessageEntity(type: MessageTypeEnum.game, content: gam);
+              conn.send(mess.toJson());
             }
           } else if (isChangeRound) {
             /// Participantのターン状態変更
@@ -175,7 +170,7 @@ class HostConnOpen extends _$HostConnOpen {
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
           }
@@ -196,7 +191,7 @@ class HostConnOpen extends _$HostConnOpen {
               final game = GameEntity(
                   uid: uid, type: GameTypeEnum.showdown, score: score);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
           }
@@ -212,7 +207,7 @@ class HostConnOpen extends _$HostConnOpen {
               final round = ref.read(roundProvider);
               final game = GameEntity(uid: '', type: round, score: 0);
               final mes =
-              MessageEntity(type: MessageTypeEnum.game, content: game);
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             });
           }

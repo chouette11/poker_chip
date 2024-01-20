@@ -135,9 +135,9 @@ class _ActionButton extends ConsumerWidget {
         }
 
         /// ParticipantのStack状態変更
-        final optId = ref.read(optionAssignedIdProvider);
         for (final conEntity in cons) {
           final conn = conEntity.con;
+          final optId = ref.read(optionAssignedIdProvider);
           final action = ActionEntity(
             uid: myUid,
             type: actionTypeEnum,
@@ -155,18 +155,17 @@ class _ActionButton extends ConsumerWidget {
             final conn = conEntity.con;
             final uids = notifier.activePlayers().map((e) => e.uid).toList();
             final round = ref.read(roundProvider);
-            final game = GameEntity(uid: uids.first, type: round, score: 0);
+            final pot = ref.read(potProvider);
+            final game = GameEntity(uid: uids.first, type: round, score: pot);
             final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
 
-            Future.delayed(const Duration(seconds: 4), () {
-              final round = ref.read(roundProvider);
-              final game = GameEntity(uid: '', type: round, score: 0);
-              final mes =
-                  MessageEntity(type: MessageTypeEnum.game, content: game);
-              conn.send(mes.toJson());
-            });
+            const gam =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
+            const mess =
+                MessageEntity(type: MessageTypeEnum.game, content: gam);
+            conn.send(mess.toJson());
           }
         } else if (isChangeRound) {
           /// Participantのターン状態変更

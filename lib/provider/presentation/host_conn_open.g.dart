@@ -6,7 +6,7 @@ part of 'host_conn_open.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hostConnOpenHash() => r'26d5ca107b6c9291498a5e2f334e1e9cf532e35a';
+String _$hostConnOpenHash() => r'a26b76424d8c122036582b066e4303969445fd52';
 
 /// Copied from Dart SDK
 class _SystemHash {
