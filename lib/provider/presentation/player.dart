@@ -112,9 +112,9 @@ class PlayerData extends _$PlayerData {
   }
 
   bool isSameScore() {
-    final player = List.from(state);
+    final List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0);
+    player.removeWhere((e) => e.stack == 0 && e.score == 0);
     final values = player.map((e) => e.score).toList();
     if (values.isEmpty) return true;
 
