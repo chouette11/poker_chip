@@ -68,6 +68,14 @@ class HostSidePots extends _$HostSidePots {
     state = [...state, ...sidePots];
   }
 
+  int totalValue() {
+    int value = 0;
+    for (final pot in state) {
+      value += pot.size;
+    }
+    return value;
+  }
+
   void clear() {
     state = [];
   }
@@ -149,18 +157,17 @@ class Round extends _$Round {
   }
 
   void delayPreFlop() {
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(Duration(seconds: 2), () {
       /// foldを初期化
       ref.read(playerDataProvider.notifier).clearIsFold();
 
       /// potを初期化
       ref.read(potProvider.notifier).clear();
       ref.read(hostSidePotsProvider.notifier).clear();
-      ref.read(sidePotsProvider.notifier).clear();
       state = GameTypeEnum.preFlop;
     });
 
-    Future.delayed(Duration(seconds: 6), () {
+    Future.delayed(Duration(seconds: 4), () {
       final cons = ref.read(hostConsProvider);
       _game(cons, ref);
     });
