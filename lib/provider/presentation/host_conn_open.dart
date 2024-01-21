@@ -90,6 +90,7 @@ class HostConnOpen extends _$HostConnOpen {
           final isFoldout = notifier.isFoldout();
           final isChangeRound =
               notifier.isAllAction() && notifier.isSameScore();
+          final isAllinShowDown = notifier.isAllinShowDown();
           if (isFoldout) {
             final winner = notifier.activePlayers().first;
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
@@ -123,6 +124,9 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
             ref.read(playerDataProvider.notifier).clearIsAction();
+            if (isAllinShowDown) {
+              ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
+            }
             final round = ref.read(roundProvider);
             if (round == GameTypeEnum.showdown) {
               ref.read(bigIdProvider.notifier).updateId();

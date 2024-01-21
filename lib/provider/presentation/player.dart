@@ -133,6 +133,13 @@ class PlayerData extends _$PlayerData {
     return player.length == 1;
   }
 
+  bool isAllinShowDown() {
+    final List<UserEntity> players = List.from(state);
+    players.removeWhere((e) => e.isFold == true);
+    players.removeWhere((e) => e.stack == 0);
+    return players.length == 1;
+  }
+
   bool isStackNone() {
     final List<UserEntity> players = List.from(state);
     players.removeWhere((e) => e.isFold == true);
