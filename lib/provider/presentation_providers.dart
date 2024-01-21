@@ -226,17 +226,15 @@ class BigId extends _$BigId {
 
   int btnId() {
     final players = ref.read(playerDataProvider);
-    int id = state - 2;
-    if (id == -1) {
-      id = players.length - 1;
-    } else if (id == 0) {
-      id = players.length;
+    final len = players.length;
+    int id = smallId() - 1;
+    if (id == 0) {
+      id = len;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(id, ref)) ==
+        .read(playerDataProvider.notifier)
+        .curStack(_assignedIdToUid2(id, ref)) ==
         0) {
-      final len = players.length;
       id = id - 1;
       if (id == 0) {
         id = len;
