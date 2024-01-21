@@ -6,19 +6,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'opt_id.g.dart';
 
-final participantOptIdProvider = StateProvider((ref) => 0);
+final participantOptIdProvider = StateProvider((ref) => 2);
 
 @riverpod
 class OptionAssignedId extends _$OptionAssignedId {
   @override
   int build() {
-    final len = ref.read(playerDataProvider).length;
-    final bigId = ref.read(bigIdProvider);
-    if ((bigId + 1) > len) {
-      return 1;
-    } else {
-      return bigId + 1;
-    }
+    return 2;
   }
 
   void updateId() {
