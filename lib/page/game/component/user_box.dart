@@ -58,6 +58,7 @@ class UserBoxes extends ConsumerWidget {
           children.add(const SizedBox(height: 16));
           children.add(Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: child,
           ));
         }
@@ -140,7 +141,6 @@ class UserBox extends ConsumerWidget {
           ],
         ),
         Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
-        Visibility(visible: userEntity.isBtn, child: const Text('D')),
         Visibility(
           visible: round == GameTypeEnum.showdown &&
               activeIds.contains(userEntity.uid),
