@@ -81,6 +81,10 @@ class _ActionButton extends ConsumerWidget {
 
     return ElevatedButton(
       onPressed: () {
+        if ((actionTypeEnum == ActionTypeEnum.bet ||
+            actionTypeEnum == ActionTypeEnum.raise) && score < maxScore) {
+          return;
+        }
         final notifier = ref.read(playerDataProvider.notifier);
 
         /// HostのStack状態変更

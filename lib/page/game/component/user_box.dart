@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -113,7 +114,31 @@ class UserBox extends ConsumerWidget {
             ],
           ),
         ),
-        Text(userEntity.score.toString()),
+        Row(
+          children: [
+            userEntity.isBtn ? const DearButton() : const SizedBox(width: 32),
+            const SizedBox(width: 40),
+            Visibility(
+              visible: userEntity.score != 0,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: const Color(0xFFFFE4C8),
+                    borderRadius: BorderRadius.circular(16)),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Text(
+                    userEntity.score.toString(),
+                    style: TextStyleConstant.bold16
+                        .copyWith(color: ColorConstant.black20),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 40),
+            const SizedBox(width: 32),
+          ],
+        ),
         Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
         Visibility(visible: userEntity.isBtn, child: const Text('D')),
         Visibility(

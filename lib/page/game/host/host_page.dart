@@ -17,6 +17,7 @@ import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
@@ -102,10 +103,10 @@ class _GamePageState extends ConsumerState<HostPage> {
                   ),
                 ),
                 Positioned(
-                  height: height * 0.2,
+                  top: height * 0.23,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(ref.watch(roundProvider).name),
+                    child: Text(ref.watch(roundProvider).name, style: TextStyleConstant.bold16,),
                   ),
                 ),
                 Positioned(
