@@ -136,7 +136,7 @@ class PlayerData extends _$PlayerData {
   bool isStackNone() {
     final List<UserEntity> players = List.from(state);
     players.removeWhere((e) => e.isFold == true);
-    final result = players.indexWhere((e) => e.stack == 0);
+    final result = players.indexWhere((e) => e.stack == 0 && e.score != 0);
     return result != -1;
   }
 
