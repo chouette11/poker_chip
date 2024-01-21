@@ -157,6 +157,7 @@ class PlayerData extends _$PlayerData {
   List<UserEntity> activePlayers() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
+    player.removeWhere((e) => e.stack == 0);
     return player;
   }
 

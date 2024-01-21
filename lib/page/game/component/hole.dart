@@ -20,9 +20,11 @@ class Hole extends ConsumerWidget {
         ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
     final round = ref.watch(roundProvider);
     final isSelected = ref.watch(isSelectedProvider(myData));
-    final player = List.from(ref.read(playerDataProvider));
-    player.removeWhere((e) => e.isFold == true);
-    final activeIds = player.map((e) => e.uid).toList();
+    final activeIds = ref
+        .watch(playerDataProvider.notifier)
+        .activePlayers()
+        .map((e) => e.uid)
+        .toList();
     final isSidePot = isHost
         ? ref.watch(hostSidePotsProvider).isNotEmpty
         : ref.watch(sidePotsProvider).isNotEmpty;
