@@ -189,14 +189,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   ),
                 ),
                 Positioned(
-                  height: height * 0.2,
+                  top: height * 0.23,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(ref.watch(roundProvider).name),
+                    child: Text(
+                      ref.watch(roundProvider).name,
+                      style: TextStyleConstant.bold16,
+                    ),
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: PotWidget(false),
