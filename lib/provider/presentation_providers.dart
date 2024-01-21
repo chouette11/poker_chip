@@ -188,11 +188,20 @@ class BigId extends _$BigId {
   }
 
   void updateId() {
-    final len = ref.read(playerDataProvider).length;
-    if ((state + 1) > len) {
+    final players = ref.read(playerDataProvider);
+    final len = players.length;
+    state = state + 1;
+    if (state > len) {
       state = 1;
-    } else {
+    }
+    while (ref
+            .read(playerDataProvider.notifier)
+            .curStack(_assignedIdToUid2(state, ref)) ==
+        0) {
       state = state + 1;
+      if (state > len) {
+        state = 1;
+      }
     }
   }
 
@@ -202,15 +211,14 @@ class BigId extends _$BigId {
     if (id == 0) {
       id = players.length;
     }
-    final stack = ref
-        .read(playerDataProvider.notifier)
-        .curStack(_assignedIdToUid2(id, ref));
-    while (stack == 0) {
+    while (ref
+            .read(playerDataProvider.notifier)
+            .curStack(_assignedIdToUid2(id, ref)) ==
+        0) {
       final len = players.length;
+      id = id - 1;
       if (id == 0) {
         id = len;
-      } else {
-        id = state - 1;
       }
     }
     return id;
@@ -223,17 +231,15 @@ class BigId extends _$BigId {
       id = players.length - 1;
     } else if (id == 0) {
       id = players.length;
-    } else {
-      final stack = ref
-          .read(playerDataProvider.notifier)
-          .curStack(_assignedIdToUid2(id, ref));
-      while (stack == 0) {
-        final len = players.length;
-        if (id == 0) {
-          id = len;
-        } else {
-          id = state - 1;
-        }
+    }
+    while (ref
+            .read(playerDataProvider.notifier)
+            .curStack(_assignedIdToUid2(id, ref)) ==
+        0) {
+      final len = players.length;
+      id = id - 1;
+      if (id == 0) {
+        id = len;
       }
     }
     return id;
@@ -309,6 +315,7 @@ String _assignedIdToUid(
 
 String _assignedIdToUid2(int assignedId, NotifierProviderRef<int> ref) {
   final players = ref.read(playerDataProvider);
+  print('$assignedId');
   if (!players.map((e) => e.assignedId).toList().contains(assignedId)) {
     return '';
   }
