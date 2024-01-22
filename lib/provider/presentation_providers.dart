@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
@@ -19,7 +21,19 @@ part 'presentation_providers.g.dart';
 final uidProvider = StateProvider<String>((ref) =>
     ref.read(firebaseAuthProvider).currentUser?.uid ?? const Uuid().v4());
 
+final flavorProvider =
+    Provider((ref) => const String.fromEnvironment('flavor'));
+
 final qrCodeDataProvider = StateProvider<String>((ref) => '');
+
+final idTextFieldControllerProvider = Provider((_) => TextEditingController());
+
+final roomIdProvider =
+    StateProvider((ref) => Random().nextInt(99999 - 10000 + 1) + 10000);
+
+final isStartProvider = StateProvider((ref) => false);
+
+final isJoinProvider = StateProvider((ref) => false);
 
 final raiseBetProvider = StateProvider((ref) => 0);
 
@@ -227,13 +241,16 @@ class BigId extends _$BigId {
   int btnId() {
     final players = ref.read(playerDataProvider);
     final len = players.length;
+    if (len == 2) {
+      return smallId();
+    }
     int id = smallId() - 1;
     if (id == 0) {
       id = len;
     }
     while (ref
-        .read(playerDataProvider.notifier)
-        .curStack(_assignedIdToUid2(id, ref)) ==
+            .read(playerDataProvider.notifier)
+            .curStack(_assignedIdToUid2(id, ref)) ==
         0) {
       id = id - 1;
       if (id == 0) {
