@@ -22,8 +22,7 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
 
   @override
   void dispose() {
-    final players = ref.read(playersExProvider);
-    final id = lenToPeerId(players.length);
+    final id = lenToPeerId(1);
     final peer = ref.read(peerProvider(id));
     peer.dispose();
     _controller.dispose();
@@ -33,15 +32,13 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
   @override
   void initState() {
     super.initState();
-    final players = ref.read(playersExProvider);
-    final id = lenToPeerId(players.length);
+    final id = lenToPeerId(1);
     final peer = ref.read(peerProvider(id));
     ref.read(hostConnOpenProvider(peer).notifier).open(context);
   }
 
   void sendHelloWorld() {
     print('send');
-    final players = ref.read(playersExProvider);
     final consEntity = ref.read(hostConsProvider);
     for (var conEntity in consEntity) {
       final conn = conEntity.con;

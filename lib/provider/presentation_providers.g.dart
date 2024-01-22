@@ -79,7 +79,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$bigIdHash() => r'cb21cb4537823a420479c46637d7bdd7fcac805e';
+String _$bigIdHash() => r'1b137999b39fbc53fd5ee847341c236f89ff2840';
 
 ///
 /// position
