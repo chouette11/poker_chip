@@ -22,10 +22,7 @@ class UserBoxes extends ConsumerWidget {
         players.firstWhere((e) => e.uid == ref.read(uidProvider)).assignedId;
 
     if (players.length == 1) {
-      return const Text(
-        '接続してください',
-        style: TextStyle(fontSize: 32),
-      );
+      return const SizedBox.shrink();
     } else {
       players = rotateToMiddle(players, myAssignedId);
       print('players');
@@ -98,6 +95,8 @@ class UserBox extends ConsumerWidget {
     final isSidePot = isHost
         ? ref.watch(hostSidePotsProvider).isNotEmpty
         : ref.watch(sidePotsProvider).isNotEmpty;
+    final flavor = ref.read(flavorProvider);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -140,7 +139,11 @@ class UserBox extends ConsumerWidget {
             const SizedBox(width: 32),
           ],
         ),
-        Text('id: ${userEntity.assignedId}', style: TextStyleConstant.normal14),
+        Visibility(
+          visible: flavor == 'dev',
+          child: Text('id: ${userEntity.assignedId}',
+              style: TextStyleConstant.normal14),
+        ),
         Visibility(
           visible: round == GameTypeEnum.showdown &&
               activeIds.contains(userEntity.uid),
