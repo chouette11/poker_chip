@@ -1,87 +1,83 @@
 import 'package:go_router/go_router.dart';
-import 'package:poker_chip/page/root/component/mute_button.dart';
+import 'package:poker_chip/page/game/component/chips.dart';
+import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/page/root/component/main_button.dart';
-import 'package:poker_chip/page/root/component/title_icon.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 
-final _localPlayer = AudioPlayer(userAgent: "local");
-
-class RootPage extends ConsumerStatefulWidget {
-  const RootPage({Key? key}) : super(key: key);
+class RootPage extends ConsumerWidget {
+  const RootPage({super.key});
 
   @override
-  ConsumerState<RootPage> createState() => _RootPageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
-class _RootPageState extends ConsumerState<RootPage> {
-  bool isChanged = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+            height: height,
+            width: width,
             child: Stack(
               alignment: Alignment.center,
               children: [
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const TitleIcon(),
-                    const SizedBox(height: 52),
-                    MainButton(
-                      onTap: () async {
-                        context.push('/host');
-                        
-                      },
-                      text: '部屋作成',
-                    ),
-                    const SizedBox(height: 32),
-                    MainButton(
-                      onTap: () async {
-                        context.go('/participant', extra: 'c78da73a-9b97-4efc-9303-4161de32b84f');
-                      },
-                      text: '参加する',
-                    ),
-                    MainButton(
-                      onTap: () async {
-                        context.go('/participant', extra: '5f865cf4-02d2-4249-812e-d0c5d8eecad3');
-                      },
-                      text: '参加する',
-                    ),
-                    const SizedBox(height: 32),
-                    MainButton(
-                      onTap: () async {
-                        context.push('/ori');
-                      },
-                      text: 'ori',
-                    ),
-                    MainButton(
-                      onTap: () async {
-                        context.push('/host_ex');
-                      },
-                      text: 'host',
-                    ),
-                  ],
-                ),
                 Positioned(
                   top: 0,
-                  right: 0,
-                  child: MuteButton(_localPlayer),
+                  left: 0,
+                  child: Image.asset(
+                    'assets/images/board.png',
+                    fit: BoxFit.fitHeight,
+                    height: height - 36,
+                    width: width,
+                  ),
                 ),
+                Positioned(
+                  top: height * 0.23,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      ref
+                          .watch(roundProvider)
+                          .name,
+                      style: TextStyleConstant.bold16,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: height * 0.3,
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: PotWidget(true),
+                  ),
+                ),
+                Positioned(
+                  bottom: height * 0.4,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                          onPressed: () => context.go('/host'),
+                          child: const Text('部屋作成')),
+                      const SizedBox(width: 32),
+                      ElevatedButton(
+                          onPressed: () => context.go('/participant'),
+                          child: const Text('参加する')),
+                    ],
+                  ),),
+                Positioned(bottom: height * 0.2, child: const Hole(true)),
+                Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),
           ),
