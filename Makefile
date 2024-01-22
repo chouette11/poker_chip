@@ -54,11 +54,11 @@ pod-install:
 
 .PHONY: dev
 dev: 
-	flutterfire configure --project=wordwolf-1f53d --out=lib/util/environment/src/firebase_options_dev.dart --platforms=android,ios,web --ios-bundle-id=com.AI.werewolf.dev --android-package-name=com.AI.werewolf.dev
+	flutterfire configure --project=poker-chip-14428 --out=lib/util/environment/src/firebase_options_dev.dart --platforms=android,ios,web --ios-bundle-id=com.poker.chip.dev --android-package-name=com.poker.chip.dev
 
 .PHONY: prod
 prod:
-	flutterfire configure --project=ai-werewolf --out=lib/util/environment/src/firebase_options_prod.dart --platforms=android,ios,web --ios-bundle-id=com.AI.werewolf --android-package-name=com.AI.werewolf
+	flutterfire configure --project=poker-chip-14428 --out=lib/util/environment/src/firebase_options_prod.dart --platforms=android,ios,web --ios-bundle-id=com.poker.chip --android-package-name=com.poker.chip
 
 .PHONY: web-dev
 web-dev:

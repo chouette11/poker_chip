@@ -47,29 +47,29 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCa6Lxfo7RRSve7PRrD86WWC3XYEoZ70Qc',
-    appId: '1:673045133489:web:ba6772abc0bb9437dd4a90',
-    messagingSenderId: '673045133489',
-    projectId: 'ai-werewolf',
-    authDomain: 'ai-werewolf.firebaseapp.com',
-    storageBucket: 'ai-werewolf.appspot.com',
-    measurementId: 'G-9ZY9MK5LCP',
+    apiKey: 'AIzaSyAoxPqYywFP5bIki03ED-ACYLy-OUvNDFo',
+    appId: '1:111799079630:web:d07f90c8acc3a7de09369f',
+    messagingSenderId: '111799079630',
+    projectId: 'poker-chip-14428',
+    authDomain: 'poker-chip-14428.firebaseapp.com',
+    storageBucket: 'poker-chip-14428.appspot.com',
+    measurementId: 'G-1B94DWWSZ7',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC9IgqqDL62XxpRvMChr7TVR_L5hJ6tNSc',
-    appId: '1:673045133489:android:3c927fa10efd3ee2dd4a90',
-    messagingSenderId: '673045133489',
-    projectId: 'ai-werewolf',
-    storageBucket: 'ai-werewolf.appspot.com',
+    apiKey: 'AIzaSyCe7QIikYa7QldE5e46lCCIr5RWsITwhx0',
+    appId: '1:111799079630:android:2b85450861b55cac09369f',
+    messagingSenderId: '111799079630',
+    projectId: 'poker-chip-14428',
+    storageBucket: 'poker-chip-14428.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDruAb-OGbnPdheqp8QdeZjKfGegeymqfQ',
-    appId: '1:673045133489:ios:80cd75fbb2ce25f3dd4a90',
-    messagingSenderId: '673045133489',
-    projectId: 'ai-werewolf',
-    storageBucket: 'ai-werewolf.appspot.com',
-    iosBundleId: 'com.AI.werewolf',
+    apiKey: 'AIzaSyCjxx2LdSwNMfedziOZdPwCxMkb2tP2A18',
+    appId: '1:111799079630:ios:e94da6160f509dc909369f',
+    messagingSenderId: '111799079630',
+    projectId: 'poker-chip-14428',
+    storageBucket: 'poker-chip-14428.appspot.com',
+    iosBundleId: 'com.poker.chip',
   );
 }
