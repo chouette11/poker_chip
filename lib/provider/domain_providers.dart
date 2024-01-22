@@ -8,8 +8,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:uuid/uuid.dart';
 import 'package:poker_chip/page/root/root_page.dart';
+import 'package:uuid/uuid.dart';
 
 final firebaseFirestoreProvider = Provider((_) => FirebaseFirestore.instance);
 
@@ -41,11 +41,12 @@ final routerProvider = Provider<GoRouter>(
           ),
           GoRoute(
             path: 'ori',
-            builder: (context, state) => Ori(),
+            builder: (context, state) => const Ori(),
           ),
           GoRoute(
             path: 'host',
-            builder: (context, state) => const HostPage(),
+            pageBuilder: (context, state) =>
+                _buildPageWithAnimation(const HostPage()),
           ),
           GoRoute(
             path: 'read_qr',
@@ -53,7 +54,8 @@ final routerProvider = Provider<GoRouter>(
           ),
           GoRoute(
             path: 'participant',
-            builder: (context, state) => ParticipantPage(id: state.extra as String),
+            pageBuilder: (context, state) => _buildPageWithAnimation(
+                ParticipantPage(id: state.extra as String?)),
           ),
         ],
       ),
@@ -70,5 +72,3 @@ CustomTransitionPage _buildPageWithAnimation(Widget page) {
     transitionDuration: const Duration(milliseconds: 0),
   );
 }
-
-final isTutorialProvider = StateProvider((ref) => false);
