@@ -10,6 +10,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
+import 'package:poker_chip/page/game/host/host_page.dart';
+import 'package:poker_chip/page/game/participant/component/id_text_field.dart';
 import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
 import 'package:poker_chip/page/game/component/side_pot.dart';
 import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
@@ -19,13 +21,14 @@ import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class ParticipantPage extends ConsumerStatefulWidget {
   const ParticipantPage({Key? key, required this.id}) : super(key: key);
-  final String id;
+  final String? id;
 
   @override
   ConsumerState<ParticipantPage> createState() => _GamePageState();
@@ -45,35 +48,10 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    // Timer.periodic(Duration(milliseconds: 1500), (timer) {
-    //   print('timer');
-    //   // connect();
-    //   if (connected) {
-    //     timer.cancel();
-    //     final uid = ref.read(uidProvider);
-    //     final mes = MessageEntity(
-    //       type: 'join',
-    //       content: UserEntity(
-    //         uid: uid,
-    //         assignedId: 404,
-    //         name: null,
-    //         stack: 1000,
-    //         isBtn: false,
-    //       ),
-    //     );
-    //     conn.send(jsonEncode(mes.toJson()));
-    //     print('send');
-    //     print(mes.toJson().toString());
-    //   }
-    // });
-  }
-
   void connect(WidgetRef ref) {
-    final connection = peer.connect(widget.id);
+    final roomId = int.parse(ref.read(idTextFieldControllerProvider).text);
+    final peerId = roomToPeerId(roomId);
+    final connection = peer.connect(widget.id ?? peerId);
     ref.read(participantConProvider.notifier).update((state) => connection);
     conn = connection;
     print('con!');
@@ -82,11 +60,16 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       print('open!');
       setState(() {
         connected = true;
+        ref.read(isJoinProvider.notifier).update((state) => true);
       });
 
       connection.on("close").listen((event) {
         setState(() {
           connected = false;
+        });
+        peer = Peer(options: PeerOptions(debug: LogLevel.All));
+        Future.delayed(const Duration(seconds: 2), () {
+          connect(ref);
         });
       });
 
@@ -140,30 +123,32 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    final isStart = ref.watch(isJoinProvider);
+    final flavor = ref.watch(flavorProvider);
+    ref.listen(isJoinProvider, (previous, next) {
+      if (next) {
+        Future.delayed(const Duration(seconds: 1), () {
+          final uid = ref.read(uidProvider);
+          final mes = MessageEntity(
+            type: MessageTypeEnum.join,
+            content: UserEntity(
+              uid: uid,
+              assignedId: 404,
+              name: null,
+              stack: ref.read(stackProvider),
+              score: 0,
+              isBtn: false,
+              isAction: false,
+              isFold: false,
+            ),
+          );
+          conn.send(mes.toJson());
+        });
+      }
+    });
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            final uid = ref.read(uidProvider);
-            final mes = MessageEntity(
-              type: MessageTypeEnum.join,
-              content: UserEntity(
-                uid: uid,
-                assignedId: 404,
-                name: null,
-                stack: ref.read(stackProvider),
-                score: 0,
-                isBtn: false,
-                isAction: false,
-                isFold: false,
-              ),
-            );
-            conn.send(mes.toJson());
-            print('send');
-            print(mes.toJson());
-          },
-        ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: SizedBox(
@@ -237,8 +222,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                     child: ParticipantActionButtons(),
                   ),
                 ),
-                ElevatedButton(
-                    onPressed: () => connect(ref), child: Text('con')),
+
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -247,9 +231,21 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //     width: 200,
                 //   ),
                 // ),
+                const IdTextField(),
+                Visibility(
+                  visible: !isStart,
+                  child: Positioned(
+                      bottom: height * 0.35,
+                    child: ElevatedButton(
+                        onPressed: () => connect(ref), child: const Text('入室')),
+                  ),
+                ),
                 Positioned(bottom: height * 0.2, child: const Hole(false)),
-                Positioned(
-                    bottom: height * 0.2, child: Text(connected.toString())),
+                Visibility(
+                  visible: flavor == 'dev',
+                  child: Positioned(
+                      bottom: height * 0.2, child: Text(connected.toString())),
+                ),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),

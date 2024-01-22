@@ -12,6 +12,7 @@ import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
+import 'package:poker_chip/page/game/host/component/room_id.dart';
 import 'package:poker_chip/provider/presentation/host_conn_open.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
@@ -35,8 +36,8 @@ class _GamePageState extends ConsumerState<HostPage> {
 
   @override
   void dispose() {
-    final players = ref.read(playerDataProvider);
-    final id = lenToPeerId(players.length);
+    final roomId = ref.read(roomIdProvider);
+    final id = roomToPeerId(roomId);
     final peer = ref.read(peerProvider(id));
     peer.dispose();
     _controller.dispose();
@@ -46,8 +47,8 @@ class _GamePageState extends ConsumerState<HostPage> {
   @override
   void initState() {
     super.initState();
-    final players = ref.read(playerDataProvider);
-    final id = lenToPeerId(players.length);
+    final roomId = ref.read(roomIdProvider);
+    final id = roomToPeerId(roomId);
 
     final peer = ref.read(peerProvider(id));
     ref.read(hostConnOpenProvider(peer).notifier).open(context);
@@ -66,14 +67,9 @@ class _GamePageState extends ConsumerState<HostPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final len = ref.watch(playerDataProvider).length;
     final cons = ref.watch(hostConsProvider);
-    final peer = ref.watch(peerProvider(lenToPeerId(len)));
-    ref.listen(playerDataProvider, (previous, next) {
-      final id = lenToPeerId(next.length);
-      final peer = ref.read(peerProvider(id));
-      ref.read(hostConnOpenProvider(peer).notifier).open(context);
-    });
+    final flavor = ref.watch(flavorProvider);
+    final isStart = ref.watch(isStartProvider);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -106,33 +102,49 @@ class _GamePageState extends ConsumerState<HostPage> {
                   top: height * 0.23,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(ref.watch(roundProvider).name, style: TextStyleConstant.bold16,),
+                    child: Text(
+                      ref.watch(roundProvider).name,
+                      style: TextStyleConstant.bold16,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: flavor == 'dev',
+                  child: Positioned(
+                    height: height * 0.3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: isStart,
+                  child: Positioned(
+                    top: height * 0.3,
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: PotWidget(true),
+                    ),
                   ),
                 ),
                 Positioned(
-                  height: height * 0.3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
-                  ),
-                ),
-                Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: PotWidget(true),
+                    child: RoomIdWidget(),
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   left: width * 0.3,
-                  child:  const Padding(
+                  child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: SidePotsWidget(true),
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -140,7 +152,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -148,20 +160,22 @@ class _GamePageState extends ConsumerState<HostPage> {
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
+                  top: height * 0.3,
                   right: width * 0.2,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: HostActionButtons(),
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    _game(cons, ref);
-                  },
-                  child: const Text('ブラインド'),
+                Positioned(
+                  top: height * 0.4,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _game(cons, ref);
+                    },
+                    child: const Text('スタート'),
+                  ),
                 ),
-                Text(peer.id ?? ''),
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -170,9 +184,22 @@ class _GamePageState extends ConsumerState<HostPage> {
                 //     width: 200,
                 //   ),
                 // ),
+                Visibility(
+                  visible: !isStart,
+                  child: Positioned(
+                    top: height * 0.5,
+                    child: const Text(
+                      '全員が揃ったら開始してください',
+                      style: TextStyleConstant.normal16,
+                    ),
+                  ),
+                ),
                 Positioned(bottom: height * 0.2, child: const Hole(true)),
-                Positioned(
-                    bottom: height * 0.2, child: Text(connected.toString())),
+                Visibility(
+                  visible: flavor == 'dev',
+                  child: Positioned(
+                      bottom: height * 0.2, child: Text(connected.toString())),
+                ),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),
@@ -191,19 +218,12 @@ String assignedIdToUid(int assignedId, WidgetRef ref) {
   return players.firstWhere((e) => e.assignedId == assignedId).uid;
 }
 
-String lenToPeerId(int len) {
-  final ids = [
-    'c78da73a-9b97-4efc-9303-4161de32b84f',
-    '5f865cf4-02d2-4249-812e-d0c5d8eecad3',
-    '3'
-  ];
-  return ids[len - 1];
+String roomToPeerId(int roomId) {
+  return '$roomId--chouette111-poker-chip';
 }
 
 void _game(List<PeerConEntity> cons, WidgetRef ref) {
-  if (ref.read(playerDataProvider).length == 2) {
-    ref.read(bigIdProvider.notifier).fixHeads();
-  }
+  ref.read(isStartProvider.notifier).update((state) => true);
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
   final btnId = ref.read(bigIdProvider.notifier).btnId();
