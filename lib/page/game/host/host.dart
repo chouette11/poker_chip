@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerdart/peerdart.dart';
-import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation/host_conn_open.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 
@@ -22,7 +21,7 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
 
   @override
   void dispose() {
-    final id = lenToPeerId(1);
+    const id = 'c78da73a-9b97-4efc-9303-4161de32b84f';
     final peer = ref.read(peerProvider(id));
     peer.dispose();
     _controller.dispose();
@@ -32,7 +31,7 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
   @override
   void initState() {
     super.initState();
-    final id = lenToPeerId(1);
+    const id = 'c78da73a-9b97-4efc-9303-4161de32b84f';
     final peer = ref.read(peerProvider(id));
     ref.read(hostConnOpenProvider(peer).notifier).open(context);
   }

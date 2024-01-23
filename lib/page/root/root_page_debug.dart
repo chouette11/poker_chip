@@ -1,13 +1,9 @@
 import 'package:go_router/go_router.dart';
-import 'package:poker_chip/page/root/component/mute_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/root/component/main_button.dart';
 import 'package:poker_chip/page/root/component/title_icon.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
-import 'package:just_audio/just_audio.dart';
-
-final _localPlayer = AudioPlayer(userAgent: "local");
 
 class RootPageDebug extends ConsumerStatefulWidget {
   const RootPageDebug({Key? key}) : super(key: key);
@@ -76,11 +72,6 @@ class _RootPageDebugState extends ConsumerState<RootPageDebug> {
                       text: 'host',
                     ),
                   ],
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: MuteButton(_localPlayer),
                 ),
               ],
             ),

@@ -12,18 +12,25 @@ class SidePot {
   SidePot(this.size, this.users);
 }
 
-Map<String, int> distributeSidePots(List<SidePot> sidePots, List<List<String>> rankings) {
+Map<String, int> distributeSidePots(List<SidePot> sidePots, Map<String, int> userRankings) {
   // 各ユーザーに分配されるチップの量を記録するマップ
   Map<String, int> distributions = {};
+
+  // ランキング順にソートされたユーザーIDのリストを作成
+  var sortedUsers = userRankings.keys.toList();
+  sortedUsers.sort((a, b) => userRankings[a]!.compareTo(userRankings[b]!));
 
   // 各サイドポットに対して
   for (var pot in sidePots) {
     // このポットを獲得できる最高ランクを見つける
     List<String> eligibleWinners = [];
-    for (var rank in rankings) {
-      eligibleWinners = rank.where((uid) => pot.users.contains(uid)).toList();
-      if (eligibleWinners.isNotEmpty) {
-        break;
+    for (var uid in sortedUsers) {
+      if (pot.users.contains(uid)) {
+        if (eligibleWinners.isEmpty || userRankings[uid] == userRankings[eligibleWinners[0]]) {
+          eligibleWinners.add(uid);
+        } else {
+          break;
+        }
       }
     }
 
@@ -38,21 +45,21 @@ Map<String, int> distributeSidePots(List<SidePot> sidePots, List<List<String>> r
 }
 
 void main() {
-  // サイドポットとランキングの例
+  // サイドポットとユーザーランキングの例
   var sidePots = [
     SidePot(200, ['uid2', 'uid3', 'uid1', 'uid4']),
-    SidePot(80, ['uid3', 'uid1', 'uid4']),
+    SidePot(100, ['uid3', 'uid1', 'uid4']),
     SidePot(50, ['uid1', 'uid4']),
     SidePot(100, ['uid4'])
   ];
 
-  var rankings = [
-    ['uid3'],
-    ['uid1', 'uid4'],  // 1位（引き分け）
-             // 2位
-    ['uid2']           // 3位
-  ];
+  var userRankings = {
+    'uid3': 1,
+    'uid2': 2,  // uid1とuid4が1位で引き分け
+    'uid1': 3,  // 2位
+    'uid4': 4   // 3位
+  };
 
-  var distributions = distributeSidePots(sidePots, rankings);
+  var distributions = distributeSidePots(sidePots, userRankings);
   print(distributions);
 }

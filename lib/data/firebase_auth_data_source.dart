@@ -1,10 +1,6 @@
 import 'package:poker_chip/provider/domain_providers.dart';
-import 'package:poker_chip/provider/presentation_providers.dart';
-import 'package:poker_chip/repository/user_repository.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
-import 'package:app_settings/app_settings.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,34 +16,9 @@ class FirebaseAuthDataSource {
   /// 自動ログイン
   Future<void> autoLogin() async {
     final auth = ref.read(firebaseAuthProvider);
-    final userRepo = ref.read(userRepositoryProvider);
     final user = auth.currentUser;
     if (user == null || user.email == null) {
       await auth.signInAnonymously();
-      final token = await FirebaseMessaging.instance.getToken();
-      final uid = ref.read(uidProvider);
-    }
-  }
-
-  /// 通知許可
-  Future<void> requestNotification(BuildContext context) async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    final setting = await messaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      carPlay: false,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    final isNotification =
-        await ref.read(userRepositoryProvider).getIsNotiDialog();
-    if (setting.authorizationStatus.name != "authorized" && !isNotification) {
-      showDialog(
-        context: context,
-        builder: (context) => const NotificationDialog(),
-      );
     }
   }
 }
@@ -81,8 +52,6 @@ class NotificationDialog extends StatelessWidget {
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () {
-                      AppSettings.openAppSettings(
-                          type: AppSettingsType.notification);
                     },
                     child: Container(
                       width: 72,
@@ -107,7 +76,6 @@ class NotificationDialog extends StatelessWidget {
               ),
             ),
           ),
-          Image.asset('assets/images/notification.png'),
           Positioned(
             left: 12,
             top: 12,

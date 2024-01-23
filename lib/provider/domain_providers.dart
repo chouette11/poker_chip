@@ -2,16 +2,12 @@ import 'package:poker_chip/page/game/host/host.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/ori.dart';
 import 'package:poker_chip/page/game/participant/paticipant_page.dart';
-import 'package:poker_chip/page/read_qr/read_qr_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poker_chip/page/root/root_page.dart';
 import 'package:uuid/uuid.dart';
-
-final firebaseFirestoreProvider = Provider((_) => FirebaseFirestore.instance);
 
 final firebaseAuthProvider = Provider((_) => FirebaseAuth.instance);
 
@@ -47,10 +43,6 @@ final routerProvider = Provider<GoRouter>(
             path: 'host',
             pageBuilder: (context, state) =>
                 _buildPageWithAnimation(const HostPage()),
-          ),
-          GoRoute(
-            path: 'read_qr',
-            builder: (context, state) => const ReadQRPage(),
           ),
           GoRoute(
             path: 'participant',

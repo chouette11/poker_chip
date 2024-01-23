@@ -1,10 +1,8 @@
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
-import 'package:poker_chip/repository/user_repository.dart';
 import 'package:poker_chip/util/environment/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/provider/audio_provider.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 
@@ -30,8 +28,6 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     Future(() async {
-      final isMute = await ref.read(userRepositoryProvider).getIsMute();
-      ref.read(isMuteProvider.notifier).update((state) => isMute);
       ref.read(authProvider).autoLogin();
     });
     super.initState();
