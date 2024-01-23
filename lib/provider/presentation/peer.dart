@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
@@ -10,13 +11,30 @@ import 'package:flutter/material.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
+import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'host_conn_open.g.dart';
+part 'peer.g.dart';
+
+final peerProvider = ProviderFamily((ref, String id) => Peer(id: id));
+
+final participantConProvider = StateProvider<DataConnection?>((ref) => null);
+
+@riverpod
+class HostCons extends _$HostCons {
+  @override
+  List<PeerConEntity> build() {
+    return [];
+  }
+
+  void add(PeerConEntity peerConEntity) {
+    state = [...state, peerConEntity];
+  }
+}
 
 @Riverpod(keepAlive: true)
 @riverpod

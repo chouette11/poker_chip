@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class PotWidget extends ConsumerWidget {

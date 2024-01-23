@@ -3,8 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerdart/peerdart.dart';
-import 'package:poker_chip/provider/presentation/host_conn_open.dart';
-import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/provider/presentation/peer.dart';
 
 class Host extends ConsumerStatefulWidget {
   const Host({Key? key}) : super(key: key);

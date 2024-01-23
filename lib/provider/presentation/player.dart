@@ -1,5 +1,6 @@
 import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
+import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

@@ -1,11 +1,26 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'host_conn_open.dart';
+part of 'peer.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
+String _$hostConsHash() => r'97c17673a2c4c37a66d5398710e3bb59a19c2db6';
+
+/// See also [HostCons].
+@ProviderFor(HostCons)
+final hostConsProvider =
+    AutoDisposeNotifierProvider<HostCons, List<PeerConEntity>>.internal(
+  HostCons.new,
+  name: r'hostConsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$hostConsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
 String _$hostConnOpenHash() => r'30b80f268470b2dd220d3ba4aa046af4c7403f07';
 
 /// Copied from Dart SDK
