@@ -1,4 +1,4 @@
-package com.flutter.template
+package com.poker.chip
 
 import io.flutter.embedding.android.FlutterActivity
 
