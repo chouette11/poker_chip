@@ -167,13 +167,16 @@ class _GamePageState extends ConsumerState<HostPage> {
                     child: HostActionButtons(),
                   ),
                 ),
-                Positioned(
-                  top: height * 0.4,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _game(cons, ref);
-                    },
-                    child: const Text('スタート'),
+                Visibility(
+                  visible: !isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _game(cons, ref);
+                      },
+                      child: const Text('スタート'),
+                    ),
                   ),
                 ),
                 // Positioned(
@@ -194,11 +197,11 @@ class _GamePageState extends ConsumerState<HostPage> {
                     ),
                   ),
                 ),
-                Positioned(bottom: height * 0.2, child: const Hole(true)),
+                Positioned(bottom: height * 0.17, child: const Hole(true)),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(
-                      bottom: height * 0.2, child: Text(connected.toString())),
+                      bottom: height * 0.17, child: Text(connected.toString())),
                 ),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],

@@ -53,6 +53,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final peerId = roomToPeerId(roomId);
     final connection = peer.connect(widget.id ?? peerId);
     ref.read(participantConProvider.notifier).update((state) => connection);
+    ref.read(errorTextProvider.notifier).view();
     conn = connection;
     print('con!');
 
@@ -123,7 +124,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    final isStart = ref.watch(isJoinProvider);
     final flavor = ref.watch(flavorProvider);
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
@@ -231,20 +231,12 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //     width: 200,
                 //   ),
                 // ),
-                const IdTextField(),
-                Visibility(
-                  visible: !isStart,
-                  child: Positioned(
-                      bottom: height * 0.35,
-                    child: ElevatedButton(
-                        onPressed: () => connect(ref), child: const Text('入室')),
-                  ),
-                ),
-                Positioned(bottom: height * 0.2, child: const Hole(false)),
+                IdTextField((ref) => connect(ref)),
+                Positioned(bottom: height * 0.17, child: const Hole(false)),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(
-                      bottom: height * 0.2, child: Text(connected.toString())),
+                      bottom: height * 0.17, child: Text(connected.toString())),
                 ),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],

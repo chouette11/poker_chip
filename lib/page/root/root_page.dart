@@ -13,14 +13,8 @@ class RootPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -48,9 +42,7 @@ class RootPage extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      ref
-                          .watch(roundProvider)
-                          .name,
+                      ref.watch(roundProvider).name,
                       style: TextStyleConstant.bold16,
                     ),
                   ),
@@ -75,8 +67,9 @@ class RootPage extends ConsumerWidget {
                           onPressed: () => context.go('/participant'),
                           child: const Text('参加する')),
                     ],
-                  ),),
-                Positioned(bottom: height * 0.2, child: const Hole(true)),
+                  ),
+                ),
+                Positioned(bottom: height * 0.17, child: const Hole(true)),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),
