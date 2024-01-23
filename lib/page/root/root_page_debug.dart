@@ -1,8 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/page/root/component/main_button.dart';
-import 'package:poker_chip/page/root/component/title_icon.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 
 class RootPageDebug extends ConsumerStatefulWidget {
@@ -36,40 +34,39 @@ class _RootPageDebugState extends ConsumerState<RootPageDebug> {
                 Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const TitleIcon(),
                     const SizedBox(height: 52),
-                    MainButton(
-                      onTap: () async {
+                    ElevatedButton(
+                      onPressed: () async {
                         context.push('/host');
                         
                       },
-                      text: '部屋作成',
+                      child: const Text('部屋作成'),
                     ),
                     const SizedBox(height: 32),
-                    MainButton(
-                      onTap: () async {
+                    ElevatedButton(
+                      onPressed: () async {
                         context.go('/participant');
                       },
-                      text: '参加する',
+                      child: const Text('参加する'),
                     ),
-                    MainButton(
-                      onTap: () async {
+                    ElevatedButton(
+                      onPressed: () async {
                         context.go('/participant', extra: '5f865cf4-02d2-4249-812e-d0c5d8eecad3');
                       },
-                      text: '参加する',
+                      child: const Text('参加する'),
                     ),
                     const SizedBox(height: 32),
-                    MainButton(
-                      onTap: () async {
+                    ElevatedButton(
+                      onPressed: () async {
                         context.push('/ori');
                       },
-                      text: 'ori',
+                      child: const Text('ori'),
                     ),
-                    MainButton(
-                      onTap: () async {
+                    ElevatedButton(
+                      onPressed: () async {
                         context.push('/host_ex');
                       },
-                      text: 'host',
+                      child: const Text('host'),
                     ),
                   ],
                 ),
