@@ -16,7 +16,7 @@ class MuteButton extends ConsumerWidget {
       onPressed: () async {
         print(isMute);
         if (isMute) {
-          localPlayer.setAsset('assets/audios/title.mp3');
+          // localPlayer.setAsset('assets/audios/title.mp3');
           localPlayer.play();
         } else {
           final player = ref.read(justAudioProvider);
