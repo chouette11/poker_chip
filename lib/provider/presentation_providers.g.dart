@@ -6,6 +6,21 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$errorTextHash() => r'4b5e110d48dc7667f5090456d727469fd9981263';
+
+/// See also [ErrorText].
+@ProviderFor(ErrorText)
+final errorTextProvider =
+    AutoDisposeNotifierProvider<ErrorText, String>.internal(
+  ErrorText.new,
+  name: r'errorTextProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$errorTextHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$ErrorText = AutoDisposeNotifier<String>;
 String _$hostConsHash() => r'97c17673a2c4c37a66d5398710e3bb59a19c2db6';
 
 /// See also [HostCons].

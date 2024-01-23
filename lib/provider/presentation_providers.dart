@@ -24,9 +24,27 @@ final uidProvider = StateProvider<String>((ref) =>
 final flavorProvider =
     Provider((ref) => const String.fromEnvironment('flavor'));
 
-final qrCodeDataProvider = StateProvider<String>((ref) => '');
-
 final idTextFieldControllerProvider = Provider((_) => TextEditingController());
+
+@riverpod
+class ErrorText extends _$ErrorText {
+  @override
+  String build() {
+    return '';
+  }
+
+  void view() {
+    Future.delayed(const Duration(seconds: 2), () {
+      final isStart = ref.watch(isJoinProvider);
+      if (!isStart) {
+        state = '再試行してください';
+      }
+    });
+    Future.delayed(const Duration(seconds: 6), () {
+      state = '';
+    });
+  }
+}
 
 final roomIdProvider =
     StateProvider((ref) => Random().nextInt(99999 - 10000 + 1) + 10000);
@@ -173,7 +191,7 @@ class Round extends _$Round {
   }
 
   void delayPreFlop() {
-    Future.delayed(Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 2), () {
       /// foldを初期化
       ref.read(playerDataProvider.notifier).clearIsFold();
 
@@ -183,7 +201,7 @@ class Round extends _$Round {
       state = GameTypeEnum.preFlop;
     });
 
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(const Duration(seconds: 4), () {
       final cons = ref.read(hostConsProvider);
       _game(cons, ref);
     });
