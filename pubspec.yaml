@@ -51,7 +51,6 @@ flutter:
   assets:
     - assets/images/
     - assets/fonts/
-    - assets/audios/
 
 flutter_icons:
   android: true
