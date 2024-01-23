@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyDruAb-OGbnPdheqp8QdeZjKfGegeymqfQ</string>
+	<string>AIzaSyCjxx2LdSwNMfedziOZdPwCxMkb2tP2A18</string>
 	<key>GCM_SENDER_ID</key>
-	<string>673045133489</string>
+	<string>111799079630</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.AI.werewolf</string>
+	<string>com.poker.chip</string>
 	<key>PROJECT_ID</key>
-	<string>ai-werewolf</string>
+	<string>poker-chip-14428</string>
 	<key>STORAGE_BUCKET</key>
-	<string>ai-werewolf.appspot.com</string>
+	<string>poker-chip-14428.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:673045133489:ios:80cd75fbb2ce25f3dd4a90</string>
+	<string>1:111799079630:ios:e94da6160f509dc909369f</string>
 </dict>
 </plist>

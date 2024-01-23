@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "673045133489",
-    "project_id": "ai-werewolf",
-    "storage_bucket": "ai-werewolf.appspot.com"
+    "project_number": "111799079630",
+    "project_id": "poker-chip-14428",
+    "storage_bucket": "poker-chip-14428.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:673045133489:android:3c927fa10efd3ee2dd4a90",
+        "mobilesdk_app_id": "1:111799079630:android:2b85450861b55cac09369f",
         "android_client_info": {
-          "package_name": "com.AI.werewolf"
+          "package_name": "com.poker.chip"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC9IgqqDL62XxpRvMChr7TVR_L5hJ6tNSc"
+          "current_key": "AIzaSyCe7QIikYa7QldE5e46lCCIr5RWsITwhx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111799079630:android:0738a18c23f1b03809369f",
+        "android_client_info": {
+          "package_name": "com.poker.chip.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe7QIikYa7QldE5e46lCCIr5RWsITwhx0"
         }
       ],
       "services": {

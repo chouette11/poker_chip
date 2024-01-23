@@ -1,36 +1,45 @@
 {
   "project_info": {
-    "project_number": "632237526803",
-    "project_id": "wordwolf-1f53d",
-    "storage_bucket": "wordwolf-1f53d.appspot.com"
+    "project_number": "111799079630",
+    "project_id": "poker-chip-14428",
+    "storage_bucket": "poker-chip-14428.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:632237526803:android:a196338799ea76ca3754e6",
+        "mobilesdk_app_id": "1:111799079630:android:2b85450861b55cac09369f",
         "android_client_info": {
-          "package_name": "com.AI.werewolf.dev"
+          "package_name": "com.poker.chip"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "632237526803-o4mgf6f9ipacjhpam562reudpgrgkos9.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC4C2BMh84GgFWlHDQFDmBQX24SpiEDJzQ"
+          "current_key": "AIzaSyCe7QIikYa7QldE5e46lCCIr5RWsITwhx0"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "632237526803-o4mgf6f9ipacjhpam562reudpgrgkos9.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:111799079630:android:0738a18c23f1b03809369f",
+        "android_client_info": {
+          "package_name": "com.poker.chip.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe7QIikYa7QldE5e46lCCIr5RWsITwhx0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
         }
       }
     }
