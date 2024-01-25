@@ -55,7 +55,9 @@ class UserBoxes extends ConsumerWidget {
           child.add(afterUsers[afterUsers.length - i - 1]);
           children.add(const SizedBox(height: 16));
           children.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: players.length % 2 == 1
+                ? MainAxisAlignment.spaceAround
+                : MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: child,
           ));
@@ -98,68 +100,75 @@ class UserBox extends ConsumerWidget {
         : ref.watch(sidePotsProvider).isNotEmpty;
     final flavor = ref.read(flavorProvider);
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          height: 64,
-          width: 100,
-          decoration: const BoxDecoration(color: ColorConstant.black60),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(userEntity.name ?? 'プレイヤー1',
-                  style: TextStyleConstant.bold14),
-              Text(userEntity.stack.toString(),
-                  style: TextStyleConstant.bold20),
-            ],
+    return SizedBox(
+      height: 120,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            height: 60,
+            width: 100,
+            decoration: const BoxDecoration(color: ColorConstant.black60),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(userEntity.name ?? 'プレイヤー1',
+                    style: TextStyleConstant.bold14),
+                Text(userEntity.stack.toString(),
+                    style: TextStyleConstant.bold20),
+              ],
+            ),
           ),
-        ),
-        Row(
-          children: [
-            userEntity.isBtn ? const DearButton() : const SizedBox(width: 32),
-            const SizedBox(width: 40),
-            Visibility(
-              visible: userEntity.score != 0,
-              child: Container(
-                decoration: BoxDecoration(
-                    color: const Color(0xFFFFE4C8),
-                    borderRadius: BorderRadius.circular(16)),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  child: Text(
-                    userEntity.score.toString(),
-                    style: TextStyleConstant.bold16
-                        .copyWith(color: ColorConstant.black20),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              userEntity.isBtn
+                  ? const DealerButton()
+                  : const SizedBox(width: 32),
+              const SizedBox(width: 16),
+              Visibility(
+                visible: round == GameTypeEnum.showdown &&
+                    activeIds.contains(userEntity.uid),
+                child: isSidePot
+                    ? RankingSelectButton(userEntity)
+                    : Checkbox(
+                        value: isSelected,
+                        onChanged: (value) {
+                          ref
+                              .read(isSelectedProvider(userEntity).notifier)
+                              .update((state) => !state);
+                        },
+                      ),
+              ),
+              Visibility(
+                visible: userEntity.score != 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFFFE4C8),
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Text(
+                      userEntity.score.toString(),
+                      style: TextStyleConstant.bold16
+                          .copyWith(color: ColorConstant.black20),
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(width: 40),
-            const SizedBox(width: 32),
-          ],
-        ),
-        Visibility(
-          visible: flavor == 'dev',
-          child: Text('id: ${userEntity.assignedId}',
-              style: TextStyleConstant.normal14),
-        ),
-        Visibility(
-          visible: round == GameTypeEnum.showdown &&
-              activeIds.contains(userEntity.uid),
-          child: isSidePot
-              ? RankingSelectButton(userEntity)
-              : Checkbox(
-                  value: isSelected,
-                  onChanged: (value) {
-                    ref
-                        .read(isSelectedProvider(userEntity).notifier)
-                        .update((state) => !state);
-                  },
-                ),
-        ),
-      ],
+              const SizedBox(width: 16),
+              const SizedBox(width: 32),
+            ],
+          ),
+          Visibility(
+            visible: flavor == 'dev',
+            child: Text('id: ${userEntity.assignedId}',
+                style: TextStyleConstant.normal14),
+          ),
+        ],
+      ),
     );
   }
 }

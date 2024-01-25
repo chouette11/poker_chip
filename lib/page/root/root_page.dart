@@ -69,7 +69,7 @@ class RootPage extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Positioned(bottom: height * 0.17, child: const Hole(true)),
+                Positioned(bottom: height * 0.2, child: const Hole(true)),
                 Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
               ],
             ),

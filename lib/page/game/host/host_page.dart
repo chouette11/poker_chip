@@ -198,7 +198,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                     ),
                   ),
                 ),
-                Positioned(bottom: height * 0.17, child: const Hole(true)),
+                Positioned(bottom: height * 0.2, child: const Hole(true)),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(

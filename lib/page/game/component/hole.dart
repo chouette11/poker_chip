@@ -31,14 +31,29 @@ class Hole extends ConsumerWidget {
         : ref.watch(sidePotsProvider).isNotEmpty;
 
     return SizedBox(
-      height: 120,
+      height: 160,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(width: 32),
               const SizedBox(width: 40),
+              Visibility(
+                visible: round == GameTypeEnum.showdown &&
+                    activeIds.contains(myData.uid),
+                child: isSidePot
+                    ? RankingSelectButton(myData)
+                    : Checkbox(
+                  value: isSelected,
+                  onChanged: (value) {
+                    ref
+                        .read(isSelectedProvider(myData).notifier)
+                        .update((state) => !state);
+                  },
+                ),
+              ),
               Visibility(
                 visible: myData.score != 0,
                 child: Container(
@@ -57,59 +72,23 @@ class Hole extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 40),
-              myData.isBtn ? const DearButton() : const SizedBox(width: 32)
+              myData.isBtn ? const DealerButton() : const SizedBox(width: 32)
             ],
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              const Row(
-                children: [
-                  // Image.asset(
-                  //   'assets/images/tranp.png',
-                  //   height: 136,
-                  //   width: 72,
-                  // ),
-                  // Image.asset(
-                  //   'assets/images/tranp.png',
-                  //   height: 136,
-                  //   width: 72,
-                  // ),
-                ],
-              ),
-              Visibility(
-                visible: round == GameTypeEnum.showdown &&
-                    activeIds.contains(myData.uid),
-                child: isSidePot
-                    ? RankingSelectButton(myData)
-                    : Checkbox(
-                        value: isSelected,
-                        onChanged: (value) {
-                          ref
-                              .read(isSelectedProvider(myData).notifier)
-                              .update((state) => !state);
-                        },
-                      ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Container(
-                height: 64,
-                width: 100,
-                decoration: const BoxDecoration(color: ColorConstant.black60),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(myData.name ?? 'プレイヤー1',
-                        style: TextStyleConstant.bold14),
-                    Text(myData.stack.toString(),
-                        style: TextStyleConstant.bold20),
-                  ],
-                ),
-              ),
-            ],
+          Container(
+            height: 64,
+            width: 100,
+            decoration: const BoxDecoration(color: ColorConstant.black60),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(myData.name ?? 'プレイヤー1',
+                    style: TextStyleConstant.bold14),
+                Text(myData.stack.toString(),
+                    style: TextStyleConstant.bold20),
+              ],
+            ),
           ),
         ],
       ),
@@ -117,8 +96,8 @@ class Hole extends ConsumerWidget {
   }
 }
 
-class DearButton extends StatelessWidget {
-  const DearButton({super.key});
+class DealerButton extends StatelessWidget {
+  const DealerButton({super.key});
 
   @override
   Widget build(BuildContext context) {

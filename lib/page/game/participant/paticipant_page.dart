@@ -151,6 +151,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: SizedBox(
@@ -234,7 +235,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //   ),
                 // ),
                 IdTextField((ref) => connect(ref)),
-                Positioned(bottom: height * 0.17, child: const Hole(false)),
+                Positioned(bottom: height * 0.2, child: const Hole(false)),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(
