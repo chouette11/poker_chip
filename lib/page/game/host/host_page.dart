@@ -48,7 +48,8 @@ class _GamePageState extends ConsumerState<HostPage> {
   @override
   void initState() {
     super.initState();
-    final roomId = ref.read(roomIdProvider);
+    final flavor = ref.read(flavorProvider);
+    final roomId = flavor == 'dev' ? 000000: ref.read(roomIdProvider);
     final id = roomToPeerId(roomId);
 
     final peer = ref.read(peerProvider(id));
