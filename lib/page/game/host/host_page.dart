@@ -4,7 +4,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
-import 'package:poker_chip/page/game/component/side_pot.dart';
+import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
 import 'package:poker_chip/page/game/host/component/host_who_win_button.dart';
@@ -100,16 +100,6 @@ class _GamePageState extends ConsumerState<HostPage> {
                     child: UserBoxes(true),
                   ),
                 ),
-                Positioned(
-                  top: height * 0.23,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ref.watch(roundProvider).name,
-                      style: TextStyleConstant.bold16,
-                    ),
-                  ),
-                ),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(
@@ -131,18 +121,14 @@ class _GamePageState extends ConsumerState<HostPage> {
                   ),
                 ),
                 Positioned(
+                  top: height * 0.4,
+                  child: const InfoWidget(true),
+                ),
+                Positioned(
                   top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: RoomIdWidget(),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  left: width * 0.3,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SidePotsWidget(true),
                   ),
                 ),
                 Positioned(

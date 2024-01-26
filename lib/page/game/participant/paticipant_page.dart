@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/component/id_text_field.dart';
 import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
-import 'package:poker_chip/page/game/component/side_pot.dart';
 import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
 import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
@@ -142,6 +142,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               isBtn: false,
               isAction: false,
               isFold: false,
+              isSitOut: false,
             ),
           );
           conn.send(mes.toJson());
@@ -194,12 +195,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   ),
                 ),
                 Positioned(
-                  height: height * 0.4,
-                  right: width * 0.3,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SidePotsWidget(false),
-                  ),
+                  top: height * 0.4,
+                  child: const InfoWidget(false),
                 ),
                 Positioned(
                   height: height * 0.4,
