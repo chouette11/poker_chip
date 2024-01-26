@@ -69,22 +69,22 @@ class _$PeerConEntityCopyWithImpl<$Res, $Val extends PeerConEntity>
 }
 
 /// @nodoc
-abstract class _$$_PeerConEntityCopyWith<$Res>
+abstract class _$$PeerConEntityImplCopyWith<$Res>
     implements $PeerConEntityCopyWith<$Res> {
-  factory _$$_PeerConEntityCopyWith(
-          _$_PeerConEntity value, $Res Function(_$_PeerConEntity) then) =
-      __$$_PeerConEntityCopyWithImpl<$Res>;
+  factory _$$PeerConEntityImplCopyWith(
+          _$PeerConEntityImpl value, $Res Function(_$PeerConEntityImpl) then) =
+      __$$PeerConEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String uid, String peerId, DataConnection con});
 }
 
 /// @nodoc
-class __$$_PeerConEntityCopyWithImpl<$Res>
-    extends _$PeerConEntityCopyWithImpl<$Res, _$_PeerConEntity>
-    implements _$$_PeerConEntityCopyWith<$Res> {
-  __$$_PeerConEntityCopyWithImpl(
-      _$_PeerConEntity _value, $Res Function(_$_PeerConEntity) _then)
+class __$$PeerConEntityImplCopyWithImpl<$Res>
+    extends _$PeerConEntityCopyWithImpl<$Res, _$PeerConEntityImpl>
+    implements _$$PeerConEntityImplCopyWith<$Res> {
+  __$$PeerConEntityImplCopyWithImpl(
+      _$PeerConEntityImpl _value, $Res Function(_$PeerConEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -94,7 +94,7 @@ class __$$_PeerConEntityCopyWithImpl<$Res>
     Object? peerId = null,
     Object? con = null,
   }) {
-    return _then(_$_PeerConEntity(
+    return _then(_$PeerConEntityImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$_PeerConEntityCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_PeerConEntity extends _PeerConEntity {
-  const _$_PeerConEntity(
+class _$PeerConEntityImpl extends _PeerConEntity {
+  const _$PeerConEntityImpl(
       {required this.uid, required this.peerId, required this.con})
       : super._();
 
@@ -131,10 +131,10 @@ class _$_PeerConEntity extends _PeerConEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_PeerConEntity &&
+            other is _$PeerConEntityImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.peerId, peerId) || other.peerId == peerId) &&
             (identical(other.con, con) || other.con == con));
@@ -146,15 +146,15 @@ class _$_PeerConEntity extends _PeerConEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_PeerConEntityCopyWith<_$_PeerConEntity> get copyWith =>
-      __$$_PeerConEntityCopyWithImpl<_$_PeerConEntity>(this, _$identity);
+  _$$PeerConEntityImplCopyWith<_$PeerConEntityImpl> get copyWith =>
+      __$$PeerConEntityImplCopyWithImpl<_$PeerConEntityImpl>(this, _$identity);
 }
 
 abstract class _PeerConEntity extends PeerConEntity {
   const factory _PeerConEntity(
       {required final String uid,
       required final String peerId,
-      required final DataConnection con}) = _$_PeerConEntity;
+      required final DataConnection con}) = _$PeerConEntityImpl;
   const _PeerConEntity._() : super._();
 
   @override
@@ -165,6 +165,6 @@ abstract class _PeerConEntity extends PeerConEntity {
   DataConnection get con;
   @override
   @JsonKey(ignore: true)
-  _$$_PeerConEntityCopyWith<_$_PeerConEntity> get copyWith =>
+  _$$PeerConEntityImplCopyWith<_$PeerConEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -6,8 +6,8 @@ part of 'user_entity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_UserEntity _$$_UserEntityFromJson(Map<String, dynamic> json) =>
-    _$_UserEntity(
+_$UserEntityImpl _$$UserEntityImplFromJson(Map<String, dynamic> json) =>
+    _$UserEntityImpl(
       uid: json['uid'] as String,
       assignedId: json['assignedId'] as int,
       name: json['name'] as String?,
@@ -15,10 +15,11 @@ _$_UserEntity _$$_UserEntityFromJson(Map<String, dynamic> json) =>
       isBtn: json['isBtn'] as bool,
       isAction: json['isAction'] as bool,
       isFold: json['isFold'] as bool,
+      isSitOut: json['isSitOut'] as bool,
       score: json['score'] as int,
     );
 
-Map<String, dynamic> _$$_UserEntityToJson(_$_UserEntity instance) =>
+Map<String, dynamic> _$$UserEntityImplToJson(_$UserEntityImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'assignedId': instance.assignedId,
@@ -27,5 +28,6 @@ Map<String, dynamic> _$$_UserEntityToJson(_$_UserEntity instance) =>
       'isBtn': instance.isBtn,
       'isAction': instance.isAction,
       'isFold': instance.isFold,
+      'isSitOut': instance.isSitOut,
       'score': instance.score,
     };

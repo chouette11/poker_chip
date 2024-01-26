@@ -20,6 +20,7 @@ class PlayerData extends _$PlayerData {
         isBtn: false,
         isAction: false,
         isFold: false,
+        isSitOut: false,
       )
     ];
   }
@@ -75,6 +76,13 @@ class PlayerData extends _$PlayerData {
     state = [
       for (final user in state)
         if (user.uid == uid) user.copyWith(isFold: true) else user
+    ];
+  }
+
+  void updateSitOut(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(isSitOut: true) else user
     ];
   }
 
@@ -158,7 +166,7 @@ class PlayerData extends _$PlayerData {
   List<UserEntity> activePlayers() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0);
+    player.removeWhere((e) => e.isSitOut == true);
     return player;
   }
 

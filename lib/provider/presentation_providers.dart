@@ -99,6 +99,8 @@ class Round extends _$Round {
         break;
       case GameTypeEnum.ranking:
         break;
+      case GameTypeEnum.sitOut:
+        break;
     }
   }
 
@@ -114,6 +116,27 @@ class Round extends _$Round {
       /// potを初期化
       ref.read(potProvider.notifier).clear();
       ref.read(hostSidePotsProvider.notifier).clear();
+
+      /// HostのsitOutを更新
+      final noneUids = ref.read(playerDataProvider.notifier).stackNoneUids();
+      for (final uid in noneUids) {
+        ref.read(playerDataProvider.notifier).updateFold(uid);
+      }
+
+      /// ParticipantのsitOutを更新
+      final cons = ref.read(hostConsProvider);
+      for (final con in cons) {
+        final conn = con.con;
+        for (final uid in noneUids) {
+          /// Participantの状態変更
+          final game = GameEntity(
+              uid: uid, type: GameTypeEnum.sitOut, score: 0);
+          final mes =
+          MessageEntity(type: MessageTypeEnum.game, content: game);
+          conn.send(mes.toJson());
+        }
+      }
+
       state = GameTypeEnum.preFlop;
     });
 

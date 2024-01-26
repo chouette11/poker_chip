@@ -17,6 +17,7 @@ class UserEntity with _$UserEntity {
     required bool isBtn,
     required bool isAction,
     required bool isFold,
+    required bool isSitOut,
     required int score,
   }) = _UserEntity;
 

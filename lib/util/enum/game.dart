@@ -9,7 +9,8 @@ enum GameTypeEnum {
   river('river'),
   foldout('foldout'),
   showdown('showdown'),
-  ranking('ranking');
+  ranking('ranking'),
+  sitOut('sitOut');
 
   const GameTypeEnum(this.displayName);
 

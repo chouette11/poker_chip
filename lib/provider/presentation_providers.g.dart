@@ -23,7 +23,11 @@ final errorTextProvider =
 typedef _$ErrorText = AutoDisposeNotifier<String>;
 String _$roundHash() => r'066be42d9bdab19526970e6162a4c1ed449706c4';
 
-/// See also [Round].
+///
+/// Round
+///
+///
+/// Copied from [Round].
 @ProviderFor(Round)
 final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
   Round.new,
@@ -53,4 +57,5 @@ final bigIdProvider = NotifierProvider<BigId, int>.internal(
 );
 
 typedef _$BigId = Notifier<int>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

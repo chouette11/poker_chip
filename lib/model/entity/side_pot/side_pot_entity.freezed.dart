@@ -69,22 +69,22 @@ class _$SidePotEntityCopyWithImpl<$Res, $Val extends SidePotEntity>
 }
 
 /// @nodoc
-abstract class _$$_SidePotEntityCopyWith<$Res>
+abstract class _$$SidePotEntityImplCopyWith<$Res>
     implements $SidePotEntityCopyWith<$Res> {
-  factory _$$_SidePotEntityCopyWith(
-          _$_SidePotEntity value, $Res Function(_$_SidePotEntity) then) =
-      __$$_SidePotEntityCopyWithImpl<$Res>;
+  factory _$$SidePotEntityImplCopyWith(
+          _$SidePotEntityImpl value, $Res Function(_$SidePotEntityImpl) then) =
+      __$$SidePotEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({List<String> uids, int size, List<String> allinUids});
 }
 
 /// @nodoc
-class __$$_SidePotEntityCopyWithImpl<$Res>
-    extends _$SidePotEntityCopyWithImpl<$Res, _$_SidePotEntity>
-    implements _$$_SidePotEntityCopyWith<$Res> {
-  __$$_SidePotEntityCopyWithImpl(
-      _$_SidePotEntity _value, $Res Function(_$_SidePotEntity) _then)
+class __$$SidePotEntityImplCopyWithImpl<$Res>
+    extends _$SidePotEntityCopyWithImpl<$Res, _$SidePotEntityImpl>
+    implements _$$SidePotEntityImplCopyWith<$Res> {
+  __$$SidePotEntityImplCopyWithImpl(
+      _$SidePotEntityImpl _value, $Res Function(_$SidePotEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -94,7 +94,7 @@ class __$$_SidePotEntityCopyWithImpl<$Res>
     Object? size = null,
     Object? allinUids = null,
   }) {
-    return _then(_$_SidePotEntity(
+    return _then(_$SidePotEntityImpl(
       uids: null == uids
           ? _value._uids
           : uids // ignore: cast_nullable_to_non_nullable
@@ -113,8 +113,8 @@ class __$$_SidePotEntityCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$_SidePotEntity extends _SidePotEntity {
-  const _$_SidePotEntity(
+class _$SidePotEntityImpl extends _SidePotEntity {
+  const _$SidePotEntityImpl(
       {required final List<String> uids,
       required this.size,
       required final List<String> allinUids})
@@ -146,10 +146,10 @@ class _$_SidePotEntity extends _SidePotEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_SidePotEntity &&
+            other is _$SidePotEntityImpl &&
             const DeepCollectionEquality().equals(other._uids, _uids) &&
             (identical(other.size, size) || other.size == size) &&
             const DeepCollectionEquality()
@@ -166,15 +166,15 @@ class _$_SidePotEntity extends _SidePotEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_SidePotEntityCopyWith<_$_SidePotEntity> get copyWith =>
-      __$$_SidePotEntityCopyWithImpl<_$_SidePotEntity>(this, _$identity);
+  _$$SidePotEntityImplCopyWith<_$SidePotEntityImpl> get copyWith =>
+      __$$SidePotEntityImplCopyWithImpl<_$SidePotEntityImpl>(this, _$identity);
 }
 
 abstract class _SidePotEntity extends SidePotEntity {
   const factory _SidePotEntity(
       {required final List<String> uids,
       required final int size,
-      required final List<String> allinUids}) = _$_SidePotEntity;
+      required final List<String> allinUids}) = _$SidePotEntityImpl;
   const _SidePotEntity._() : super._();
 
   @override
@@ -185,6 +185,6 @@ abstract class _SidePotEntity extends SidePotEntity {
   List<String> get allinUids;
   @override
   @JsonKey(ignore: true)
-  _$$_SidePotEntityCopyWith<_$_SidePotEntity> get copyWith =>
+  _$$SidePotEntityImplCopyWith<_$SidePotEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

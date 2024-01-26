@@ -6,7 +6,7 @@ part of 'player.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerDataHash() => r'89a6c8f9a9e0df94520ca512476bf8c159c0dcc6';
+String _$playerDataHash() => r'86e05b8792c82693f1cbc5abfd5ec6cb9188b845';
 
 /// See also [PlayerData].
 @ProviderFor(PlayerData)
@@ -21,4 +21,5 @@ final playerDataProvider =
 );
 
 typedef _$PlayerData = AutoDisposeNotifier<List<UserEntity>>;
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

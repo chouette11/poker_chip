@@ -81,6 +81,7 @@ class HostConnOpen extends _$HostConnOpen {
             isBtn: false,
             isAction: false,
             isFold: false,
+            isSitOut: false,
           );
 
           /// Hostの状態変更

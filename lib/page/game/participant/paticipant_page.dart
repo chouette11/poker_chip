@@ -286,10 +286,14 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
   final type = game.type;
   final uid = game.uid;
   final score = game.score;
+  final playerNotifier = ref.read(playerDataProvider.notifier);
   switch (type) {
+    case GameTypeEnum.sitOut:
+      playerNotifier.updateSitOut(uid);
+      break;
     case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      playerNotifier.updateStack(uid, -score);
+      playerNotifier.updateScore(uid, score);
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case GameTypeEnum.anty:
@@ -297,7 +301,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.ranking:
       break;
     case GameTypeEnum.btn:
-      ref.read(playerDataProvider.notifier).updateBtn(uid);
+      playerNotifier.updateBtn(uid);
       break;
     case GameTypeEnum.sidePot:
       print(score);
@@ -307,29 +311,29 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       ref.read(roundProvider.notifier).update(type);
       ref.read(potProvider.notifier).clear();
       ref.read(sidePotsProvider.notifier).clear();
-      ref.read(playerDataProvider.notifier).clearIsFold();
+      playerNotifier.clearIsFold();
       break;
     case GameTypeEnum.flop:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
       break;
     case GameTypeEnum.turn:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
       break;
     case GameTypeEnum.river:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
       break;
     case GameTypeEnum.foldout:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      playerNotifier.clearScore();
+      playerNotifier.updateStack(uid, score);
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
       if (uid != '') {
-        ref.read(playerDataProvider.notifier).updateStack(uid, score);
+        playerNotifier.updateStack(uid, score);
       }
       break;
   }
