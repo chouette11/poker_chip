@@ -69,14 +69,11 @@ web-dev:
 	ex -s -c '2a|"site": "ai-werewolf-dev",' -c 'x' firebase.json
 	firebase deploy --only hosting:ai-werewolf-dev
 
-.PHONY: web-prod
-web-prod:
+.PHONY: web
+web:
 	fvm flutter clean
 	fvm flutter build web --no-tree-shake-icons --dart-define-from-file=dart_defines/prod.json
-	cd build/web;echo "google.com, pub-3443545166967285, DIRECT, f08c47fec0942fa0" > ads.txt
-	sed -i '' '3d' firebase.json
-	ex -s -c '2a|"site": "ai-werewolf",' -c 'x' firebase.json
-	cd web-prod;firebase deploy
+	firebase deploy --only hosting:poker-chip-app
 
 .PHONY: release-android
 release-android:
