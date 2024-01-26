@@ -118,6 +118,30 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(bigIdProvider.notifier).updateId();
             ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
             ref.read(roundProvider.notifier).delayPreFlop();
+          } else if (isAllinShowDown) {
+            if (notifier.isStackNone()) {
+              final sidePots =
+              ref.read(playerDataProvider.notifier).calculateSidePots();
+              ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+
+              final cons = ref.read(hostConsProvider);
+              for (final con in cons) {
+                final conn = con.con;
+                for (final sidePot in sidePots) {
+                  /// Participantの状態変更
+                  final game = GameEntity(
+                      uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
+                  final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+                  conn.send(mes.toJson());
+                }
+              }
+            }
+            ref.read(playerDataProvider.notifier).clearScore();
+            ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
+            ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(bigIdProvider.notifier).updateId();
+            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
           } else if (isChangeRound) {
             print('change round');
             if (notifier.isStackNone()) {
@@ -183,7 +207,7 @@ class HostConnOpen extends _$HostConnOpen {
                   MessageEntity(type: MessageTypeEnum.game, content: gam);
               conn.send(mess.toJson());
             }
-          } else if (isChangeRound) {
+          } else if (isChangeRound || isAllinShowDown) {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;

@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'30b80f268470b2dd220d3ba4aa046af4c7403f07';
+String _$hostConnOpenHash() => r'096d26add63586fece84dfd1909f1ae276c380a3';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -98,8 +98,8 @@ class HostConnOpenFamily extends Family<bool> {
 class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
   /// See also [HostConnOpen].
   HostConnOpenProvider(
-    this.peer,
-  ) : super.internal(
+    Peer peer,
+  ) : this._internal(
           () => HostConnOpen()..peer = peer,
           from: hostConnOpenProvider,
           name: r'hostConnOpenProvider',
@@ -110,9 +110,50 @@ class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
           dependencies: HostConnOpenFamily._dependencies,
           allTransitiveDependencies:
               HostConnOpenFamily._allTransitiveDependencies,
+          peer: peer,
         );
 
+  HostConnOpenProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.peer,
+  }) : super.internal();
+
   final Peer peer;
+
+  @override
+  bool runNotifierBuild(
+    covariant HostConnOpen notifier,
+  ) {
+    return notifier.build(
+      peer,
+    );
+  }
+
+  @override
+  Override overrideWith(HostConnOpen Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: HostConnOpenProvider._internal(
+        () => create()..peer = peer,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        peer: peer,
+      ),
+    );
+  }
+
+  @override
+  NotifierProviderElement<HostConnOpen, bool> createElement() {
+    return _HostConnOpenProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -126,14 +167,19 @@ class HostConnOpenProvider extends NotifierProviderImpl<HostConnOpen, bool> {
 
     return _SystemHash.finish(hash);
   }
+}
+
+mixin HostConnOpenRef on NotifierProviderRef<bool> {
+  /// The parameter `peer` of this provider.
+  Peer get peer;
+}
+
+class _HostConnOpenProviderElement
+    extends NotifierProviderElement<HostConnOpen, bool> with HostConnOpenRef {
+  _HostConnOpenProviderElement(super.provider);
 
   @override
-  bool runNotifierBuild(
-    covariant HostConnOpen notifier,
-  ) {
-    return notifier.build(
-      peer,
-    );
-  }
+  Peer get peer => (origin as HostConnOpenProvider).peer;
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
