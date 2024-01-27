@@ -81,6 +81,7 @@ class HostConnOpen extends _$HostConnOpen {
             isBtn: false,
             isAction: false,
             isFold: false,
+            isCheck: false,
             isSitOut: false,
           );
 
@@ -113,6 +114,8 @@ class HostConnOpen extends _$HostConnOpen {
             final winner = notifier.activePlayers().first;
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(playerDataProvider.notifier).clearScore();
+            ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(playerDataProvider.notifier).clearIsCheck();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
             ref.read(bigIdProvider.notifier).updateId();
@@ -140,6 +143,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearScore();
             ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
             ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(playerDataProvider.notifier).clearIsCheck();
             ref.read(bigIdProvider.notifier).updateId();
             ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
           } else if (isChangeRound) {
@@ -166,6 +170,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
             ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(playerDataProvider.notifier).clearIsCheck();
             if (isAllinShowDown) {
               ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
             }
@@ -315,6 +320,7 @@ void _actionStackMethod(ActionEntity action, NotifierProviderRef<bool> ref) {
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
+      ref.read(playerDataProvider.notifier).updateCheck(uid);
       break;
   }
 }

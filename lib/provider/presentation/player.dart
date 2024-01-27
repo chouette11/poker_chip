@@ -20,6 +20,7 @@ class PlayerData extends _$PlayerData {
         isBtn: false,
         isAction: false,
         isFold: false,
+        isCheck: false,
         isSitOut: false,
       )
     ];
@@ -79,6 +80,13 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void updateCheck(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(isCheck: true) else user
+    ];
+  }
+
   void updateSitOut(String uid) {
     state = [
       for (final user in state)
@@ -101,6 +109,12 @@ class PlayerData extends _$PlayerData {
   void clearIsFold() {
     state = [
       for (final user in state) user.copyWith(isFold: false),
+    ];
+  }
+
+  void clearIsCheck() {
+    state = [
+      for (final user in state) user.copyWith(isCheck: false),
     ];
   }
 

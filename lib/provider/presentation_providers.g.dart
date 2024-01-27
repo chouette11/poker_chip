@@ -21,7 +21,7 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'066be42d9bdab19526970e6162a4c1ed449706c4';
+String _$roundHash() => r'bc8fcf66a117196f9418b9affb6799df25554b73';
 
 ///
 /// Round

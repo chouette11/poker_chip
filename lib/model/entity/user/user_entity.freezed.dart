@@ -26,6 +26,7 @@ mixin _$UserEntity {
   int get stack => throw _privateConstructorUsedError;
   bool get isBtn => throw _privateConstructorUsedError;
   bool get isAction => throw _privateConstructorUsedError;
+  bool get isCheck => throw _privateConstructorUsedError;
   bool get isFold => throw _privateConstructorUsedError;
   bool get isSitOut => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
@@ -49,6 +50,7 @@ abstract class $UserEntityCopyWith<$Res> {
       int stack,
       bool isBtn,
       bool isAction,
+      bool isCheck,
       bool isFold,
       bool isSitOut,
       int score});
@@ -73,6 +75,7 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
     Object? stack = null,
     Object? isBtn = null,
     Object? isAction = null,
+    Object? isCheck = null,
     Object? isFold = null,
     Object? isSitOut = null,
     Object? score = null,
@@ -101,6 +104,10 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
       isAction: null == isAction
           ? _value.isAction
           : isAction // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isCheck: null == isCheck
+          ? _value.isCheck
+          : isCheck // ignore: cast_nullable_to_non_nullable
               as bool,
       isFold: null == isFold
           ? _value.isFold
@@ -133,6 +140,7 @@ abstract class _$$UserEntityImplCopyWith<$Res>
       int stack,
       bool isBtn,
       bool isAction,
+      bool isCheck,
       bool isFold,
       bool isSitOut,
       int score});
@@ -155,6 +163,7 @@ class __$$UserEntityImplCopyWithImpl<$Res>
     Object? stack = null,
     Object? isBtn = null,
     Object? isAction = null,
+    Object? isCheck = null,
     Object? isFold = null,
     Object? isSitOut = null,
     Object? score = null,
@@ -184,6 +193,10 @@ class __$$UserEntityImplCopyWithImpl<$Res>
           ? _value.isAction
           : isAction // ignore: cast_nullable_to_non_nullable
               as bool,
+      isCheck: null == isCheck
+          ? _value.isCheck
+          : isCheck // ignore: cast_nullable_to_non_nullable
+              as bool,
       isFold: null == isFold
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
@@ -210,6 +223,7 @@ class _$UserEntityImpl extends _UserEntity {
       required this.stack,
       required this.isBtn,
       required this.isAction,
+      required this.isCheck,
       required this.isFold,
       required this.isSitOut,
       required this.score})
@@ -231,6 +245,8 @@ class _$UserEntityImpl extends _UserEntity {
   @override
   final bool isAction;
   @override
+  final bool isCheck;
+  @override
   final bool isFold;
   @override
   final bool isSitOut;
@@ -239,7 +255,7 @@ class _$UserEntityImpl extends _UserEntity {
 
   @override
   String toString() {
-    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isAction: $isAction, isFold: $isFold, isSitOut: $isSitOut, score: $score)';
+    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isAction: $isAction, isCheck: $isCheck, isFold: $isFold, isSitOut: $isSitOut, score: $score)';
   }
 
   @override
@@ -255,6 +271,7 @@ class _$UserEntityImpl extends _UserEntity {
             (identical(other.isBtn, isBtn) || other.isBtn == isBtn) &&
             (identical(other.isAction, isAction) ||
                 other.isAction == isAction) &&
+            (identical(other.isCheck, isCheck) || other.isCheck == isCheck) &&
             (identical(other.isFold, isFold) || other.isFold == isFold) &&
             (identical(other.isSitOut, isSitOut) ||
                 other.isSitOut == isSitOut) &&
@@ -264,7 +281,7 @@ class _$UserEntityImpl extends _UserEntity {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, assignedId, name, stack,
-      isBtn, isAction, isFold, isSitOut, score);
+      isBtn, isAction, isCheck, isFold, isSitOut, score);
 
   @JsonKey(ignore: true)
   @override
@@ -288,6 +305,7 @@ abstract class _UserEntity extends UserEntity {
       required final int stack,
       required final bool isBtn,
       required final bool isAction,
+      required final bool isCheck,
       required final bool isFold,
       required final bool isSitOut,
       required final int score}) = _$UserEntityImpl;
@@ -308,6 +326,8 @@ abstract class _UserEntity extends UserEntity {
   bool get isBtn;
   @override
   bool get isAction;
+  @override
+  bool get isCheck;
   @override
   bool get isFold;
   @override

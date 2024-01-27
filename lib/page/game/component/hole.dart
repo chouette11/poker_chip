@@ -85,6 +85,23 @@ class Hole extends ConsumerWidget {
                   ),
                 ),
               ),
+              Visibility(
+                visible: myData.isCheck,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xFFFFF636),
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Padding(
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    child: Text(
+                      'check',
+                      style: TextStyleConstant.normal12
+                          .copyWith(color: ColorConstant.black20),
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(width: 40),
               myData.isBtn ? const DealerButton() : const SizedBox(width: 32)
             ],

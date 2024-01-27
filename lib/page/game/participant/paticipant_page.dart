@@ -140,6 +140,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               isBtn: false,
               isAction: false,
               isFold: false,
+              isCheck: false,
               isSitOut: false,
             ),
           );
@@ -251,6 +252,7 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
+      ref.read(playerDataProvider.notifier).updateCheck(uid);
       break;
   }
 }
@@ -290,22 +292,27 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
     case GameTypeEnum.flop:
       ref.read(roundProvider.notifier).update(type);
       playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.turn:
       ref.read(roundProvider.notifier).update(type);
       playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.river:
       ref.read(roundProvider.notifier).update(type);
       playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.foldout:
       ref.read(roundProvider.notifier).update(type);
       playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       playerNotifier.updateStack(uid, score);
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
       playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       if (uid != '') {
         playerNotifier.updateStack(uid, score);
       }

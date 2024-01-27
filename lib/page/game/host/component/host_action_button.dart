@@ -105,6 +105,8 @@ class _ActionButton extends ConsumerWidget {
           final winner = notifier.activePlayers().first;
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(playerDataProvider.notifier).clearScore();
+          ref.read(playerDataProvider.notifier).clearIsAction();
+          ref.read(playerDataProvider.notifier).clearIsCheck();
           final pot = ref.read(potProvider);
           ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
           ref.read(bigIdProvider.notifier).updateId();
@@ -132,6 +134,7 @@ class _ActionButton extends ConsumerWidget {
           ref.read(playerDataProvider.notifier).clearScore();
           ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
           ref.read(playerDataProvider.notifier).clearIsAction();
+          ref.read(playerDataProvider.notifier).clearIsCheck();
           ref.read(bigIdProvider.notifier).updateId();
           ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
         } else if (isChangeRound) {
@@ -157,6 +160,7 @@ class _ActionButton extends ConsumerWidget {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(roundProvider.notifier).nextRound();
           ref.read(playerDataProvider.notifier).clearIsAction();
+          ref.read(playerDataProvider.notifier).clearIsCheck();
           if (isAllinShowDown) {
             ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
           }
