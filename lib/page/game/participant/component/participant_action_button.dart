@@ -17,6 +17,8 @@ class ParticipantActionButtons extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final round = ref.watch(roundProvider);
+    final isStart = ref.watch(isStartProvider);
+
     Widget children() {
       final players = ref.watch(playerDataProvider);
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
@@ -48,7 +50,9 @@ class ParticipantActionButtons extends ConsumerWidget {
     }
 
     bool isVisible(int optAssignedId) {
-      if (round == GameTypeEnum.foldout || round == GameTypeEnum.showdown) {
+      if (round == GameTypeEnum.foldout ||
+          round == GameTypeEnum.showdown ||
+          !isStart) {
         return false;
       }
       final uid = assignedIdToUid(optAssignedId, ref);

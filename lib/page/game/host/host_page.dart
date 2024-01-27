@@ -5,9 +5,6 @@ import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/info.dart';
-import 'package:poker_chip/page/game/host/component/host_action_button.dart';
-import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
-import 'package:poker_chip/page/game/host/component/host_who_win_button.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -120,39 +117,18 @@ class _GamePageState extends ConsumerState<HostPage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: height * 0.4,
-                  child: const InfoWidget(true),
+                Visibility(
+                  visible: isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: const InfoWidget(true),
+                  ),
                 ),
                 Positioned(
                   top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: RoomIdWidget(),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: HostWhoWinButton(),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: HostRankingButton(),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: HostActionButtons(),
                   ),
                 ),
                 Visibility(

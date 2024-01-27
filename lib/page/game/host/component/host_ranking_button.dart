@@ -19,7 +19,7 @@ class HostRankingButton extends ConsumerWidget {
     final sidePots = ref.watch(hostSidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePots.isNotEmpty,
-      child: ElevatedButton(
+      child: FloatingActionButton(
         onPressed: () {
           Map<String, int> rankingMap = {};
           final players = ref.read(playerDataProvider);

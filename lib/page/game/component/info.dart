@@ -43,8 +43,9 @@ Widget _action(int actionId, List<UserEntity> players, GameTypeEnum round) {
   if (actionId == -1 || round == GameTypeEnum.showdown) {
     return const SizedBox.shrink();
   } else {
+    final name = players[actionId].name ?? 'プレイヤー1';
     return Text(
-      '${players[actionId].name}のアクションです',
+      '$nameのアクションです',
       style: TextStyleConstant.bold14,
     );
   }

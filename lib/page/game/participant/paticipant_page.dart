@@ -13,9 +13,6 @@ import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/component/id_text_field.dart';
-import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
-import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
-import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
@@ -127,6 +124,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final flavor = ref.watch(flavorProvider);
+    final isStart = ref.watch(isStartProvider);
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
         Future.delayed(const Duration(seconds: 1), () {
@@ -178,51 +176,29 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.23,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ref.watch(roundProvider).name,
-                      style: TextStyleConstant.bold16,
-                    ),
-                  ),
-                ),
-                Positioned(
                   top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: PotWidget(false),
                   ),
                 ),
-                Positioned(
-                  top: height * 0.4,
-                  child: const InfoWidget(false),
-                ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantRankingButton(),
+                Visibility(
+                  visible: isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: const InfoWidget(false),
                   ),
                 ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantWhoWinButton(),
+                Visibility(
+                  visible: !isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: const Text(
+                      'ホストが開始するまでお待ち下さい',
+                      style: TextStyleConstant.normal14,
+                    ),
                   ),
                 ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantActionButtons(),
-                  ),
-                ),
-
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -292,6 +268,7 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       playerNotifier.updateStack(uid, -score);
       playerNotifier.updateScore(uid, score);
       ref.read(potProvider.notifier).potUpdate(score);
+      ref.read(isStartProvider.notifier).update((state) => true);
       break;
     case GameTypeEnum.anty:
       break;

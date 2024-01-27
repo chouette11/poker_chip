@@ -18,7 +18,7 @@ class ParticipantWhoWinButton extends ConsumerWidget {
     final sidePots = ref.watch(sidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePots.isEmpty,
-      child: ElevatedButton(
+      child: FloatingActionButton(
         onPressed: () {
           final players = ref.read(playerDataProvider);
           final List<String> values = [];

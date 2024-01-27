@@ -25,12 +25,14 @@ class HostActionButtons extends ConsumerWidget {
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
       if (maxScore == 0 || me.score == maxScore) {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
@@ -84,7 +86,8 @@ class _ActionButton extends ConsumerWidget {
     return ElevatedButton(
       onPressed: () {
         if ((actionTypeEnum == ActionTypeEnum.bet ||
-            actionTypeEnum == ActionTypeEnum.raise) && score < maxScore) {
+                actionTypeEnum == ActionTypeEnum.raise) &&
+            score < maxScore) {
           return;
         }
         final notifier = ref.read(playerDataProvider.notifier);
@@ -108,7 +111,7 @@ class _ActionButton extends ConsumerWidget {
         } else if (isAllinShowDown) {
           if (notifier.isStackNone()) {
             final sidePots =
-            ref.read(playerDataProvider.notifier).calculateSidePots();
+                ref.read(playerDataProvider.notifier).calculateSidePots();
             ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
 
             final cons = ref.read(hostConsProvider);
@@ -119,7 +122,7 @@ class _ActionButton extends ConsumerWidget {
                 final game = GameEntity(
                     uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
                 final mes =
-                MessageEntity(type: MessageTypeEnum.game, content: game);
+                    MessageEntity(type: MessageTypeEnum.game, content: game);
                 conn.send(mes.toJson());
               }
             }

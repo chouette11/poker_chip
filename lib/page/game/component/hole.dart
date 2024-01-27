@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
+import 'package:poker_chip/page/game/host/component/host_action_button.dart';
+import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
+import 'package:poker_chip/page/game/host/component/host_who_win_button.dart';
+import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
+import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
+import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -31,10 +37,18 @@ class Hole extends ConsumerWidget {
         : ref.watch(sidePotsProvider).isNotEmpty;
 
     return SizedBox(
-      height: 160,
+      height: 240,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          isHost ? const HostRankingButton() : const ParticipantRankingButton(),
+          isHost ? const HostWhoWinButton() : const ParticipantWhoWinButton(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 32),
+            child: isHost
+                ? const HostActionButtons()
+                : const ParticipantActionButtons(),
+          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -46,13 +60,13 @@ class Hole extends ConsumerWidget {
                 child: isSidePot
                     ? RankingSelectButton(myData)
                     : Checkbox(
-                  value: isSelected,
-                  onChanged: (value) {
-                    ref
-                        .read(isSelectedProvider(myData).notifier)
-                        .update((state) => !state);
-                  },
-                ),
+                        value: isSelected,
+                        onChanged: (value) {
+                          ref
+                              .read(isSelectedProvider(myData).notifier)
+                              .update((state) => !state);
+                        },
+                      ),
               ),
               Visibility(
                 visible: myData.score != 0,
@@ -83,10 +97,8 @@ class Hole extends ConsumerWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(myData.name ?? 'プレイヤー1',
-                    style: TextStyleConstant.bold14),
-                Text(myData.stack.toString(),
-                    style: TextStyleConstant.bold20),
+                Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
+                Text(myData.stack.toString(), style: TextStyleConstant.bold20),
               ],
             ),
           ),
