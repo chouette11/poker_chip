@@ -25,23 +25,27 @@ class ParticipantActionButtons extends ConsumerWidget {
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
 
       if (maxScore == 0 || me.score == maxScore) {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       } else {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],

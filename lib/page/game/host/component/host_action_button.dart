@@ -38,12 +38,14 @@ class HostActionButtons extends ConsumerWidget {
           ],
         );
       } else {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],

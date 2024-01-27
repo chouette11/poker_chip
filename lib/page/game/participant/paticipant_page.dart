@@ -214,7 +214,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   child: Positioned(
                       bottom: height * 0.17, child: Text(connected.toString())),
                 ),
-                Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
+                Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
               ],
             ),
           ),
