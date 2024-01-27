@@ -12,7 +12,7 @@ class Chips extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final score = ref.watch(raiseBetProvider);
     return SizedBox(
-      height: 128,
+      height: 129,
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -67,8 +67,8 @@ class Chip extends ConsumerWidget {
         alignment: Alignment.center,
         children: [
           Container(
-            width: size,
-            height: size,
+            width: size + 1,
+            height: size + 1,
             decoration: const BoxDecoration(
                 shape: BoxShape.circle, color: ColorConstant.black90),
           ),

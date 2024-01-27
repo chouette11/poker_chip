@@ -72,7 +72,7 @@ class Hole extends ConsumerWidget {
                 visible: myData.score != 0,
                 child: Container(
                   decoration: BoxDecoration(
-                      color: const Color(0xFFFFE4C8),
+                      color: const Color(0xFFFFF636),
                       borderRadius: BorderRadius.circular(16)),
                   child: Padding(
                     padding:
