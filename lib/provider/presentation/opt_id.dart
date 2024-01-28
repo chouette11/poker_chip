@@ -16,10 +16,9 @@ class OptionAssignedId extends _$OptionAssignedId {
   }
 
   void updateId() {
-    final List<UserEntity> player = List.from(ref.read(playerDataProvider));
-    player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0);
-    final activeIds = player.map((e) => e.assignedId).toList();
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    actPlayers.removeWhere((e) => e.stack == 0);
+    final activeIds = actPlayers.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
     int smallestNumber = activeIds[0];
@@ -37,9 +36,8 @@ class OptionAssignedId extends _$OptionAssignedId {
 
   void updatePreFlopId() {
     final big = ref.read(bigIdProvider);
-    final player = List.from(ref.read(playerDataProvider));
-    player.removeWhere((e) => e.stack == 0);
-    final activeIds = player.map((e) => e.assignedId).toList();
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    final activeIds = actPlayers.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
     int smallestNumber = activeIds[0];
@@ -57,10 +55,9 @@ class OptionAssignedId extends _$OptionAssignedId {
 
   void updatePostFlopId() {
     final btn = ref.read(bigIdProvider.notifier).btnId();
-    final player = List.from(ref.read(playerDataProvider));
-    player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0);
-    final activeIds = player.map((e) => e.assignedId).toList();
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    actPlayers.removeWhere((e) => e.stack == 0);
+    final activeIds = actPlayers.map((e) => e.assignedId).toList();
     activeIds.sort();
     int? firstLargerNumber;
     int smallestNumber = activeIds[0];
