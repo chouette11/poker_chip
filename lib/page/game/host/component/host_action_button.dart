@@ -83,7 +83,8 @@ class _ActionButton extends ConsumerWidget {
     final betScore = ref.watch(raiseBetProvider);
     final myScore = ref.watch(playerDataProvider.notifier).curScore(myUid);
     final myStack = ref.watch(playerDataProvider.notifier).curStack(myUid);
-    final score = _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack);
+    final score =
+        _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack, myScore);
 
     return ElevatedButton(
       onPressed: () {
@@ -239,17 +240,20 @@ class _ActionButton extends ConsumerWidget {
   }
 }
 
-int _fixScoreSize(
-    ActionTypeEnum actionTypeEnum, int betScore, int maxScore, int stack) {
+int _fixScoreSize(ActionTypeEnum actionTypeEnum, int betScore, int maxScore,
+    int stack, int myScore) {
   int score = 0;
   if (actionTypeEnum == ActionTypeEnum.raise ||
       actionTypeEnum == ActionTypeEnum.bet) {
     score = betScore;
+    if (score > stack) {
+      score = stack;
+    }
   } else if (actionTypeEnum == ActionTypeEnum.call) {
     score = maxScore;
-  }
-  if (score > stack) {
-    score = stack;
+    if (score > stack + myScore) {
+      score = stack + myScore;
+    }
   }
   return score;
 }
