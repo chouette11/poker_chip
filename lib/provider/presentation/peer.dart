@@ -247,7 +247,11 @@ class HostConnOpen extends _$HostConnOpen {
           } else if (game.type == GameTypeEnum.ranking) {
             final rankingMap = jsonDecode(game.uid);
             final sidePots = ref.read(hostSidePotsProvider);
-            final distributionMap = distributeSidePots(sidePots, rankingMap);
+            final curPotSize = ref.read(potProvider.notifier).currentSize(true);
+            final finalUids =
+                ref.read(hostSidePotsProvider.notifier).finalistUids();
+            final distributionMap =
+                distributeSidePots(sidePots, curPotSize, finalUids, rankingMap);
             final uids = distributionMap.keys.toList();
             final cons = ref.read(hostConsProvider);
             for (final uid in uids) {
