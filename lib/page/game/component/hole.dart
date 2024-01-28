@@ -44,7 +44,7 @@ class Hole extends ConsumerWidget {
           isHost ? const HostRankingButton() : const ParticipantRankingButton(),
           isHost ? const HostWhoWinButton() : const ParticipantWhoWinButton(),
           Padding(
-            padding: const EdgeInsets.only(bottom: 32),
+            padding: const EdgeInsets.only(bottom: 8),
             child: isHost
                 ? const HostActionButtons()
                 : const ParticipantActionButtons(),
@@ -53,7 +53,7 @@ class Hole extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(width: 32),
-              const SizedBox(width: 40),
+              const SizedBox(height: 40, width: 40),
               Visibility(
                 visible: round == GameTypeEnum.showdown &&
                     activeIds.contains(myData.uid),
@@ -86,14 +86,14 @@ class Hole extends ConsumerWidget {
                 ),
               ),
               Visibility(
-                visible: myData.isCheck,
+                visible: myData.isCheck && myData.score == 0,
                 child: Container(
                   decoration: BoxDecoration(
                       color: const Color(0xFFFFF636),
                       borderRadius: BorderRadius.circular(16)),
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
                       'check',
                       style: TextStyleConstant.normal12
