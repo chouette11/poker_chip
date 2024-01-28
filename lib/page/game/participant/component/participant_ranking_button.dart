@@ -20,7 +20,7 @@ class ParticipantRankingButton extends ConsumerWidget {
     final sidePot = ref.watch(sidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePot.isNotEmpty,
-      child: ElevatedButton(
+      child: FloatingActionButton(
         onPressed: () {
           Map<String, int> rankingMap = {};
           final players = ref.read(playerDataProvider.notifier).activePlayers();
