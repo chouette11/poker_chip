@@ -229,9 +229,9 @@ class BigId extends _$BigId {
       state = 1;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(state, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       state = state + 1;
       if (state > len) {
         state = 1;
@@ -246,9 +246,9 @@ class BigId extends _$BigId {
       id = players.length;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(id, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       final len = players.length;
       id = id - 1;
       if (id == 0) {
@@ -269,9 +269,9 @@ class BigId extends _$BigId {
       id = len;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(id, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       id = id - 1;
       if (id == 0) {
         id = len;
