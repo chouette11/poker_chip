@@ -23,7 +23,7 @@ class ParticipantRankingButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: () {
           Map<String, int> rankingMap = {};
-          final players = ref.read(playerDataProvider);
+          final players = ref.read(playerDataProvider.notifier).activePlayers();
           for (final player in players) {
             final rank = ref.read(rankingProvider(player));
             rankingMap[player.uid] = rank;
