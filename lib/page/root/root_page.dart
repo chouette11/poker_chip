@@ -4,6 +4,7 @@ import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/page/root/setting_button.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -36,6 +37,11 @@ class RootPage extends ConsumerWidget {
                     height: height - 36,
                     width: width,
                   ),
+                ),
+                const Positioned(
+                  top: 0,
+                  right: 0,
+                  child: SettingButton()
                 ),
                 Positioned(
                   top: height * 0.3,
