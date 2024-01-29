@@ -285,6 +285,9 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.preFlop:
       ref.read(roundProvider.notifier).update(type);
+      if (score != 0) {
+        ref.read(participantOptIdProvider.notifier).update((state) => score);
+      }
       ref.read(potProvider.notifier).clear();
       ref.read(sidePotsProvider.notifier).clear();
       playerNotifier.clearIsFold();

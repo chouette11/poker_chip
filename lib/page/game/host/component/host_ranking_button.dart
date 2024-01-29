@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
+import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -57,11 +58,12 @@ class HostRankingButton extends ConsumerWidget {
           ref.read(roundProvider.notifier).delayPreFlop();
 
           /// ParticipantのOption状態変更
+          final optId = ref.read(optionAssignedIdProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            const game =
-                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mes =
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
+            final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
@@ -103,6 +105,9 @@ Map<String, int> distributeSidePots(List<SidePotEntity> sidePots, int pot,
       }
     }
 
+    if (eligibleWinners.isEmpty) {
+      continue;
+    }
     // サイドポットを関連する勝者に分配
     int potShare = pot.size ~/ eligibleWinners.length;
     for (var winner in eligibleWinners) {

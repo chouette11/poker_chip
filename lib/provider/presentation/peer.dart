@@ -134,7 +134,7 @@ class HostConnOpen extends _$HostConnOpen {
           } else if (isAllinShowDown) {
             if (notifier.isStackNone()) {
               final sidePots =
-              ref.read(playerDataProvider.notifier).calculateSidePots();
+                  ref.read(playerDataProvider.notifier).calculateSidePots();
               ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
 
               final cons = ref.read(hostConsProvider);
@@ -145,7 +145,7 @@ class HostConnOpen extends _$HostConnOpen {
                   final game = GameEntity(
                       uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
                   final mes =
-                  MessageEntity(type: MessageTypeEnum.game, content: game);
+                      MessageEntity(type: MessageTypeEnum.game, content: game);
                   conn.send(mes.toJson());
                 }
               }
@@ -279,12 +279,13 @@ class HostConnOpen extends _$HostConnOpen {
           ref.read(roundProvider.notifier).delayPreFlop();
 
           /// ParticipantのOption状態変更
+          final optId = ref.read(optionAssignedIdProvider);
           final cons = ref.read(hostConsProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            const game =
-                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mes =
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
+            final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
