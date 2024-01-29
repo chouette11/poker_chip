@@ -1,4 +1,3 @@
-import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
