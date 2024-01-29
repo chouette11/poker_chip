@@ -118,8 +118,18 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(playerDataProvider.notifier).clearIsCheck();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
-            ref.read(bigIdProvider.notifier).updateId();
-            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
+            final cons = ref.read(hostConsProvider);
+
+            /// Participantのターン状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final uids = notifier.activePlayers().map((e) => e.uid).toList();
+              final game = GameEntity(
+                  uid: uids.first, type: GameTypeEnum.foldout, score: pot);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
             ref.read(roundProvider.notifier).delayPreFlop();
           } else if (isAllinShowDown) {
             if (notifier.isStackNone()) {
@@ -198,19 +208,12 @@ class HostConnOpen extends _$HostConnOpen {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final uids = notifier.activePlayers().map((e) => e.uid).toList();
-              final round = ref.read(roundProvider);
-              final pot = ref.read(potProvider);
-              final game = GameEntity(uid: uids.first, type: round, score: pot);
+              final optId = ref.read(optionAssignedIdProvider);
+              final game =
+                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
               final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
-
-              const gam =
-                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-              const mess =
-                  MessageEntity(type: MessageTypeEnum.game, content: gam);
-              conn.send(mess.toJson());
             }
           } else if (isChangeRound || isAllinShowDown) {
             /// Participantのターン状態変更
