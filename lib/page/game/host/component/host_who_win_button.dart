@@ -49,7 +49,7 @@ class HostWhoWinButton extends ConsumerWidget {
           }
 
           /// HostのOption状態変更
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
 
           /// ParticipantのOption状態変更
           final optId = ref.read(optionAssignedIdProvider);

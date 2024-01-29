@@ -130,7 +130,7 @@ class HostConnOpen extends _$HostConnOpen {
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
-            ref.read(roundProvider.notifier).delayPreFlop();
+            ref.read(roundProvider.notifier).updatePreFlop();
           } else if (isAllinShowDown) {
             if (notifier.isStackNone()) {
               final sidePots =
@@ -154,8 +154,6 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
             ref.read(playerDataProvider.notifier).clearIsAction();
             ref.read(playerDataProvider.notifier).clearIsCheck();
-            ref.read(bigIdProvider.notifier).updateId();
-            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
           } else if (isChangeRound) {
             print('change round');
             if (notifier.isStackNone()) {
@@ -181,14 +179,6 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(roundProvider.notifier).nextRound();
             ref.read(playerDataProvider.notifier).clearIsAction();
             ref.read(playerDataProvider.notifier).clearIsCheck();
-            if (isAllinShowDown) {
-              ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
-            }
-            final round = ref.read(roundProvider);
-            if (round == GameTypeEnum.showdown) {
-              ref.read(bigIdProvider.notifier).updateId();
-              ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-            }
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();
           }
@@ -276,7 +266,7 @@ class HostConnOpen extends _$HostConnOpen {
           }
 
           /// HostのOption状態変更
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
 
           /// ParticipantのOption状態変更
           final optId = ref.read(optionAssignedIdProvider);

@@ -122,7 +122,7 @@ class _ActionButton extends ConsumerWidget {
             conn.send(mes.toJson());
           }
 
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
         } else if (isAllinShowDown) {
           if (notifier.isStackNone()) {
             final sidePots =
@@ -146,8 +146,6 @@ class _ActionButton extends ConsumerWidget {
           ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
           ref.read(playerDataProvider.notifier).clearIsAction();
           ref.read(playerDataProvider.notifier).clearIsCheck();
-          ref.read(bigIdProvider.notifier).updateId();
-          ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
         } else if (isChangeRound) {
           if (notifier.isStackNone()) {
             final sidePots =
@@ -172,14 +170,6 @@ class _ActionButton extends ConsumerWidget {
           ref.read(roundProvider.notifier).nextRound();
           ref.read(playerDataProvider.notifier).clearIsAction();
           ref.read(playerDataProvider.notifier).clearIsCheck();
-          if (isAllinShowDown) {
-            ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
-          }
-          final round = ref.read(roundProvider);
-          if (round == GameTypeEnum.showdown) {
-            ref.read(bigIdProvider.notifier).updateId();
-            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-          }
         } else {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         }
