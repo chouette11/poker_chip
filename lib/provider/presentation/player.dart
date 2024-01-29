@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -20,6 +22,8 @@ class PlayerData extends _$PlayerData {
         isBtn: false,
         isAction: false,
         isFold: false,
+        isCheck: false,
+        isSitOut: false,
       )
     ];
   }
@@ -78,6 +82,20 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void updateCheck(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(isCheck: true) else user
+    ];
+  }
+
+  void updateSitOut(String uid) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(isSitOut: true) else user
+    ];
+  }
+
   void clearScore() {
     state = [
       for (final user in state) user.copyWith(score: 0),
@@ -96,6 +114,12 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void clearIsCheck() {
+    state = [
+      for (final user in state) user.copyWith(isCheck: false),
+    ];
+  }
+
   int totalScore() {
     int total = 0;
     for (final user in state) {
@@ -105,18 +129,17 @@ class PlayerData extends _$PlayerData {
   }
 
   bool isAllAction() {
-    final List<UserEntity> players = List.from(state);
-    players.removeWhere((e) => e.isFold == true);
-    players.removeWhere((e) => e.stack == 0);
-    final values = players.map((e) => e.isAction).toList();
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    actPlayers.removeWhere((e) => e.stack == 0);
+    final values = actPlayers.map((e) => e.isAction).toList();
     return !values.contains(false);
   }
 
   bool isSameScore() {
-    final List<UserEntity> player = List.from(state);
-    player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0 && e.score == 0);
-    final values = player.map((e) => e.score).toList();
+    final actPlayers = activePlayers();
+    final maxScore = actPlayers.map((e) => e.score).toList().reduce(max);
+    actPlayers.removeWhere((e) => e.stack == 0 && e.score < maxScore);
+    final values = actPlayers.map((e) => e.score).toList();
     if (values.isEmpty) return true;
 
     final first = values.first;
@@ -129,36 +152,41 @@ class PlayerData extends _$PlayerData {
   }
 
   bool isFoldout() {
-    final player = List.from(state);
-    player.removeWhere((e) => e.isFold == true);
-    return player.length == 1;
+    final actPlayers = activePlayers();
+    return actPlayers.length == 1;
   }
 
   bool isAllinShowDown() {
-    final List<UserEntity> players = List.from(state);
-    players.removeWhere((e) => e.isFold == true);
-    players.removeWhere((e) => e.stack == 0);
-    return players.length == 1;
+    final actPlayers = activePlayers();
+    if (actPlayers.where((e) => e.stack == 0).toList().isEmpty) {
+      return false;
+    }
+    final stackNoneMaxScore = actPlayers
+        .where((e) => e.stack == 0)
+        .toList()
+        .map((e) => e.score)
+        .reduce(max);
+    actPlayers.removeWhere((e) => e.stack == 0);
+    return actPlayers.isEmpty ||
+        (actPlayers.length == 1 && actPlayers.first.score >= stackNoneMaxScore);
   }
 
   bool isStackNone() {
-    final List<UserEntity> players = List.from(state);
-    players.removeWhere((e) => e.isFold == true);
-    final result = players.indexWhere((e) => e.stack == 0 && e.score != 0);
+    final actPlayers = activePlayers();
+    final result = actPlayers.indexWhere((e) => e.stack == 0 && e.score != 0);
     return result != -1;
   }
 
   List<String> stackNoneUids() {
-    final List<UserEntity> player = List.from(state);
-    player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack != 0);
-    return player.map((e) => e.uid).toList();
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    actPlayers.removeWhere((e) => e.stack != 0);
+    return actPlayers.map((e) => e.uid).toList();
   }
 
   List<UserEntity> activePlayers() {
     List<UserEntity> player = List.from(state);
     player.removeWhere((e) => e.isFold == true);
-    player.removeWhere((e) => e.stack == 0);
+    player.removeWhere((e) => e.isSitOut == true);
     return player;
   }
 
@@ -217,17 +245,6 @@ class PlayerData extends _$PlayerData {
     }
 
     return sidePots;
-  }
-
-  String finalUidString() {
-    List<UserEntity> player = List.from(state);
-    player.removeWhere((e) => e.isFold == true);
-    final uids = player.map((e) => e.uid).toList();
-    String value = '';
-    for (final uid in uids) {
-      value += '$uid ';
-    }
-    return value;
   }
 
   int curScore(String uid) {

@@ -26,7 +26,9 @@ mixin _$UserEntity {
   int get stack => throw _privateConstructorUsedError;
   bool get isBtn => throw _privateConstructorUsedError;
   bool get isAction => throw _privateConstructorUsedError;
+  bool get isCheck => throw _privateConstructorUsedError;
   bool get isFold => throw _privateConstructorUsedError;
+  bool get isSitOut => throw _privateConstructorUsedError;
   int get score => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -48,7 +50,9 @@ abstract class $UserEntityCopyWith<$Res> {
       int stack,
       bool isBtn,
       bool isAction,
+      bool isCheck,
       bool isFold,
+      bool isSitOut,
       int score});
 }
 
@@ -71,7 +75,9 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
     Object? stack = null,
     Object? isBtn = null,
     Object? isAction = null,
+    Object? isCheck = null,
     Object? isFold = null,
+    Object? isSitOut = null,
     Object? score = null,
   }) {
     return _then(_value.copyWith(
@@ -99,9 +105,17 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
           ? _value.isAction
           : isAction // ignore: cast_nullable_to_non_nullable
               as bool,
+      isCheck: null == isCheck
+          ? _value.isCheck
+          : isCheck // ignore: cast_nullable_to_non_nullable
+              as bool,
       isFold: null == isFold
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSitOut: null == isSitOut
+          ? _value.isSitOut
+          : isSitOut // ignore: cast_nullable_to_non_nullable
               as bool,
       score: null == score
           ? _value.score
@@ -112,11 +126,11 @@ class _$UserEntityCopyWithImpl<$Res, $Val extends UserEntity>
 }
 
 /// @nodoc
-abstract class _$$_UserEntityCopyWith<$Res>
+abstract class _$$UserEntityImplCopyWith<$Res>
     implements $UserEntityCopyWith<$Res> {
-  factory _$$_UserEntityCopyWith(
-          _$_UserEntity value, $Res Function(_$_UserEntity) then) =
-      __$$_UserEntityCopyWithImpl<$Res>;
+  factory _$$UserEntityImplCopyWith(
+          _$UserEntityImpl value, $Res Function(_$UserEntityImpl) then) =
+      __$$UserEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -126,16 +140,18 @@ abstract class _$$_UserEntityCopyWith<$Res>
       int stack,
       bool isBtn,
       bool isAction,
+      bool isCheck,
       bool isFold,
+      bool isSitOut,
       int score});
 }
 
 /// @nodoc
-class __$$_UserEntityCopyWithImpl<$Res>
-    extends _$UserEntityCopyWithImpl<$Res, _$_UserEntity>
-    implements _$$_UserEntityCopyWith<$Res> {
-  __$$_UserEntityCopyWithImpl(
-      _$_UserEntity _value, $Res Function(_$_UserEntity) _then)
+class __$$UserEntityImplCopyWithImpl<$Res>
+    extends _$UserEntityCopyWithImpl<$Res, _$UserEntityImpl>
+    implements _$$UserEntityImplCopyWith<$Res> {
+  __$$UserEntityImplCopyWithImpl(
+      _$UserEntityImpl _value, $Res Function(_$UserEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -147,10 +163,12 @@ class __$$_UserEntityCopyWithImpl<$Res>
     Object? stack = null,
     Object? isBtn = null,
     Object? isAction = null,
+    Object? isCheck = null,
     Object? isFold = null,
+    Object? isSitOut = null,
     Object? score = null,
   }) {
-    return _then(_$_UserEntity(
+    return _then(_$UserEntityImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -175,9 +193,17 @@ class __$$_UserEntityCopyWithImpl<$Res>
           ? _value.isAction
           : isAction // ignore: cast_nullable_to_non_nullable
               as bool,
+      isCheck: null == isCheck
+          ? _value.isCheck
+          : isCheck // ignore: cast_nullable_to_non_nullable
+              as bool,
       isFold: null == isFold
           ? _value.isFold
           : isFold // ignore: cast_nullable_to_non_nullable
+              as bool,
+      isSitOut: null == isSitOut
+          ? _value.isSitOut
+          : isSitOut // ignore: cast_nullable_to_non_nullable
               as bool,
       score: null == score
           ? _value.score
@@ -189,20 +215,22 @@ class __$$_UserEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_UserEntity extends _UserEntity {
-  const _$_UserEntity(
+class _$UserEntityImpl extends _UserEntity {
+  const _$UserEntityImpl(
       {required this.uid,
       required this.assignedId,
       this.name,
       required this.stack,
       required this.isBtn,
       required this.isAction,
+      required this.isCheck,
       required this.isFold,
+      required this.isSitOut,
       required this.score})
       : super._();
 
-  factory _$_UserEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_UserEntityFromJson(json);
+  factory _$UserEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$UserEntityImplFromJson(json);
 
   @override
   final String uid;
@@ -217,20 +245,24 @@ class _$_UserEntity extends _UserEntity {
   @override
   final bool isAction;
   @override
+  final bool isCheck;
+  @override
   final bool isFold;
+  @override
+  final bool isSitOut;
   @override
   final int score;
 
   @override
   String toString() {
-    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isAction: $isAction, isFold: $isFold, score: $score)';
+    return 'UserEntity(uid: $uid, assignedId: $assignedId, name: $name, stack: $stack, isBtn: $isBtn, isAction: $isAction, isCheck: $isCheck, isFold: $isFold, isSitOut: $isSitOut, score: $score)';
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_UserEntity &&
+            other is _$UserEntityImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.assignedId, assignedId) ||
                 other.assignedId == assignedId) &&
@@ -239,24 +271,27 @@ class _$_UserEntity extends _UserEntity {
             (identical(other.isBtn, isBtn) || other.isBtn == isBtn) &&
             (identical(other.isAction, isAction) ||
                 other.isAction == isAction) &&
+            (identical(other.isCheck, isCheck) || other.isCheck == isCheck) &&
             (identical(other.isFold, isFold) || other.isFold == isFold) &&
+            (identical(other.isSitOut, isSitOut) ||
+                other.isSitOut == isSitOut) &&
             (identical(other.score, score) || other.score == score));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, assignedId, name, stack,
-      isBtn, isAction, isFold, score);
+      isBtn, isAction, isCheck, isFold, isSitOut, score);
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>
-      __$$_UserEntityCopyWithImpl<_$_UserEntity>(this, _$identity);
+  _$$UserEntityImplCopyWith<_$UserEntityImpl> get copyWith =>
+      __$$UserEntityImplCopyWithImpl<_$UserEntityImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_UserEntityToJson(
+    return _$$UserEntityImplToJson(
       this,
     );
   }
@@ -270,12 +305,14 @@ abstract class _UserEntity extends UserEntity {
       required final int stack,
       required final bool isBtn,
       required final bool isAction,
+      required final bool isCheck,
       required final bool isFold,
-      required final int score}) = _$_UserEntity;
+      required final bool isSitOut,
+      required final int score}) = _$UserEntityImpl;
   const _UserEntity._() : super._();
 
   factory _UserEntity.fromJson(Map<String, dynamic> json) =
-      _$_UserEntity.fromJson;
+      _$UserEntityImpl.fromJson;
 
   @override
   String get uid;
@@ -290,11 +327,15 @@ abstract class _UserEntity extends UserEntity {
   @override
   bool get isAction;
   @override
+  bool get isCheck;
+  @override
   bool get isFold;
+  @override
+  bool get isSitOut;
   @override
   int get score;
   @override
   @JsonKey(ignore: true)
-  _$$_UserEntityCopyWith<_$_UserEntity> get copyWith =>
+  _$$UserEntityImplCopyWith<_$UserEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

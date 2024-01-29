@@ -68,22 +68,22 @@ class _$MessageEntityCopyWithImpl<$Res, $Val extends MessageEntity>
 }
 
 /// @nodoc
-abstract class _$$_MessageEntityCopyWith<$Res>
+abstract class _$$MessageEntityImplCopyWith<$Res>
     implements $MessageEntityCopyWith<$Res> {
-  factory _$$_MessageEntityCopyWith(
-          _$_MessageEntity value, $Res Function(_$_MessageEntity) then) =
-      __$$_MessageEntityCopyWithImpl<$Res>;
+  factory _$$MessageEntityImplCopyWith(
+          _$MessageEntityImpl value, $Res Function(_$MessageEntityImpl) then) =
+      __$$MessageEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({MessageTypeEnum type, dynamic content});
 }
 
 /// @nodoc
-class __$$_MessageEntityCopyWithImpl<$Res>
-    extends _$MessageEntityCopyWithImpl<$Res, _$_MessageEntity>
-    implements _$$_MessageEntityCopyWith<$Res> {
-  __$$_MessageEntityCopyWithImpl(
-      _$_MessageEntity _value, $Res Function(_$_MessageEntity) _then)
+class __$$MessageEntityImplCopyWithImpl<$Res>
+    extends _$MessageEntityCopyWithImpl<$Res, _$MessageEntityImpl>
+    implements _$$MessageEntityImplCopyWith<$Res> {
+  __$$MessageEntityImplCopyWithImpl(
+      _$MessageEntityImpl _value, $Res Function(_$MessageEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -92,7 +92,7 @@ class __$$_MessageEntityCopyWithImpl<$Res>
     Object? type = null,
     Object? content = freezed,
   }) {
-    return _then(_$_MessageEntity(
+    return _then(_$MessageEntityImpl(
       type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
@@ -107,12 +107,12 @@ class __$$_MessageEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_MessageEntity extends _MessageEntity {
-  const _$_MessageEntity({required this.type, required this.content})
+class _$MessageEntityImpl extends _MessageEntity {
+  const _$MessageEntityImpl({required this.type, required this.content})
       : super._();
 
-  factory _$_MessageEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_MessageEntityFromJson(json);
+  factory _$MessageEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MessageEntityImplFromJson(json);
 
   @override
   final MessageTypeEnum type;
@@ -125,10 +125,10 @@ class _$_MessageEntity extends _MessageEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_MessageEntity &&
+            other is _$MessageEntityImpl &&
             (identical(other.type, type) || other.type == type) &&
             const DeepCollectionEquality().equals(other.content, content));
   }
@@ -141,12 +141,12 @@ class _$_MessageEntity extends _MessageEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_MessageEntityCopyWith<_$_MessageEntity> get copyWith =>
-      __$$_MessageEntityCopyWithImpl<_$_MessageEntity>(this, _$identity);
+  _$$MessageEntityImplCopyWith<_$MessageEntityImpl> get copyWith =>
+      __$$MessageEntityImplCopyWithImpl<_$MessageEntityImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_MessageEntityToJson(
+    return _$$MessageEntityImplToJson(
       this,
     );
   }
@@ -155,11 +155,11 @@ class _$_MessageEntity extends _MessageEntity {
 abstract class _MessageEntity extends MessageEntity {
   const factory _MessageEntity(
       {required final MessageTypeEnum type,
-      required final dynamic content}) = _$_MessageEntity;
+      required final dynamic content}) = _$MessageEntityImpl;
   const _MessageEntity._() : super._();
 
   factory _MessageEntity.fromJson(Map<String, dynamic> json) =
-      _$_MessageEntity.fromJson;
+      _$MessageEntityImpl.fromJson;
 
   @override
   MessageTypeEnum get type;
@@ -167,6 +167,6 @@ abstract class _MessageEntity extends MessageEntity {
   dynamic get content;
   @override
   @JsonKey(ignore: true)
-  _$$_MessageEntityCopyWith<_$_MessageEntity> get copyWith =>
+  _$$MessageEntityImplCopyWith<_$MessageEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

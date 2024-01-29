@@ -81,6 +81,8 @@ class HostConnOpen extends _$HostConnOpen {
             isBtn: false,
             isAction: false,
             isFold: false,
+            isCheck: false,
+            isSitOut: false,
           );
 
           /// Hostの状態変更
@@ -112,11 +114,46 @@ class HostConnOpen extends _$HostConnOpen {
             final winner = notifier.activePlayers().first;
             ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
             ref.read(playerDataProvider.notifier).clearScore();
+            ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(playerDataProvider.notifier).clearIsCheck();
             final pot = ref.read(potProvider);
             ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
-            ref.read(bigIdProvider.notifier).updateId();
-            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-            ref.read(roundProvider.notifier).delayPreFlop();
+            final cons = ref.read(hostConsProvider);
+
+            /// Participantのターン状態変更
+            for (final conEntity in cons) {
+              final conn = conEntity.con;
+              final uids = notifier.activePlayers().map((e) => e.uid).toList();
+              final game = GameEntity(
+                  uid: uids.first, type: GameTypeEnum.foldout, score: pot);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
+              conn.send(mes.toJson());
+            }
+            ref.read(roundProvider.notifier).updatePreFlop();
+          } else if (isAllinShowDown) {
+            if (notifier.isStackNone()) {
+              final sidePots =
+                  ref.read(playerDataProvider.notifier).calculateSidePots();
+              ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+
+              final cons = ref.read(hostConsProvider);
+              for (final con in cons) {
+                final conn = con.con;
+                for (final sidePot in sidePots) {
+                  /// Participantの状態変更
+                  final game = GameEntity(
+                      uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
+                  final mes =
+                      MessageEntity(type: MessageTypeEnum.game, content: game);
+                  conn.send(mes.toJson());
+                }
+              }
+            }
+            ref.read(playerDataProvider.notifier).clearScore();
+            ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
+            ref.read(playerDataProvider.notifier).clearIsAction();
+            ref.read(playerDataProvider.notifier).clearIsCheck();
           } else if (isChangeRound) {
             print('change round');
             if (notifier.isStackNone()) {
@@ -141,14 +178,7 @@ class HostConnOpen extends _$HostConnOpen {
             ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
             ref.read(roundProvider.notifier).nextRound();
             ref.read(playerDataProvider.notifier).clearIsAction();
-            if (isAllinShowDown) {
-              ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
-            }
-            final round = ref.read(roundProvider);
-            if (round == GameTypeEnum.showdown) {
-              ref.read(bigIdProvider.notifier).updateId();
-              ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-            }
+            ref.read(playerDataProvider.notifier).clearIsCheck();
           } else {
             ref.read(optionAssignedIdProvider.notifier).updateId();
           }
@@ -168,21 +198,14 @@ class HostConnOpen extends _$HostConnOpen {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final uids = notifier.activePlayers().map((e) => e.uid).toList();
-              final round = ref.read(roundProvider);
-              final pot = ref.read(potProvider);
-              final game = GameEntity(uid: uids.first, type: round, score: pot);
+              final optId = ref.read(optionAssignedIdProvider);
+              final game =
+                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
               final mes =
                   MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
-
-              const gam =
-                  GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-              const mess =
-                  MessageEntity(type: MessageTypeEnum.game, content: gam);
-              conn.send(mess.toJson());
             }
-          } else if (isChangeRound) {
+          } else if (isChangeRound || isAllinShowDown) {
             /// Participantのターン状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
@@ -217,7 +240,11 @@ class HostConnOpen extends _$HostConnOpen {
           } else if (game.type == GameTypeEnum.ranking) {
             final rankingMap = jsonDecode(game.uid);
             final sidePots = ref.read(hostSidePotsProvider);
-            final distributionMap = distributeSidePots(sidePots, rankingMap);
+            final curPotSize = ref.read(potProvider.notifier).currentSize(true);
+            final finalUids =
+                ref.read(hostSidePotsProvider.notifier).finalistUids();
+            final distributionMap =
+                distributeSidePots(sidePots, curPotSize, finalUids, rankingMap);
             final uids = distributionMap.keys.toList();
             final cons = ref.read(hostConsProvider);
             for (final uid in uids) {
@@ -239,15 +266,16 @@ class HostConnOpen extends _$HostConnOpen {
           }
 
           /// HostのOption状態変更
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
 
           /// ParticipantのOption状態変更
+          final optId = ref.read(optionAssignedIdProvider);
           final cons = ref.read(hostConsProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            const game =
-                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mes =
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
+            final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
@@ -290,6 +318,7 @@ void _actionStackMethod(ActionEntity action, NotifierProviderRef<bool> ref) {
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
+      ref.read(playerDataProvider.notifier).updateCheck(uid);
       break;
   }
 }

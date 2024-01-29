@@ -5,9 +5,9 @@ import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/root/setting_button.dart';
+import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
-import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class RootPage extends ConsumerWidget {
   const RootPage({super.key});
@@ -44,16 +44,6 @@ class RootPage extends ConsumerWidget {
                   child: SettingButton()
                 ),
                 Positioned(
-                  top: height * 0.23,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ref.watch(roundProvider).name,
-                      style: TextStyleConstant.bold16,
-                    ),
-                  ),
-                ),
-                Positioned(
                   top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -70,13 +60,19 @@ class RootPage extends ConsumerWidget {
                           child: const Text('部屋作成')),
                       const SizedBox(width: 32),
                       ElevatedButton(
-                          onPressed: () => context.go('/participant'),
+                          onPressed: () {
+                            final flavor = ref.read(flavorProvider);
+                            if (flavor == 'dev') {
+                              context.go('/participant', extra: roomToPeerId(000000));
+                            }
+                            context.go('/participant');
+                          },
                           child: const Text('参加する')),
                     ],
                   ),
                 ),
-                Positioned(bottom: height * 0.17, child: const Hole(true)),
-                Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
+                Positioned(bottom: height * 0.2, child: const Hole(true)),
+                Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
               ],
             ),
           ),

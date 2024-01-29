@@ -6,13 +6,13 @@ part of 'message_entity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_MessageEntity _$$_MessageEntityFromJson(Map<String, dynamic> json) =>
-    _$_MessageEntity(
+_$MessageEntityImpl _$$MessageEntityImplFromJson(Map<String, dynamic> json) =>
+    _$MessageEntityImpl(
       type: $enumDecode(_$MessageTypeEnumEnumMap, json['type']),
       content: json['content'],
     );
 
-Map<String, dynamic> _$$_MessageEntityToJson(_$_MessageEntity instance) =>
+Map<String, dynamic> _$$MessageEntityImplToJson(_$MessageEntityImpl instance) =>
     <String, dynamic>{
       'type': _$MessageTypeEnumEnumMap[instance.type]!,
       'content': instance.content,

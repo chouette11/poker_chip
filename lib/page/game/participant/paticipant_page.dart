@@ -9,13 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
+import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/component/id_text_field.dart';
-import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
-import 'package:poker_chip/page/game/component/side_pot.dart';
-import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
-import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
@@ -127,6 +124,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
     final flavor = ref.watch(flavorProvider);
+    final isStart = ref.watch(isStartProvider);
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
         Future.delayed(const Duration(seconds: 1), () {
@@ -142,6 +140,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               isBtn: false,
               isAction: false,
               isFold: false,
+              isCheck: false,
+              isSitOut: false,
             ),
           );
           conn.send(mes.toJson());
@@ -151,6 +151,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: SizedBox(
@@ -176,55 +177,29 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                   ),
                 ),
                 Positioned(
-                  top: height * 0.23,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      ref.watch(roundProvider).name,
-                      style: TextStyleConstant.bold16,
-                    ),
-                  ),
-                ),
-                Positioned(
                   top: height * 0.3,
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: PotWidget(false),
                   ),
                 ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.3,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: SidePotsWidget(false),
+                Visibility(
+                  visible: isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: const InfoWidget(false),
                   ),
                 ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantRankingButton(),
+                Visibility(
+                  visible: !isStart,
+                  child: Positioned(
+                    top: height * 0.4,
+                    child: const Text(
+                      'ホストが開始するまでお待ち下さい',
+                      style: TextStyleConstant.normal14,
+                    ),
                   ),
                 ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantWhoWinButton(),
-                  ),
-                ),
-                Positioned(
-                  height: height * 0.4,
-                  right: width * 0.2,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: ParticipantActionButtons(),
-                  ),
-                ),
-
                 // Positioned(
                 //   child: Image.asset(
                 //     'assets/images/chips.png',
@@ -234,13 +209,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                 //   ),
                 // ),
                 IdTextField((ref) => connect(ref)),
-                Positioned(bottom: height * 0.17, child: const Hole(false)),
+                Positioned(bottom: height * 0.2, child: const Hole(false)),
                 Visibility(
                   visible: flavor == 'dev',
                   child: Positioned(
                       bottom: height * 0.17, child: Text(connected.toString())),
                 ),
-                Positioned(bottom: height * 0.1, left: 0, child: const Chips()),
+                Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
               ],
             ),
           ),
@@ -277,6 +252,7 @@ void _participantActionMethod(ActionEntity action, WidgetRef ref) {
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
+      ref.read(playerDataProvider.notifier).updateCheck(uid);
       break;
   }
 }
@@ -285,18 +261,23 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
   final type = game.type;
   final uid = game.uid;
   final score = game.score;
+  final playerNotifier = ref.read(playerDataProvider.notifier);
   switch (type) {
+    case GameTypeEnum.sitOut:
+      playerNotifier.updateSitOut(uid);
+      break;
     case GameTypeEnum.blind:
-      ref.read(playerDataProvider.notifier).updateStack(uid, -score);
-      ref.read(playerDataProvider.notifier).updateScore(uid, score);
+      playerNotifier.updateStack(uid, -score);
+      playerNotifier.updateScore(uid, score);
       ref.read(potProvider.notifier).potUpdate(score);
+      ref.read(isStartProvider.notifier).update((state) => true);
       break;
     case GameTypeEnum.anty:
       break;
     case GameTypeEnum.ranking:
       break;
     case GameTypeEnum.btn:
-      ref.read(playerDataProvider.notifier).updateBtn(uid);
+      playerNotifier.updateBtn(uid);
       break;
     case GameTypeEnum.sidePot:
       print(score);
@@ -304,31 +285,39 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
       break;
     case GameTypeEnum.preFlop:
       ref.read(roundProvider.notifier).update(type);
+      if (score != 0) {
+        ref.read(participantOptIdProvider.notifier).update((state) => score);
+      }
       ref.read(potProvider.notifier).clear();
       ref.read(sidePotsProvider.notifier).clear();
-      ref.read(playerDataProvider.notifier).clearIsFold();
+      playerNotifier.clearIsFold();
       break;
     case GameTypeEnum.flop:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.turn:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.river:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       break;
     case GameTypeEnum.foldout:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
-      ref.read(playerDataProvider.notifier).updateStack(uid, score);
+      playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
+      playerNotifier.updateStack(uid, score);
     case GameTypeEnum.showdown:
       ref.read(roundProvider.notifier).update(type);
-      ref.read(playerDataProvider.notifier).clearScore();
+      playerNotifier.clearScore();
+      playerNotifier.clearIsCheck();
       if (uid != '') {
-        ref.read(playerDataProvider.notifier).updateStack(uid, score);
+        playerNotifier.updateStack(uid, score);
       }
       break;
   }

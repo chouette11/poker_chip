@@ -8,6 +8,7 @@ import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -62,7 +63,7 @@ final playersExProvider = StateProvider((ref) => []);
 final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
 
-final rankingProvider = StateProvider.family((ref, UserEntity _) => 0);
+final rankingProvider = StateProvider.family((ref, UserEntity _) => 1);
 
 ///
 /// Round
@@ -99,6 +100,8 @@ class Round extends _$Round {
         break;
       case GameTypeEnum.ranking:
         break;
+      case GameTypeEnum.sitOut:
+        break;
     }
   }
 
@@ -106,18 +109,41 @@ class Round extends _$Round {
     state = gameTypeEnum;
   }
 
-  void delayPreFlop() {
+  void updatePreFlop() {
+    /// foldを初期化
+    ref.read(playerDataProvider.notifier).clearIsFold();
+
+    /// potを初期化
+    ref.read(potProvider.notifier).clear();
+    ref.read(hostSidePotsProvider.notifier).clear();
+
+    /// HostのsitOutを更新
+    final noneUids = ref.read(playerDataProvider.notifier).stackNoneUids();
+    for (final uid in noneUids) {
+      ref.read(playerDataProvider.notifier).updateFold(uid);
+    }
+
+    /// bigBlindを更新
+    ref.read(bigIdProvider.notifier).updateId();
+
+    /// optionIdを更新
+    ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
+
+    /// ParticipantのsitOutを更新
+    final cons = ref.read(hostConsProvider);
+    for (final con in cons) {
+      final conn = con.con;
+      for (final uid in noneUids) {
+        /// Participantの状態変更
+        final game = GameEntity(uid: uid, type: GameTypeEnum.sitOut, score: 0);
+        final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
+        conn.send(mes.toJson());
+      }
+    }
+
+    state = GameTypeEnum.preFlop;
+
     Future.delayed(const Duration(seconds: 2), () {
-      /// foldを初期化
-      ref.read(playerDataProvider.notifier).clearIsFold();
-
-      /// potを初期化
-      ref.read(potProvider.notifier).clear();
-      ref.read(hostSidePotsProvider.notifier).clear();
-      state = GameTypeEnum.preFlop;
-    });
-
-    Future.delayed(const Duration(seconds: 4), () {
       final cons = ref.read(hostConsProvider);
       _game(cons, ref);
     });
@@ -206,9 +232,9 @@ class BigId extends _$BigId {
       state = 1;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(state, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       state = state + 1;
       if (state > len) {
         state = 1;
@@ -223,9 +249,9 @@ class BigId extends _$BigId {
       id = players.length;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(id, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       final len = players.length;
       id = id - 1;
       if (id == 0) {
@@ -246,19 +272,15 @@ class BigId extends _$BigId {
       id = len;
     }
     while (ref
-            .read(playerDataProvider.notifier)
-            .curStack(_assignedIdToUid2(id, ref)) ==
-        0) {
+        .read(playerDataProvider)
+        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .isSitOut) {
       id = id - 1;
       if (id == 0) {
         id = len;
       }
     }
     return id;
-  }
-
-  void fixHeads() {
-    state = 2;
   }
 }
 
