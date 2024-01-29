@@ -62,7 +62,7 @@ final playersExProvider = StateProvider((ref) => []);
 final isSelectedProvider =
     StateProvider.family((ref, UserEntity user) => false);
 
-final rankingProvider = StateProvider.family((ref, UserEntity _) => 0);
+final rankingProvider = StateProvider.family((ref, UserEntity _) => 1);
 
 ///
 /// Round
