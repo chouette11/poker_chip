@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 
 class SettingButton extends ConsumerStatefulWidget {
@@ -39,9 +40,10 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                         )),
                     IconButton(
                         onPressed: () {
-                          _stack(ref);
-                          Navigator.pop(context);
-                          print(stack);
+                          ref
+                              .read(stackProvider.notifier)
+                              .update((state) => int.parse(stack));
+                          context.pop();
                         },
                         icon: const Icon(Icons.check)),
                   ],
@@ -53,10 +55,5 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
       ),
       icon: const Icon(Icons.settings),
     );
-  }
-
-  void _stack(WidgetRef ref) {
-    ref.read(stackProvider.notifier).update((state) => int.parse(stack));
-    print(ref.read(stackProvider));
   }
 }
