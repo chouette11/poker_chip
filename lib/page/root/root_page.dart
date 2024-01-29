@@ -38,6 +38,39 @@ class RootPage extends ConsumerWidget {
                   ),
                 ),
                 Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  SizedBox(
+                                      width: width * 0.5,
+                                      child: const TextField(
+                                        decoration:
+                                            InputDecoration(labelText: 'stack'),
+                                      )),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.check)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    icon: const Icon(Icons.settings),
+                  ),
+                ),
+                Positioned(
                   top: height * 0.23,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
