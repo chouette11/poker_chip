@@ -4,6 +4,7 @@ import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/page/root/setting_button.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -37,38 +38,10 @@ class RootPage extends ConsumerWidget {
                     width: width,
                   ),
                 ),
-                Positioned(
+                const Positioned(
                   top: 0,
                   right: 0,
-                  child: IconButton(
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                children: [
-                                  SizedBox(
-                                      width: width * 0.5,
-                                      child: const TextField(
-                                        decoration:
-                                            InputDecoration(labelText: 'stack'),
-                                      )),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.check)),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    icon: const Icon(Icons.settings),
-                  ),
+                  child: SettingButton()
                 ),
                 Positioned(
                   top: height * 0.23,
