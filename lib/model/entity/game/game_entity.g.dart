@@ -6,14 +6,14 @@ part of 'game_entity.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_GameEntity _$$_GameEntityFromJson(Map<String, dynamic> json) =>
-    _$_GameEntity(
+_$GameEntityImpl _$$GameEntityImplFromJson(Map<String, dynamic> json) =>
+    _$GameEntityImpl(
       uid: json['uid'] as String,
       type: $enumDecode(_$GameTypeEnumEnumMap, json['type']),
       score: json['score'] as int,
     );
 
-Map<String, dynamic> _$$_GameEntityToJson(_$_GameEntity instance) =>
+Map<String, dynamic> _$$GameEntityImplToJson(_$GameEntityImpl instance) =>
     <String, dynamic>{
       'uid': instance.uid,
       'type': _$GameTypeEnumEnumMap[instance.type]!,
@@ -32,4 +32,5 @@ const _$GameTypeEnumEnumMap = {
   GameTypeEnum.foldout: 'foldout',
   GameTypeEnum.showdown: 'showdown',
   GameTypeEnum.ranking: 'ranking',
+  GameTypeEnum.sitOut: 'sitOut',
 };

@@ -30,24 +30,30 @@ class _RankingSelectButtonState extends ConsumerState<RankingSelectButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ToggleButtons(
-      fillColor: ColorConstant.accent2,
-      borderColor: ColorConstant.black0,
-      selectedColor: ColorConstant.black0,
-      isSelected: selection,
-      onPressed: (int index) {
-        selection.fillRange(0, selection.length, false);
-        selection[index] = true;
-        ref
-            .read(rankingProvider(widget.userEntity).notifier)
-            .update((state) => index + 1);
-        setState(() {});
-      },
-      constraints: const BoxConstraints(
-        minHeight: 32.0,
-        minWidth: 56.0,
+    return SizedBox(
+      width: 88,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: ToggleButtons(
+          fillColor: ColorConstant.accent2,
+          borderColor: ColorConstant.black0,
+          selectedColor: ColorConstant.black0,
+          isSelected: selection,
+          onPressed: (int index) {
+            selection.fillRange(0, selection.length, false);
+            selection[index] = true;
+            ref
+                .read(rankingProvider(widget.userEntity).notifier)
+                .update((state) => index + 1);
+            setState(() {});
+          },
+          constraints: const BoxConstraints(
+            minHeight: 32.0,
+            minWidth: 36.0,
+          ),
+          children: options.map((e) => Text(e)).toList(),
+        ),
       ),
-      children: options.map((e) => Text(e)).toList(),
     );
   }
 }

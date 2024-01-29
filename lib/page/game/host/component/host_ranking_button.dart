@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
+import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -19,15 +20,20 @@ class HostRankingButton extends ConsumerWidget {
     final sidePots = ref.watch(hostSidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePots.isNotEmpty,
-      child: ElevatedButton(
+      child: FloatingActionButton(
         onPressed: () {
           Map<String, int> rankingMap = {};
-          final players = ref.read(playerDataProvider);
+          final players = ref.read(playerDataProvider.notifier).activePlayers();
           for (final player in players) {
             final rank = ref.read(rankingProvider(player));
             rankingMap[player.uid] = rank;
           }
-          final distributionMap = distributeSidePots(sidePots, rankingMap);
+          final currentPotSize =
+              ref.watch(potProvider.notifier).currentSize(true);
+          final finalUids =
+              ref.read(hostSidePotsProvider.notifier).finalistUids();
+          final distributionMap = distributeSidePots(
+              sidePots, currentPotSize, finalUids, rankingMap);
           final uids = distributionMap.keys.toList();
 
           final cons = ref.read(hostConsProvider);
@@ -49,14 +55,15 @@ class HostRankingButton extends ConsumerWidget {
           }
 
           /// HostのOption状態変更
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
 
           /// ParticipantのOption状態変更
+          final optId = ref.read(optionAssignedIdProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            const game =
-                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mes =
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
+            final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
@@ -68,14 +75,20 @@ class HostRankingButton extends ConsumerWidget {
 }
 
 /// { uid: score }
-Map<String, int> distributeSidePots(
-    List<SidePotEntity> sidePots, Map userRankings) {
+Map<String, int> distributeSidePots(List<SidePotEntity> sidePots, int pot,
+    List<String> finalUids, Map userRankings) {
   // 各ユーザーに分配されるチップの量を記録するマップ
   Map<String, int> distributions = {};
 
   // ランキング順にソートされたユーザーIDのリストを作成
   var sortedUsers = userRankings.keys.toList();
   sortedUsers.sort((a, b) => userRankings[a]!.compareTo(userRankings[b]!));
+
+  //現在のpotのentityを作成
+  final potEntity = SidePotEntity(uids: finalUids, size: pot, allinUids: []);
+  sidePots.add(potEntity);
+  print(userRankings);
+  print(sidePots);
 
   // 各サイドポットに対して
   for (var pot in sidePots) {
@@ -92,6 +105,9 @@ Map<String, int> distributeSidePots(
       }
     }
 
+    if (eligibleWinners.isEmpty) {
+      continue;
+    }
     // サイドポットを関連する勝者に分配
     int potShare = pot.size ~/ eligibleWinners.length;
     for (var winner in eligibleWinners) {

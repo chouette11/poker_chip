@@ -1,4 +1,5 @@
 import 'package:poker_chip/model/entity/side_pot/side_pot_entity.dart';
+import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pot.g.dart';
@@ -20,6 +21,17 @@ class HostSidePots extends _$HostSidePots {
       value += pot.size;
     }
     return value;
+  }
+
+  List<String> finalistUids() {
+    final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+    final uids = actPlayers.map((e) => e.uid).toList();
+    List<String> allinUsers = [];
+    for (final sidePot in state) {
+      allinUsers = [...allinUsers, ...sidePot.allinUids];
+    }
+    uids.removeWhere((e) => allinUsers.contains(e));
+    return uids;
   }
 
   void clear() {
@@ -60,6 +72,13 @@ class Pot extends _$Pot {
 
   void potUpdate(int score) {
     state = state + score;
+  }
+
+  int currentSize(bool isHost) {
+    final sidePotsSize = isHost
+        ? ref.read(hostSidePotsProvider.notifier).totalValue()
+        : ref.read(sidePotsProvider.notifier).totalValue();
+    return state - sidePotsSize;
   }
 
   void clear() {

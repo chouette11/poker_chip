@@ -25,23 +25,27 @@ class HostActionButtons extends ConsumerWidget {
       final maxScore = _findMaxInList(players.map((e) => e.score).toList());
       final me = players.firstWhere((e) => e.uid == ref.watch(uidProvider));
       if (maxScore == 0 || me.score == maxScore) {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
         );
       } else {
-        return Column(
+        return Row(
           children: [
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore),
+            const SizedBox(width: 8),
             _ActionButton(
                 actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore)
           ],
@@ -79,12 +83,14 @@ class _ActionButton extends ConsumerWidget {
     final betScore = ref.watch(raiseBetProvider);
     final myScore = ref.watch(playerDataProvider.notifier).curScore(myUid);
     final myStack = ref.watch(playerDataProvider.notifier).curStack(myUid);
-    final score = _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack);
+    final score =
+        _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack, myScore);
 
     return ElevatedButton(
       onPressed: () {
         if ((actionTypeEnum == ActionTypeEnum.bet ||
-            actionTypeEnum == ActionTypeEnum.raise) && score < maxScore) {
+                actionTypeEnum == ActionTypeEnum.raise) &&
+            score < maxScore) {
           return;
         }
         final notifier = ref.read(playerDataProvider.notifier);
@@ -100,11 +106,46 @@ class _ActionButton extends ConsumerWidget {
           final winner = notifier.activePlayers().first;
           ref.read(roundProvider.notifier).update(GameTypeEnum.foldout);
           ref.read(playerDataProvider.notifier).clearScore();
+          ref.read(playerDataProvider.notifier).clearIsAction();
+          ref.read(playerDataProvider.notifier).clearIsCheck();
           final pot = ref.read(potProvider);
           ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
-          ref.read(bigIdProvider.notifier).updateId();
-          ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-          ref.read(roundProvider.notifier).delayPreFlop();
+
+          /// Participantのターン状態変更
+          for (final conEntity in cons) {
+            final conn = conEntity.con;
+            final uids = notifier.activePlayers().map((e) => e.uid).toList();
+            final game = GameEntity(
+                uid: uids.first, type: GameTypeEnum.foldout, score: pot);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.game, content: game);
+            conn.send(mes.toJson());
+          }
+
+          ref.read(roundProvider.notifier).updatePreFlop();
+        } else if (isAllinShowDown) {
+          if (notifier.isStackNone()) {
+            final sidePots =
+                ref.read(playerDataProvider.notifier).calculateSidePots();
+            ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
+
+            final cons = ref.read(hostConsProvider);
+            for (final con in cons) {
+              final conn = con.con;
+              for (final sidePot in sidePots) {
+                /// Participantの状態変更
+                final game = GameEntity(
+                    uid: '', type: GameTypeEnum.sidePot, score: sidePot.size);
+                final mes =
+                    MessageEntity(type: MessageTypeEnum.game, content: game);
+                conn.send(mes.toJson());
+              }
+            }
+          }
+          ref.read(playerDataProvider.notifier).clearScore();
+          ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
+          ref.read(playerDataProvider.notifier).clearIsAction();
+          ref.read(playerDataProvider.notifier).clearIsCheck();
         } else if (isChangeRound) {
           if (notifier.isStackNone()) {
             final sidePots =
@@ -128,14 +169,7 @@ class _ActionButton extends ConsumerWidget {
           ref.read(optionAssignedIdProvider.notifier).updatePostFlopId();
           ref.read(roundProvider.notifier).nextRound();
           ref.read(playerDataProvider.notifier).clearIsAction();
-          if (isAllinShowDown) {
-            ref.read(roundProvider.notifier).update(GameTypeEnum.showdown);
-          }
-          final round = ref.read(roundProvider);
-          if (round == GameTypeEnum.showdown) {
-            ref.read(bigIdProvider.notifier).updateId();
-            ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-          }
+          ref.read(playerDataProvider.notifier).clearIsCheck();
         } else {
           ref.read(optionAssignedIdProvider.notifier).updateId();
         }
@@ -159,21 +193,14 @@ class _ActionButton extends ConsumerWidget {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            final uids = notifier.activePlayers().map((e) => e.uid).toList();
-            final round = ref.read(roundProvider);
-            final pot = ref.read(potProvider);
-            final game = GameEntity(uid: uids.first, type: round, score: pot);
+            final optId = ref.read(optionAssignedIdProvider);
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
             final mes =
                 MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
-
-            const gam =
-                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mess =
-                MessageEntity(type: MessageTypeEnum.game, content: gam);
-            conn.send(mess.toJson());
           }
-        } else if (isChangeRound) {
+        } else if (isChangeRound || isAllinShowDown) {
           /// Participantのターン状態変更
           for (final conEntity in cons) {
             final conn = conEntity.con;
@@ -206,17 +233,20 @@ class _ActionButton extends ConsumerWidget {
   }
 }
 
-int _fixScoreSize(
-    ActionTypeEnum actionTypeEnum, int betScore, int maxScore, int stack) {
+int _fixScoreSize(ActionTypeEnum actionTypeEnum, int betScore, int maxScore,
+    int stack, int myScore) {
   int score = 0;
   if (actionTypeEnum == ActionTypeEnum.raise ||
       actionTypeEnum == ActionTypeEnum.bet) {
     score = betScore;
+    if (score > stack) {
+      score = stack;
+    }
   } else if (actionTypeEnum == ActionTypeEnum.call) {
     score = maxScore;
-  }
-  if (score > stack) {
-    score = stack;
+    if (score > stack + myScore) {
+      score = stack + myScore;
+    }
   }
   return score;
 }

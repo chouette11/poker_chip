@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -18,7 +19,7 @@ class HostWhoWinButton extends ConsumerWidget {
     final sidePots = ref.watch(hostSidePotsProvider);
     return Visibility(
       visible: round == GameTypeEnum.showdown && sidePots.isEmpty,
-      child: ElevatedButton(
+      child: FloatingActionButton(
         onPressed: () {
           final players = ref.read(playerDataProvider);
           final List<String> uids = [];
@@ -39,22 +40,25 @@ class HostWhoWinButton extends ConsumerWidget {
             /// Participantのstack状態変更
             for (final conEntity in cons) {
               final conn = conEntity.con;
-              final game =
-              GameEntity(uid: uid, type: GameTypeEnum.showdown, score: score);
-              final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
+              final game = GameEntity(
+                  uid: uid, type: GameTypeEnum.showdown, score: score);
+              final mes =
+                  MessageEntity(type: MessageTypeEnum.game, content: game);
               conn.send(mes.toJson());
             }
           }
 
           /// HostのOption状態変更
-          ref.read(roundProvider.notifier).delayPreFlop();
+          ref.read(roundProvider.notifier).updatePreFlop();
 
           /// ParticipantのOption状態変更
+          final optId = ref.read(optionAssignedIdProvider);
           for (final conEntity in cons) {
             final conn = conEntity.con;
-            const game =
-            GameEntity(uid: '', type: GameTypeEnum.preFlop, score: 0);
-            const mes = MessageEntity(type: MessageTypeEnum.game, content: game);
+            final game =
+                GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.game, content: game);
             conn.send(mes.toJson());
           }
         },

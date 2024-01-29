@@ -74,22 +74,22 @@ class _$GameEntityCopyWithImpl<$Res, $Val extends GameEntity>
 }
 
 /// @nodoc
-abstract class _$$_GameEntityCopyWith<$Res>
+abstract class _$$GameEntityImplCopyWith<$Res>
     implements $GameEntityCopyWith<$Res> {
-  factory _$$_GameEntityCopyWith(
-          _$_GameEntity value, $Res Function(_$_GameEntity) then) =
-      __$$_GameEntityCopyWithImpl<$Res>;
+  factory _$$GameEntityImplCopyWith(
+          _$GameEntityImpl value, $Res Function(_$GameEntityImpl) then) =
+      __$$GameEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String uid, GameTypeEnum type, int score});
 }
 
 /// @nodoc
-class __$$_GameEntityCopyWithImpl<$Res>
-    extends _$GameEntityCopyWithImpl<$Res, _$_GameEntity>
-    implements _$$_GameEntityCopyWith<$Res> {
-  __$$_GameEntityCopyWithImpl(
-      _$_GameEntity _value, $Res Function(_$_GameEntity) _then)
+class __$$GameEntityImplCopyWithImpl<$Res>
+    extends _$GameEntityCopyWithImpl<$Res, _$GameEntityImpl>
+    implements _$$GameEntityImplCopyWith<$Res> {
+  __$$GameEntityImplCopyWithImpl(
+      _$GameEntityImpl _value, $Res Function(_$GameEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -99,7 +99,7 @@ class __$$_GameEntityCopyWithImpl<$Res>
     Object? type = null,
     Object? score = null,
   }) {
-    return _then(_$_GameEntity(
+    return _then(_$GameEntityImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -118,13 +118,13 @@ class __$$_GameEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GameEntity extends _GameEntity {
-  const _$_GameEntity(
+class _$GameEntityImpl extends _GameEntity {
+  const _$GameEntityImpl(
       {required this.uid, required this.type, required this.score})
       : super._();
 
-  factory _$_GameEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_GameEntityFromJson(json);
+  factory _$GameEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameEntityImplFromJson(json);
 
   @override
   final String uid;
@@ -139,10 +139,10 @@ class _$_GameEntity extends _GameEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_GameEntity &&
+            other is _$GameEntityImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.score, score) || other.score == score));
@@ -155,12 +155,12 @@ class _$_GameEntity extends _GameEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_GameEntityCopyWith<_$_GameEntity> get copyWith =>
-      __$$_GameEntityCopyWithImpl<_$_GameEntity>(this, _$identity);
+  _$$GameEntityImplCopyWith<_$GameEntityImpl> get copyWith =>
+      __$$GameEntityImplCopyWithImpl<_$GameEntityImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_GameEntityToJson(
+    return _$$GameEntityImplToJson(
       this,
     );
   }
@@ -170,11 +170,11 @@ abstract class _GameEntity extends GameEntity {
   const factory _GameEntity(
       {required final String uid,
       required final GameTypeEnum type,
-      required final int score}) = _$_GameEntity;
+      required final int score}) = _$GameEntityImpl;
   const _GameEntity._() : super._();
 
   factory _GameEntity.fromJson(Map<String, dynamic> json) =
-      _$_GameEntity.fromJson;
+      _$GameEntityImpl.fromJson;
 
   @override
   String get uid;
@@ -184,6 +184,6 @@ abstract class _GameEntity extends GameEntity {
   int get score;
   @override
   @JsonKey(ignore: true)
-  _$$_GameEntityCopyWith<_$_GameEntity> get copyWith =>
+  _$$GameEntityImplCopyWith<_$GameEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

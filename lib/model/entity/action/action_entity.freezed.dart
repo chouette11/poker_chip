@@ -80,22 +80,22 @@ class _$ActionEntityCopyWithImpl<$Res, $Val extends ActionEntity>
 }
 
 /// @nodoc
-abstract class _$$_ActionEntityCopyWith<$Res>
+abstract class _$$ActionEntityImplCopyWith<$Res>
     implements $ActionEntityCopyWith<$Res> {
-  factory _$$_ActionEntityCopyWith(
-          _$_ActionEntity value, $Res Function(_$_ActionEntity) then) =
-      __$$_ActionEntityCopyWithImpl<$Res>;
+  factory _$$ActionEntityImplCopyWith(
+          _$ActionEntityImpl value, $Res Function(_$ActionEntityImpl) then) =
+      __$$ActionEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String uid, ActionTypeEnum type, int? optId, int score});
 }
 
 /// @nodoc
-class __$$_ActionEntityCopyWithImpl<$Res>
-    extends _$ActionEntityCopyWithImpl<$Res, _$_ActionEntity>
-    implements _$$_ActionEntityCopyWith<$Res> {
-  __$$_ActionEntityCopyWithImpl(
-      _$_ActionEntity _value, $Res Function(_$_ActionEntity) _then)
+class __$$ActionEntityImplCopyWithImpl<$Res>
+    extends _$ActionEntityCopyWithImpl<$Res, _$ActionEntityImpl>
+    implements _$$ActionEntityImplCopyWith<$Res> {
+  __$$ActionEntityImplCopyWithImpl(
+      _$ActionEntityImpl _value, $Res Function(_$ActionEntityImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -106,7 +106,7 @@ class __$$_ActionEntityCopyWithImpl<$Res>
     Object? optId = freezed,
     Object? score = null,
   }) {
-    return _then(_$_ActionEntity(
+    return _then(_$ActionEntityImpl(
       uid: null == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
@@ -129,13 +129,13 @@ class __$$_ActionEntityCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ActionEntity extends _ActionEntity {
-  const _$_ActionEntity(
+class _$ActionEntityImpl extends _ActionEntity {
+  const _$ActionEntityImpl(
       {required this.uid, required this.type, this.optId, required this.score})
       : super._();
 
-  factory _$_ActionEntity.fromJson(Map<String, dynamic> json) =>
-      _$$_ActionEntityFromJson(json);
+  factory _$ActionEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ActionEntityImplFromJson(json);
 
   @override
   final String uid;
@@ -152,10 +152,10 @@ class _$_ActionEntity extends _ActionEntity {
   }
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ActionEntity &&
+            other is _$ActionEntityImpl &&
             (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.optId, optId) || other.optId == optId) &&
@@ -169,12 +169,12 @@ class _$_ActionEntity extends _ActionEntity {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ActionEntityCopyWith<_$_ActionEntity> get copyWith =>
-      __$$_ActionEntityCopyWithImpl<_$_ActionEntity>(this, _$identity);
+  _$$ActionEntityImplCopyWith<_$ActionEntityImpl> get copyWith =>
+      __$$ActionEntityImplCopyWithImpl<_$ActionEntityImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ActionEntityToJson(
+    return _$$ActionEntityImplToJson(
       this,
     );
   }
@@ -185,11 +185,11 @@ abstract class _ActionEntity extends ActionEntity {
       {required final String uid,
       required final ActionTypeEnum type,
       final int? optId,
-      required final int score}) = _$_ActionEntity;
+      required final int score}) = _$ActionEntityImpl;
   const _ActionEntity._() : super._();
 
   factory _ActionEntity.fromJson(Map<String, dynamic> json) =
-      _$_ActionEntity.fromJson;
+      _$ActionEntityImpl.fromJson;
 
   @override
   String get uid;
@@ -201,6 +201,6 @@ abstract class _ActionEntity extends ActionEntity {
   int get score;
   @override
   @JsonKey(ignore: true)
-  _$$_ActionEntityCopyWith<_$_ActionEntity> get copyWith =>
+  _$$ActionEntityImplCopyWith<_$ActionEntityImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
