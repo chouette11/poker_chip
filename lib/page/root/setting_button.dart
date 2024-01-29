@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -11,7 +12,7 @@ class SettingButton extends ConsumerStatefulWidget {
 }
 
 class _SettingButtonState extends ConsumerState<SettingButton> {
-  String stack = '1000';
+  int stack = 1000;
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +32,25 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
-                        width: width * 0.6,
-                        child: TextField(
-                          decoration: const InputDecoration(labelText: 'stack'),
-                          onChanged: (value) {
-                            stack = value;
-                          },
-                        )),
-                    IconButton(
-                        onPressed: () {
-                          ref
-                              .read(stackProvider.notifier)
-                              .update((state) => int.parse(stack));
-                          context.pop();
+                      width: width * 0.6,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        decoration: const InputDecoration(labelText: 'stack'),
+                        onChanged: (value) {
+                          stack = int.parse(value);
                         },
-                        icon: const Icon(Icons.check)),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        ref
+                            .read(stackProvider.notifier)
+                            .update((state) => stack);
+                        context.pop();
+                      },
+                      icon: const Icon(Icons.check),
+                    ),
                   ],
                 ),
               ],
