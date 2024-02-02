@@ -6,8 +6,8 @@ import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
-class EditButton extends ConsumerWidget {
-  const EditButton({super.key});
+class EditablePlayerCard extends ConsumerWidget {
+  const EditablePlayerCard({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
@@ -17,70 +17,71 @@ class EditButton extends ConsumerWidget {
     String playername = '';
     int stack = 0;
 
-    return InkWell(
+    return GestureDetector(
       onTap: () {
         showDialog(
-            context: context,
-            builder: (context) {
-              return Dialog(
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Text('playerName'),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: width * 0.6,
-                            child: TextField(
-                              decoration: const InputDecoration(
-                                  labelText: 'playerName'),
-                              onChanged: (value) {
-                                playername = value;
-                              },
-                            ),
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text('playerName'),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: width * 0.6,
+                          child: TextField(
+                            decoration:
+                                const InputDecoration(labelText: 'playerName'),
+                            onChanged: (value) {
+                              playername = value;
+                            },
                           ),
-                          IconButton(
-                              onPressed: () {
-                                ref
-                                    .read(playerDataProvider.notifier)
-                                    .updateName(uid, playername);
-                                context.pop();
-                              },
-                              icon: const Icon(Icons.check)),
-                        ],
-                      ),
-                      const Text('stack'),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          SizedBox(
-                            width: width * 0.6,
-                            child: TextField(
-                              decoration:
-                                  const InputDecoration(labelText: 'stack'),
-                              onChanged: (value) {
-                                stack = int.parse(value);
-                              },
-                            ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(playerDataProvider.notifier)
+                                  .updateName(uid, playername);
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.check)),
+                      ],
+                    ),
+                    const Text('stack'),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: width * 0.6,
+                          child: TextField(
+                            decoration:
+                                const InputDecoration(labelText: 'stack'),
+                            onChanged: (value) {
+                              stack = int.parse(value);
+                            },
                           ),
-                          IconButton(
-                              onPressed: () {
-                                ref
-                                    .read(playerDataProvider.notifier)
-                                    .updateStack(uid, stack);
-                                context.pop();
-                              },
-                              icon: const Icon(Icons.check)),
-                        ],
-                      ),
-                    ],
-                  ),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              ref
+                                  .read(playerDataProvider.notifier)
+                                  .updateStack(uid, stack);
+                              context.pop();
+                            },
+                            icon: const Icon(Icons.check)),
+                      ],
+                    ),
+                  ],
                 ),
-              );
-            });
+              ),
+            );
+          },
+        );
       },
       child: Container(
         height: 64,
