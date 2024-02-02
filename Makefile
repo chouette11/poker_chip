@@ -94,3 +94,7 @@ release-ios-dev: ## clean project
 	fvm flutter pub get
 	make pod-install
 	fvm flutter build ios --no-tree-shake-icons --dart-define-from-file=dart_defines/dev.json
+
+.PHONY: change-icon
+change-icon: ## clean project
+	fvm flutter pub run flutter_launcher_icons:main
