@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/page/game/component/edit_button.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
@@ -107,18 +108,7 @@ class Hole extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Container(
-            height: 64,
-            width: 100,
-            decoration: const BoxDecoration(color: ColorConstant.black60),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
-                Text(myData.stack.toString(), style: TextStyleConstant.bold20),
-              ],
-            ),
-          ),
+          const EditButton(),
         ],
       ),
     );
