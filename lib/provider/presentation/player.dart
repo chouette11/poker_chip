@@ -41,6 +41,13 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void updateName(String uid, String playername) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(name: playername) else user
+    ];
+  }
+
   void updateStack(String uid, int? score) {
     state = [
       for (final user in state)
