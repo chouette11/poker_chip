@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/page/game/component/edit_button.dart';
+import 'package:poker_chip/page/game/component/editable_player_card.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
