@@ -91,7 +91,19 @@ class EditablePlayerCard extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
-            Text(myData.stack.toString(), style: TextStyleConstant.bold20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(myData.stack.toString(), style: TextStyleConstant.bold20),
+                const SizedBox(
+                  height: 20,
+                  child: Icon(
+                    Icons.edit,
+                    color: ColorConstant.black100,
+                  ),
+                )
+              ],
+            ),
           ],
         ),
       ),
