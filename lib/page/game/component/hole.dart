@@ -108,7 +108,7 @@ class Hole extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const EditButton(),
+          const EditablePlayerCard(),
         ],
       ),
     );
