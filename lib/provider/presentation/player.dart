@@ -16,7 +16,7 @@ class PlayerData extends _$PlayerData {
     return [
       UserEntity(
         uid: uid,
-        stack: ref.read(stackProvider),
+        stack: ref.watch(stackProvider),
         assignedId: 1,
         score: 0,
         isBtn: false,
@@ -38,6 +38,13 @@ class PlayerData extends _$PlayerData {
     state = [
       for (final e in state)
         if (e.uid == user.uid) user else e,
+    ];
+  }
+
+  void updateName(String uid, String playername) {
+    state = [
+      for (final user in state)
+        if (user.uid == uid) user.copyWith(name: playername) else user
     ];
   }
 

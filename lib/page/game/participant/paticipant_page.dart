@@ -135,7 +135,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               uid: uid,
               assignedId: 404,
               name: null,
-              stack: ref.read(stackProvider),
+              stack: ref.watch(stackProvider),
               score: 0,
               isBtn: false,
               isAction: false,
