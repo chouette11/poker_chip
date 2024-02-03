@@ -91,6 +91,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               ref.read(playerDataProvider.notifier).update(user);
             }
           }
+        } else if (mes.type == MessageTypeEnum.userSetting) {
+          final user = UserEntity.fromJson(mes.content);
+          ref.read(playerDataProvider.notifier).update(user);
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _participantActionMethod(action, ref);
