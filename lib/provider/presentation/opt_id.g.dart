@@ -6,7 +6,7 @@ part of 'opt_id.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$optionAssignedIdHash() => r'25ed991a025f7ec19cfa54ec6bdf9ecfbaf0bcdd';
+String _$optionAssignedIdHash() => r'b94f3cd80a6caa64289a99e4c2dd653eda1ffcc0';
 
 /// See also [OptionAssignedId].
 @ProviderFor(OptionAssignedId)
