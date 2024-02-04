@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
@@ -175,7 +176,6 @@ class _EditablePlayerCard extends ConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('playerName'),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -183,7 +183,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                           width: width * 0.6,
                           child: TextField(
                             decoration:
-                                const InputDecoration(labelText: 'playerName'),
+                                const InputDecoration(labelText: '名前'),
                             onChanged: (value) {
                               playername = value;
                             },
@@ -224,7 +224,6 @@ class _EditablePlayerCard extends ConsumerWidget {
                             icon: const Icon(Icons.check)),
                       ],
                     ),
-                    const Text('stack'),
                     Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -233,6 +232,10 @@ class _EditablePlayerCard extends ConsumerWidget {
                           child: TextField(
                             decoration:
                                 const InputDecoration(labelText: 'stack'),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
                             onChanged: (value) {
                               stack = int.parse(value);
                             },
