@@ -1,4 +1,7 @@
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
+import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/util/environment/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import 'package:poker_chip/util/constant/color_constant.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   const flavorName = String.fromEnvironment('flavor');
   final flavor = Flavor.values.byName(flavorName);
   await Firebase.initializeApp(
@@ -24,20 +28,33 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
   @override
   void initState() {
     Future(() async {
       ref.read(authProvider).autoLogin();
     });
+    initPlugin();
     super.initState();
+  }
+
+  Future<void> initPlugin() async {
+    TrackingStatus status =
+        await AppTrackingTransparency.trackingAuthorizationStatus;
+    if (status == TrackingStatus.notDetermined) {
+      await Future.delayed(const Duration(milliseconds: 200));
+      status = await AppTrackingTransparency.requestTrackingAuthorization();
+    }
+    if (status == TrackingStatus.authorized) {
+      gdpr();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-   final router = ref.watch(routerProvider);
+    final router = ref.watch(routerProvider);
     return MaterialApp.router(
       theme: ThemeData(
+        useMaterial3: false,
         primaryColor: ColorConstant.black100,
         fontFamily: 'Kaisei_Decol',
         dividerColor: Colors.transparent,

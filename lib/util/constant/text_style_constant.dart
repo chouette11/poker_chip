@@ -59,6 +59,11 @@ class TextStyleConstant {
       fontWeight: FontWeight.bold,
       fontSize: 60,
       color: ColorConstant.text);
+  static const normal10 = TextStyle(
+      fontFamily: 'Kaisei_Decol',
+      fontWeight: FontWeight.normal,
+      fontSize: 10,
+      color: ColorConstant.text);
   static const normal12 = TextStyle(
       fontFamily: 'Kaisei_Decol',
       fontWeight: FontWeight.normal,
