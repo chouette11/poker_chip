@@ -76,7 +76,7 @@ class HostConnOpen extends _$HostConnOpen {
             uid: user.uid,
             assignedId: players.length + 1,
             name: user.name ?? 'プレイヤー${players.length + 1}',
-            stack: user.stack,
+            stack: ref.watch(stackProvider),
             score: 0,
             isBtn: false,
             isAction: false,
