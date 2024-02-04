@@ -29,6 +29,7 @@ dependencies:
   shared_preferences: ^2.2.2
   peerdart: ^0.5.4
   flutter_webrtc: 0.9.46
+  google_mobile_ads: ^4.0.0
 
 dev_dependencies:
   flutter_test:
