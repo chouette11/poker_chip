@@ -4,10 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class SettingButton extends ConsumerStatefulWidget {
-  const SettingButton({Key? key}) : super(key: key);
+  const SettingButton({super.key});
 
   @override
   ConsumerState<SettingButton> createState() => _SettingButtonState();
@@ -28,8 +29,8 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return IconButton(
-      onPressed: () => showDialog(
+    return GestureDetector(
+      onTap: () => showDialog(
         context: context,
         builder: (BuildContext context) => Dialog(
           child: Padding(
@@ -37,20 +38,25 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text('stack変更'),
+                Text(
+                  '初期stack変更',
+                  style: TextStyleConstant.normal14
+                      .copyWith(color: ColorConstant.black0),
+                ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SizedBox(
                       width: width * 0.6,
-                      child: TextField(
+                      child: TextFormField(
+                        initialValue: ref.read(stackProvider).toString(),
                         keyboardType: TextInputType.number,
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         decoration: const InputDecoration(labelText: 'stack'),
                         onChanged: (value) {
-                          stack = int.parse(value);
+                          stack = int.tryParse(value) ?? 1000;
                         },
                       ),
                     ),
@@ -86,7 +92,20 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
           ),
         ),
       ),
-      icon: const Icon(Icons.settings),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.settings, color: ColorConstant.black0),
+            Text(
+              '設定',
+              style: TextStyleConstant.normal16
+                  .copyWith(color: ColorConstant.black0),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
