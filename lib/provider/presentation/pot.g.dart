@@ -6,7 +6,7 @@ part of 'pot.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hostSidePotsHash() => r'57fc190fc1d21d559b79c7239ac39a29879f40dd';
+String _$hostSidePotsHash() => r'241b2a176292ff6b19512dbe205fe3267ae9b94e';
 
 /// See also [HostSidePots].
 @ProviderFor(HostSidePots)
@@ -36,7 +36,7 @@ final sidePotsProvider =
 );
 
 typedef _$SidePots = AutoDisposeNotifier<List<int>>;
-String _$potHash() => r'b5de5d1217ad2b5ffed1c690a593052ef7881283';
+String _$potHash() => r'5fae36f24663f197f0c4513beac20eb895b3aaaa';
 
 /// See also [Pot].
 @ProviderFor(Pot)

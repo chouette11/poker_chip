@@ -21,7 +21,7 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'bc8fcf66a117196f9418b9affb6799df25554b73';
+String _$roundHash() => r'd7d334fe0d71001fc4edb2392a73856e61222598';
 
 ///
 /// Round
@@ -39,7 +39,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$bigIdHash() => r'864f08a054ad2916ff187ea210dbd9549d901200';
+String _$bigIdHash() => r'6dac66508b13072cf6f343a12507fcc977a36087';
 
 ///
 /// position

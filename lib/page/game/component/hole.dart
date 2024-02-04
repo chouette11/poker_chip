@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
@@ -8,12 +10,14 @@ import 'package:poker_chip/page/game/host/component/host_who_win_button.dart';
 import 'package:poker_chip/page/game/participant/component/participant_action_button.dart';
 import 'package:poker_chip/page/game/participant/component/participant_ranking_button.dart';
 import 'package:poker_chip/page/game/participant/component/participant_who_win_button.dart';
+import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 class Hole extends ConsumerWidget {
   const Hole(this.isHost, {super.key});
@@ -108,7 +112,7 @@ class Hole extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 16),
-          const _EditablePlayerCard(),
+          _EditablePlayerCard(isHost, myData),
         ],
       ),
     );
@@ -146,7 +150,11 @@ class DealerButton extends StatelessWidget {
 }
 
 class _EditablePlayerCard extends ConsumerWidget {
-  const _EditablePlayerCard({super.key});
+  const _EditablePlayerCard(this.isHost, this.myData, {super.key});
+
+  final bool isHost;
+  final UserEntity myData;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final width = MediaQuery.of(context).size.width;
@@ -183,9 +191,34 @@ class _EditablePlayerCard extends ConsumerWidget {
                         ),
                         IconButton(
                             onPressed: () {
-                              ref
-                                  .read(playerDataProvider.notifier)
-                                  .updateName(uid, playername);
+                              if (isHost) {
+                                /// Hostの状態変更
+                                ref
+                                    .read(playerDataProvider.notifier)
+                                    .updateName(uid, playername);
+
+                                /// Participantの状態変更
+                                final cons = ref.read(hostConsProvider);
+                                for (final con in cons) {
+                                  final conn = con.con;
+                                  final user =
+                                      myData.copyWith.call(name: playername);
+                                  final mes = MessageEntity(
+                                    type: MessageTypeEnum.userSetting,
+                                    content: user,
+                                  );
+                                  conn.send(mes.toJson());
+                                }
+                              } else {
+                                final conn = ref.read(participantConProvider);
+                                final user =
+                                    myData.copyWith.call(name: playername);
+                                final mes = MessageEntity(
+                                  type: MessageTypeEnum.userSetting,
+                                  content: user,
+                                );
+                                conn!.send(mes.toJson());
+                              }
                               context.pop();
                             },
                             icon: const Icon(Icons.check)),
@@ -207,9 +240,34 @@ class _EditablePlayerCard extends ConsumerWidget {
                         ),
                         IconButton(
                             onPressed: () {
-                              ref
-                                  .read(playerDataProvider.notifier)
-                                  .updateStack(uid, stack);
+                              if (isHost) {
+                                /// Hostの状態変更
+                                ref
+                                    .read(playerDataProvider.notifier)
+                                    .changeStack(uid, stack);
+
+                                /// Participantの状態変更
+                                final cons = ref.read(hostConsProvider);
+                                for (final con in cons) {
+                                  final conn = con.con;
+                                  final user =
+                                  myData.copyWith.call(stack: stack);
+                                  final mes = MessageEntity(
+                                    type: MessageTypeEnum.userSetting,
+                                    content: user,
+                                  );
+                                  conn.send(mes.toJson());
+                                }
+                              } else {
+                                final conn = ref.read(participantConProvider);
+                                final user =
+                                myData.copyWith.call(stack: stack);
+                                final mes = MessageEntity(
+                                  type: MessageTypeEnum.userSetting,
+                                  content: user,
+                                );
+                                conn!.send(mes.toJson());
+                              }
                               context.pop();
                             },
                             icon: const Icon(Icons.check)),
@@ -249,4 +307,3 @@ class _EditablePlayerCard extends ConsumerWidget {
     );
   }
 }
-

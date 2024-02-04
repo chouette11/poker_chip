@@ -1,6 +1,7 @@
 enum MessageTypeEnum {
   join('join'),
   joined('joined'),
+  userSetting('userSetting'),
   game('game'),
   action('action');
 
