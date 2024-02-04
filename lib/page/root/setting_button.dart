@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class SettingButton extends ConsumerStatefulWidget {
   const SettingButton({Key? key}) : super(key: key);
@@ -12,6 +14,14 @@ class SettingButton extends ConsumerStatefulWidget {
 }
 
 class _SettingButtonState extends ConsumerState<SettingButton> {
+  bool isGDPR = false;
+
+  @override
+  void initState() {
+    Future(() async => isGDPR = await isUnderGdpr());
+    super.initState();
+  }
+
   int stack = 1000;
 
   @override
@@ -35,7 +45,9 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       width: width * 0.6,
                       child: TextField(
                         keyboardType: TextInputType.number,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         decoration: const InputDecoration(labelText: 'stack'),
                         onChanged: (value) {
                           stack = int.parse(value);
@@ -53,6 +65,22 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     ),
                   ],
                 ),
+                Visibility(
+                  visible: isGDPR,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      TextButton(
+                        onPressed: () => changeGDPR(),
+                        child: Text(
+                          'GDPRを変更',
+                          style: TextStyleConstant.normal10
+                              .copyWith(color: Colors.blueAccent),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
