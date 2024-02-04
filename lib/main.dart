@@ -1,3 +1,4 @@
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/util/environment/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -8,6 +9,7 @@ import 'package:poker_chip/util/constant/color_constant.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   const flavorName = String.fromEnvironment('flavor');
   final flavor = Flavor.values.byName(flavorName);
   await Firebase.initializeApp(

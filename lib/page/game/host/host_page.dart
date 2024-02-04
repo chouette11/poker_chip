@@ -2,6 +2,7 @@ import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
+import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/info.dart';
@@ -75,101 +76,107 @@ class _GamePageState extends ConsumerState<HostPage> {
       child: Scaffold(
         backgroundColor: ColorConstant.back,
         body: SafeArea(
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Image.asset(
-                    'assets/images/board.png',
-                    fit: BoxFit.fitHeight,
-                    height: height - 36,
-                    width: width,
+          child: Column(
+            children: [
+              BannerAdWidget(width: width.toInt(), height: 48),
+              Expanded(
+                child: SizedBox(
+                  width: width,
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Image.asset(
+                          'assets/images/board.png',
+                          fit: BoxFit.fitHeight,
+                          height: height - 36,
+                          width: width,
+                        ),
+                      ),
+                      const Positioned(
+                        child: Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: UserBoxes(true),
+                        ),
+                      ),
+                      Visibility(
+                        visible: flavor == 'dev',
+                        child: Positioned(
+                          height: height * 0.3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isStart,
+                        child: Positioned(
+                          top: height * 0.3,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: PotWidget(true),
+                          ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isStart,
+                        child: Positioned(
+                          top: height * 0.4,
+                          child: const InfoWidget(true),
+                        ),
+                      ),
+                      Positioned(
+                        top: height * 0.3,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: RoomIdWidget(),
+                        ),
+                      ),
+                      Visibility(
+                        visible: !isStart,
+                        child: Positioned(
+                          top: height * 0.4,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _game(cons, ref);
+                            },
+                            child: const Text('スタート'),
+                          ),
+                        ),
+                      ),
+                      // Positioned(
+                      //   child: Image.asset(
+                      //     'assets/images/chips.png',
+                      //     fit: BoxFit.fitHeight,
+                      //     height: 200,
+                      //     width: 200,
+                      //   ),
+                      // ),
+                      Visibility(
+                        visible: !isStart,
+                        child: Positioned(
+                          top: height * 0.5,
+                          child: const Text(
+                            '全員が揃ったら開始してください',
+                            style: TextStyleConstant.normal16,
+                          ),
+                        ),
+                      ),
+                      Positioned(bottom: height * 0.2, child: const Hole(true)),
+                      Visibility(
+                        visible: flavor == 'dev',
+                        child: Positioned(
+                            bottom: height * 0.17, child: Text(connected.toString())),
+                      ),
+                      Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
+                    ],
                   ),
                 ),
-                const Positioned(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: UserBoxes(true),
-                  ),
-                ),
-                Visibility(
-                  visible: flavor == 'dev',
-                  child: Positioned(
-                    height: height * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: isStart,
-                  child: Positioned(
-                    top: height * 0.3,
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: PotWidget(true),
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: isStart,
-                  child: Positioned(
-                    top: height * 0.4,
-                    child: const InfoWidget(true),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: RoomIdWidget(),
-                  ),
-                ),
-                Visibility(
-                  visible: !isStart,
-                  child: Positioned(
-                    top: height * 0.4,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _game(cons, ref);
-                      },
-                      child: const Text('スタート'),
-                    ),
-                  ),
-                ),
-                // Positioned(
-                //   child: Image.asset(
-                //     'assets/images/chips.png',
-                //     fit: BoxFit.fitHeight,
-                //     height: 200,
-                //     width: 200,
-                //   ),
-                // ),
-                Visibility(
-                  visible: !isStart,
-                  child: Positioned(
-                    top: height * 0.5,
-                    child: const Text(
-                      '全員が揃ったら開始してください',
-                      style: TextStyleConstant.normal16,
-                    ),
-                  ),
-                ),
-                Positioned(bottom: height * 0.2, child: const Hole(true)),
-                Visibility(
-                  visible: flavor == 'dev',
-                  child: Positioned(
-                      bottom: height * 0.17, child: Text(connected.toString())),
-                ),
-                Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

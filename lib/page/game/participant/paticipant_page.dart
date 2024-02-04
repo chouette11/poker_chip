@@ -7,6 +7,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/info.dart';
@@ -157,70 +158,74 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
         body: SafeArea(
-          child: SizedBox(
-            height: height,
-            width: width,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  child: Image.asset(
-                    'assets/images/board.png',
-                    fit: BoxFit.fitHeight,
-                    height: height - 36,
-                    width: width,
-                  ),
-                ),
-                const Positioned(
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: UserBoxes(false),
-                  ),
-                ),
-                Positioned(
-                  top: height * 0.3,
-                  child: const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: PotWidget(false),
-                  ),
-                ),
-                Visibility(
-                  visible: isStart,
-                  child: Positioned(
-                    top: height * 0.4,
-                    child: const InfoWidget(false),
-                  ),
-                ),
-                Visibility(
-                  visible: !isStart,
-                  child: Positioned(
-                    top: height * 0.4,
-                    child: const Text(
-                      'ホストが開始するまでお待ち下さい',
-                      style: TextStyleConstant.normal14,
+          child: Column(
+            children: [
+              BannerAdWidget(width: width.toInt(), height: 48),
+              SizedBox(
+                width: width,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Image.asset(
+                        'assets/images/board.png',
+                        fit: BoxFit.fitHeight,
+                        height: height - 36,
+                        width: width,
+                      ),
                     ),
-                  ),
+                    const Positioned(
+                      child: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: UserBoxes(false),
+                      ),
+                    ),
+                    Positioned(
+                      top: height * 0.3,
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: PotWidget(false),
+                      ),
+                    ),
+                    Visibility(
+                      visible: isStart,
+                      child: Positioned(
+                        top: height * 0.4,
+                        child: const InfoWidget(false),
+                      ),
+                    ),
+                    Visibility(
+                      visible: !isStart,
+                      child: Positioned(
+                        top: height * 0.4,
+                        child: const Text(
+                          'ホストが開始するまでお待ち下さい',
+                          style: TextStyleConstant.normal14,
+                        ),
+                      ),
+                    ),
+                    // Positioned(
+                    //   child: Image.asset(
+                    //     'assets/images/chips.png',
+                    //     fit: BoxFit.fitHeight,
+                    //     height: 200,
+                    //     width: 200,
+                    //   ),
+                    // ),
+                    IdTextField((ref) => connect(ref)),
+                    Positioned(bottom: height * 0.2, child: const Hole(false)),
+                    Visibility(
+                      visible: flavor == 'dev',
+                      child: Positioned(
+                          bottom: height * 0.17, child: Text(connected.toString())),
+                    ),
+                    Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
+                  ],
                 ),
-                // Positioned(
-                //   child: Image.asset(
-                //     'assets/images/chips.png',
-                //     fit: BoxFit.fitHeight,
-                //     height: 200,
-                //     width: 200,
-                //   ),
-                // ),
-                IdTextField((ref) => connect(ref)),
-                Positioned(bottom: height * 0.2, child: const Hole(false)),
-                Visibility(
-                  visible: flavor == 'dev',
-                  child: Positioned(
-                      bottom: height * 0.17, child: Text(connected.toString())),
-                ),
-                Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
