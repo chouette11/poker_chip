@@ -1,0 +1,11 @@
+{
+  "searchHintText": "Please enter a search word",
+  "openIssuesCount": "{count} open issues",
+  "@openIssuesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}
