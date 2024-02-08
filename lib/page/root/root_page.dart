@@ -25,7 +25,7 @@ class RootPage extends ConsumerWidget {
         body: SafeArea(
           child: Column(
             children: [
-              BannerAdWidget(width: width.toInt(), height: 48),
+              BannerAdWidget(width: width, height: height * 0.06),
               Expanded(
                 child: SizedBox(
                   width: width,
@@ -55,7 +55,7 @@ class RootPage extends ConsumerWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: height * 0.4,
+                        bottom: height * 0.35,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

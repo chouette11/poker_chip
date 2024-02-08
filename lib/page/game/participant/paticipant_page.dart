@@ -160,7 +160,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         body: SafeArea(
           child: Column(
             children: [
-              BannerAdWidget(width: width.toInt(), height: 48),
+              BannerAdWidget(width: width, height: 48),
               Expanded(
                 child: SizedBox(
                   width: width,
