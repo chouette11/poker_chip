@@ -101,7 +101,8 @@ class UserBox extends ConsumerWidget {
     final flavor = ref.read(flavorProvider);
 
     return SizedBox(
-      height: 120,
+      height: 104,
+      width: 124,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -123,10 +124,8 @@ class UserBox extends ConsumerWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              userEntity.isBtn
-                  ? const DealerButton()
-                  : const SizedBox(width: 32),
-              const SizedBox(width: 16),
+              const DealerButton(),
+              const SizedBox(width: 8),
               Visibility(
                 visible: round == GameTypeEnum.showdown &&
                     activeIds.contains(userEntity.uid),
@@ -175,8 +174,7 @@ class UserBox extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 16),
-              const SizedBox(width: 32),
+              const SizedBox(width: 8),
             ],
           ),
           Visibility(

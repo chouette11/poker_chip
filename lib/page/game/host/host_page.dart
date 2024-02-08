@@ -114,7 +114,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                       Visibility(
                         visible: isStart,
                         child: Positioned(
-                          top: height * 0.3,
+                          top: height * 0.25,
                           child: const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: PotWidget(true),
@@ -124,7 +124,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                       Visibility(
                         visible: isStart,
                         child: Positioned(
-                          top: height * 0.4,
+                          top: height * 0.35,
                           child: const InfoWidget(true),
                         ),
                       ),
