@@ -6,8 +6,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class BannerAdWidget extends StatefulWidget {
   const BannerAdWidget({Key? key, required this.width, required this.height})
       : super(key: key);
-  final int width;
-  final int height;
+  final double width;
+  final double height;
 
   @override
   _BannerAdWidgetState createState() => _BannerAdWidgetState();
@@ -19,7 +19,7 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
   @override
   void initState() {
     super.initState();
-    final AdSize adSize = AdSize(width: widget.width, height: widget.height);
+    final AdSize adSize = AdSize(width: widget.width.toInt(), height: widget.height.toInt());
 
     _ad = BannerAd(
         adUnitId: unitId(AdState.bannerAdUnitId),
