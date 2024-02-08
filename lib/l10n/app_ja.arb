@@ -1,0 +1,15 @@
+{
+  "confirm": "確定",
+  "start" : "スタート",
+  "makeRoom": "部屋作成",
+  "join" : "参加する",
+  "enter" : "入室",
+  "openIssuesCount": "{count} open issues",
+  "@openIssuesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

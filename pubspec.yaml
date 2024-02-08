@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
 
   cupertino_icons: ^1.0.2
   riverpod: ^2.3.6
@@ -32,6 +34,7 @@ dependencies:
   google_mobile_ads: ^4.0.0
   app_tracking_transparency: ^2.0.4
   async_preferences: ^0.8.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -43,6 +46,7 @@ dev_dependencies:
   json_serializable: ^6.7.0
 
 flutter:
+  generate: true
 
   fonts:
      - family: Kaisei_Decol

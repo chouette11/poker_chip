@@ -1,4 +1,5 @@
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,6 +61,8 @@ class _MyAppState extends ConsumerState<MyApp> {
         fontFamily: 'Kaisei_Decol',
         dividerColor: Colors.transparent,
       ),
+      localizationsDelegates: L10n.localizationsDelegates,
+      supportedLocales: L10n.supportedLocales,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
     );
