@@ -152,7 +152,7 @@ class UserBox extends ConsumerWidget {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
                       userEntity.score.toString(),
-                      style: TextStyleConstant.bold16
+                      style: TextStyleConstant.score
                           .copyWith(color: ColorConstant.black20),
                     ),
                   ),
@@ -166,10 +166,10 @@ class UserBox extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(16)),
                   child: Padding(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
-                     'check',
-                      style: TextStyleConstant.normal12
+                      'Ch',
+                      style: TextStyleConstant.score
                           .copyWith(color: ColorConstant.black20),
                     ),
                   ),
