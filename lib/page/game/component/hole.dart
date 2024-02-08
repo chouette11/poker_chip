@@ -85,7 +85,7 @@ class Hole extends ConsumerWidget {
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
                       myData.score.toString(),
-                      style: TextStyleConstant.bold16
+                      style: TextStyleConstant.score
                           .copyWith(color: ColorConstant.black20),
                     ),
                   ),
@@ -101,8 +101,8 @@ class Hole extends ConsumerWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Text(
-                      'check',
-                      style: TextStyleConstant.normal12
+                      'Ch',
+                      style: TextStyleConstant.score
                           .copyWith(color: ColorConstant.black20),
                     ),
                   ),

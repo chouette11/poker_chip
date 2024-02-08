@@ -104,4 +104,9 @@ class TextStyleConstant {
       fontWeight: FontWeight.normal,
       fontSize: 32,
       color: ColorConstant.text);
+  static const score = TextStyle(
+      fontFamily: 'Rubik',
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+      color: ColorConstant.text);
 }

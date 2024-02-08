@@ -54,6 +54,13 @@ flutter:
          - asset: assets/fonts/Kaisei_Decol/KaiseiDecol-Bold.ttf
          - asset: assets/fonts/Kaisei_Decol/KaiseiDecol-Regular.ttf
          - asset: assets/fonts/Kaisei_Decol/KaiseiDecol-Medium.ttf
+     - family: Rubik
+       fonts:
+         - asset: assets/fonts/Rubik/Rubik-Medium.ttf
+         - asset: assets/fonts/Rubik/Rubik-Regular.ttf
+         - asset: assets/fonts/Rubik/Rubik-SemiBold.ttf
+         - asset: assets/fonts/Rubik/Rubik-Bold.ttf
+
   uses-material-design: true
 
   assets:
