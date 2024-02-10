@@ -34,6 +34,13 @@ class HostCons extends _$HostCons {
   void add(PeerConEntity peerConEntity) {
     state = [...state, peerConEntity];
   }
+
+  void send(MessageEntity mes) {
+    for (final con in state) {
+      final conn = con.con;
+      conn.send(mes.toJson());
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -72,6 +79,7 @@ class HostConnOpen extends _$HostConnOpen {
           );
           ref.read(hostConsProvider.notifier).add(entity);
           List<UserEntity> players = ref.read(playerDataProvider);
+          final isStart = ref.read(isStartProvider);
           user = UserEntity(
             uid: user.uid,
             assignedId: players.length + 1,
@@ -82,7 +90,7 @@ class HostConnOpen extends _$HostConnOpen {
             isAction: false,
             isFold: false,
             isCheck: false,
-            isSitOut: false,
+            isSitOut: isStart,
           );
 
           /// Hostの状態変更
@@ -100,6 +108,7 @@ class HostConnOpen extends _$HostConnOpen {
         } else if (mes.type == MessageTypeEnum.userSetting) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);
+
           /// Hostの状態変更
           notifier.update(user);
 
