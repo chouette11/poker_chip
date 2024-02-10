@@ -106,10 +106,10 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
-  void updateSitOut(String uid) {
+  void updateSitOut(String uid, bool value) {
     state = [
       for (final user in state)
-        if (user.uid == uid) user.copyWith(isSitOut: true) else user
+        if (user.uid == uid) user.copyWith(isSitOut: value) else user
     ];
   }
 
