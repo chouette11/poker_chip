@@ -100,8 +100,6 @@ class Round extends _$Round {
         break;
       case GameTypeEnum.ranking:
         break;
-      case GameTypeEnum.sitOut:
-        break;
     }
   }
 
@@ -117,10 +115,17 @@ class Round extends _$Round {
     ref.read(potProvider.notifier).clear();
     ref.read(hostSidePotsProvider.notifier).clear();
 
-    /// HostのsitOutを更新
-    final noneUids = ref.read(playerDataProvider.notifier).stackNoneUids();
-    for (final uid in noneUids) {
-      ref.read(playerDataProvider.notifier).updateFold(uid);
+    final noneUsers =
+        ref.read(playerDataProvider).where((e) => e.stack == 0).toList();
+    for (final user in noneUsers) {
+      /// HostのsitOutを更新
+      ref.read(playerDataProvider.notifier).updateSitOut(user.uid, true);
+
+      /// ParticipantのsitOutを更新
+      final mes = MessageEntity(
+          type: MessageTypeEnum.userSetting,
+          content: user.copyWith.call(isSitOut: true));
+      ref.read(hostConsProvider.notifier).send(mes);
     }
 
     /// bigBlindを更新
@@ -128,18 +133,6 @@ class Round extends _$Round {
 
     /// optionIdを更新
     ref.read(optionAssignedIdProvider.notifier).updatePreFlopId();
-
-    /// ParticipantのsitOutを更新
-    final cons = ref.read(hostConsProvider);
-    for (final con in cons) {
-      final conn = con.con;
-      for (final uid in noneUids) {
-        /// Participantの状態変更
-        final game = GameEntity(uid: uid, type: GameTypeEnum.sitOut, score: 0);
-        final mes = MessageEntity(type: MessageTypeEnum.game, content: game);
-        conn.send(mes.toJson());
-      }
-    }
 
     state = GameTypeEnum.preFlop;
 
@@ -152,6 +145,22 @@ class Round extends _$Round {
 
 void _game(List<PeerConEntity> cons,
     AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
+  /// アクティブプレイヤーが一人の場合終了
+  final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
+  if (actPlayers.length == 1) {
+    final user = actPlayers.first;
+
+    ///Hostの状態変更
+    ref.read(playerDataProvider.notifier).updateSitOut(user.uid, true);
+
+    /// Participantの状態変更
+    final mes = MessageEntity(
+        type: MessageTypeEnum.userSetting,
+        content: user.copyWith.call(isSitOut: true));
+    ref.read(hostConsProvider.notifier).send(mes);
+    return;
+  }
+
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
   final btnId = ref.read(bigIdProvider.notifier).btnId();
