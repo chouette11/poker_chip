@@ -32,5 +32,4 @@ const _$GameTypeEnumEnumMap = {
   GameTypeEnum.foldout: 'foldout',
   GameTypeEnum.showdown: 'showdown',
   GameTypeEnum.ranking: 'ranking',
-  GameTypeEnum.sitOut: 'sitOut',
 };
