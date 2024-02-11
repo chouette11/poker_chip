@@ -287,7 +287,7 @@ class BigId extends _$BigId {
     }
     while (ref
         .read(playerDataProvider)
-        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .firstWhere((e) => e.uid == _assignedIdToUid2(id, ref))
         .isSitOut) {
       final len = players.length;
       id = id - 1;
@@ -301,7 +301,7 @@ class BigId extends _$BigId {
   int btnId() {
     final players = ref.read(playerDataProvider);
     final len = players.length;
-    if (len == 2) {
+    if (ref.read(playerDataProvider.notifier).activePlayers().length == 2) {
       return smallId();
     }
     int id = smallId() - 1;
@@ -310,7 +310,7 @@ class BigId extends _$BigId {
     }
     while (ref
         .read(playerDataProvider)
-        .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
+        .firstWhere((e) => e.uid == _assignedIdToUid2(id, ref))
         .isSitOut) {
       id = id - 1;
       if (id == 0) {
