@@ -216,13 +216,16 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                       //   ),
                       // ),
                       IdTextField((ref) => connect(ref)),
-                      Positioned(bottom: height * 0.2, child: const Hole(false)),
+                      Positioned(
+                          bottom: height * 0.2, child: const Hole(false)),
                       Visibility(
                         visible: flavor == 'dev',
                         child: Positioned(
-                            bottom: height * 0.17, child: Text(connected.toString())),
+                            bottom: height * 0.17,
+                            child: Text(connected.toString())),
                       ),
-                      Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
+                      Positioned(
+                          bottom: height * 0.08, left: 0, child: const Chips()),
                     ],
                   ),
                 ),
@@ -273,9 +276,6 @@ void _gameMethod(GameEntity game, WidgetRef ref) {
   final score = game.score;
   final playerNotifier = ref.read(playerDataProvider.notifier);
   switch (type) {
-    case GameTypeEnum.sitOut:
-      playerNotifier.updateSitOut(uid);
-      break;
     case GameTypeEnum.blind:
       playerNotifier.updateStack(uid, -score);
       playerNotifier.updateScore(uid, score);

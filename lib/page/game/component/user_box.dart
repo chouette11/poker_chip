@@ -123,8 +123,14 @@ class UserBox extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Row(
+            mainAxisAlignment: userEntity.isBtn
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.center,
             children: [
-              const DealerButton(),
+              Visibility(
+                visible: userEntity.isBtn,
+                child: const DealerButton(),
+              ),
               const SizedBox(width: 8),
               Visibility(
                 visible: round == GameTypeEnum.showdown &&
