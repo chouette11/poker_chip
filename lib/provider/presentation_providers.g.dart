@@ -6,6 +6,21 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$sittingUidsHash() => r'3fbf289e2d4458ae0c65925dd00b3e139b1de86a';
+
+/// See also [SittingUids].
+@ProviderFor(SittingUids)
+final sittingUidsProvider =
+    AutoDisposeNotifierProvider<SittingUids, List<String>>.internal(
+  SittingUids.new,
+  name: r'sittingUidsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$sittingUidsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$SittingUids = AutoDisposeNotifier<List<String>>;
 String _$errorTextHash() => r'a50cffbf42c3ee751f00c13721025752e6ecc205';
 
 /// See also [ErrorText].
@@ -21,7 +36,7 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'd7d334fe0d71001fc4edb2392a73856e61222598';
+String _$roundHash() => r'420334f968341c7b9566c2757234868030d86eae';
 
 ///
 /// Round

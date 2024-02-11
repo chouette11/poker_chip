@@ -28,6 +28,20 @@ final flavorProvider =
 final idTextFieldControllerProvider = Provider((_) => TextEditingController());
 
 @riverpod
+class SittingUids extends _$SittingUids {
+  @override
+  List<String> build() {
+    return [];
+  }
+
+  void add(String uid) {
+    if (state.where((e) => e == uid).isEmpty) {
+      state = [...state, uid];
+    }
+  }
+}
+
+@riverpod
 class ErrorText extends _$ErrorText {
   @override
   String build() {
@@ -125,6 +139,20 @@ class Round extends _$Round {
       final mes = MessageEntity(
           type: MessageTypeEnum.userSetting,
           content: user.copyWith.call(isSitOut: true));
+      ref.read(hostConsProvider.notifier).send(mes);
+    }
+
+    /// sitOutから復帰したユーザーを更新
+    final sittingUids = ref.read(sittingUidsProvider);
+    for (final uid in sittingUids) {
+      /// Hostの状態変更
+      ref.read(playerDataProvider.notifier).updateSitOut(uid, false);
+
+      /// Participantの状態変更
+      final player = ref.read(playerDataProvider.notifier).specificPlayer(uid);
+      final mes = MessageEntity(
+          type: MessageTypeEnum.userSetting,
+          content: player.copyWith.call(isSitOut: false));
       ref.read(hostConsProvider.notifier).send(mes);
     }
 
