@@ -108,19 +108,21 @@ class HostConnOpen extends _$HostConnOpen {
         } else if (mes.type == MessageTypeEnum.userSetting) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);
+          final beforeUser =
+              ref.read(playerDataProvider).firstWhere((e) => e.uid == user.uid);
 
-          /// Hostの状態変更
-          notifier.update(user);
+          if (beforeUser.isSitOut == true && user.isSitOut == false) {
+            ref.read(sittingUidsProvider.notifier).add(user.uid);
+          } else {
+            /// Hostの状態変更
+            notifier.update(user);
 
-          /// Participantの状態変更
-          final cons = ref.read(hostConsProvider);
-          for (final con in cons) {
-            final conn = con.con;
+            /// Participantの状態変更
             final mes = MessageEntity(
               type: MessageTypeEnum.userSetting,
               content: user,
             );
-            conn.send(mes.toJson());
+            ref.read(hostConsProvider.notifier).send(mes);
           }
         } else if (mes.type == MessageTypeEnum.action) {
           ActionEntity action = ActionEntity.fromJson(mes.content);

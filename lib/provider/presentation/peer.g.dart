@@ -6,7 +6,7 @@ part of 'peer.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$hostConsHash() => r'97c17673a2c4c37a66d5398710e3bb59a19c2db6';
+String _$hostConsHash() => r'c10e36ff92fbf328d7b91b0a606e250d4f19c1c1';
 
 /// See also [HostCons].
 @ProviderFor(HostCons)
@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'85d037aa2657a8c74f7882089a7e63f6fa88346a';
+String _$hostConnOpenHash() => r'4397672eea88b6d61b1e14b0120cd6faa5f7a91c';
 
 /// Copied from Dart SDK
 class _SystemHash {
