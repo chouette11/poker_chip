@@ -28,6 +28,10 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    int sb = 10;
+    int bb = 20;
+    int sb2 = 20;
+    int bb2 = 40;
 
     return GestureDetector(
       onTap: () => showDialog(
@@ -86,7 +90,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       ),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ),
