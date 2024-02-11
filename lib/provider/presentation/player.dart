@@ -137,6 +137,11 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  UserEntity specificPlayer(String uid) {
+    List<UserEntity> players = List.from(state);
+    return players.firstWhere((e) => e.uid == uid);
+  }
+
   int totalScore() {
     int total = 0;
     for (final user in state) {
