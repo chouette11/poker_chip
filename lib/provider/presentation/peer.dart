@@ -34,6 +34,13 @@ class HostCons extends _$HostCons {
   void add(PeerConEntity peerConEntity) {
     state = [...state, peerConEntity];
   }
+
+  void send(MessageEntity mes) {
+    for (final con in state) {
+      final conn = con.con;
+      conn.send(mes.toJson());
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)
@@ -72,6 +79,7 @@ class HostConnOpen extends _$HostConnOpen {
           );
           ref.read(hostConsProvider.notifier).add(entity);
           List<UserEntity> players = ref.read(playerDataProvider);
+          final isStart = ref.read(isStartProvider);
           user = UserEntity(
             uid: user.uid,
             assignedId: players.length + 1,
@@ -82,7 +90,7 @@ class HostConnOpen extends _$HostConnOpen {
             isAction: false,
             isFold: false,
             isCheck: false,
-            isSitOut: false,
+            isSitOut: isStart,
           );
 
           /// Hostの状態変更
@@ -97,6 +105,9 @@ class HostConnOpen extends _$HostConnOpen {
             final conn = conEntity.con;
             conn.send(res.toJson());
           }
+        } else if (mes.type == MessageTypeEnum.sit) {
+          final uid = mes.content as String;
+          ref.read(sittingUidsProvider.notifier).add(uid);
         } else if (mes.type == MessageTypeEnum.userSetting) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);
@@ -104,15 +115,11 @@ class HostConnOpen extends _$HostConnOpen {
           notifier.update(user);
 
           /// Participantの状態変更
-          final cons = ref.read(hostConsProvider);
-          for (final con in cons) {
-            final conn = con.con;
-            final mes = MessageEntity(
-              type: MessageTypeEnum.userSetting,
-              content: user,
-            );
-            conn.send(mes.toJson());
-          }
+          final res = MessageEntity(
+            type: MessageTypeEnum.userSetting,
+            content: user,
+          );
+          ref.read(hostConsProvider.notifier).send(res);
         } else if (mes.type == MessageTypeEnum.action) {
           ActionEntity action = ActionEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);

@@ -44,9 +44,10 @@ class UserBoxes extends ConsumerWidget {
           child.add(afterUsers[afterUsers.length - i - 1]);
           children.add(const SizedBox(height: 16));
           children.add(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: child,
           ));
+          child = [];
         }
         return Column(children: children);
       } else {
@@ -54,13 +55,14 @@ class UserBoxes extends ConsumerWidget {
           child.add(beforeUsers[i + 1]);
           child.add(afterUsers[afterUsers.length - i - 1]);
           children.add(const SizedBox(height: 16));
+          print('child');
+          print(child);
           children.add(Row(
-            mainAxisAlignment: players.length % 2 == 1
-                ? MainAxisAlignment.spaceAround
-                : MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: child,
           ));
+          child = [];
         }
         return Column(
           children: [
@@ -123,8 +125,14 @@ class UserBox extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           Row(
+            mainAxisAlignment: userEntity.isBtn
+                ? MainAxisAlignment.start
+                : MainAxisAlignment.center,
             children: [
-              const DealerButton(),
+              Visibility(
+                visible: userEntity.isBtn,
+                child: const DealerButton(),
+              ),
               const SizedBox(width: 8),
               Visibility(
                 visible: round == GameTypeEnum.showdown &&

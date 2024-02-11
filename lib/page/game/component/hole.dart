@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/game/component/ranking_select_button.dart';
+import 'package:poker_chip/page/game/component/sit_button.dart';
 import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/component/host_ranking_button.dart';
 import 'package:poker_chip/page/game/host/component/host_who_win_button.dart';
@@ -47,13 +48,30 @@ class Hole extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          isHost ? const HostRankingButton() : const ParticipantRankingButton(),
-          isHost ? const HostWhoWinButton() : const ParticipantWhoWinButton(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 8),
+          Visibility(
+            visible: myData.isSitOut && ref.watch(isSittingButtonProvider),
+            child: SitButton(isHost: isHost),
+          ),
+          Visibility(
+            visible: !myData.isSitOut,
             child: isHost
-                ? const HostActionButtons()
-                : const ParticipantActionButtons(),
+                ? const HostRankingButton()
+                : const ParticipantRankingButton(),
+          ),
+          Visibility(
+            visible: !myData.isSitOut,
+            child: isHost
+                ? const HostWhoWinButton()
+                : const ParticipantWhoWinButton(),
+          ),
+          Visibility(
+            visible: !myData.isSitOut,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: isHost
+                  ? const HostActionButtons()
+                  : const ParticipantActionButtons(),
+            ),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
@@ -182,8 +200,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                         SizedBox(
                           width: width * 0.6,
                           child: TextField(
-                            decoration:
-                                const InputDecoration(labelText: '名前'),
+                            decoration: const InputDecoration(labelText: '名前'),
                             onChanged: (value) {
                               playername = value;
                             },
@@ -254,7 +271,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                                 for (final con in cons) {
                                   final conn = con.con;
                                   final user =
-                                  myData.copyWith.call(stack: stack);
+                                      myData.copyWith.call(stack: stack);
                                   final mes = MessageEntity(
                                     type: MessageTypeEnum.userSetting,
                                     content: user,
@@ -263,8 +280,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                                 }
                               } else {
                                 final conn = ref.read(participantConProvider);
-                                final user =
-                                myData.copyWith.call(stack: stack);
+                                final user = myData.copyWith.call(stack: stack);
                                 final mes = MessageEntity(
                                   type: MessageTypeEnum.userSetting,
                                   content: user,
