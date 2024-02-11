@@ -27,7 +27,9 @@ final flavorProvider =
 
 final idTextFieldControllerProvider = Provider((_) => TextEditingController());
 
-@riverpod
+final isSittingButtonProvider = StateProvider((ref) => true);
+
+@Riverpod(keepAlive: true)
 class SittingUids extends _$SittingUids {
   @override
   List<String> build() {

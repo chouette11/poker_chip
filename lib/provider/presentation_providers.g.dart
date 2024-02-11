@@ -6,12 +6,12 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sittingUidsHash() => r'3fbf289e2d4458ae0c65925dd00b3e139b1de86a';
+String _$sittingUidsHash() => r'6968ac7f81458ab8d28a9c0a5b6884a96f1a13a9';
 
 /// See also [SittingUids].
 @ProviderFor(SittingUids)
 final sittingUidsProvider =
-    AutoDisposeNotifierProvider<SittingUids, List<String>>.internal(
+    NotifierProvider<SittingUids, List<String>>.internal(
   SittingUids.new,
   name: r'sittingUidsProvider',
   debugGetCreateSourceHash:
@@ -20,7 +20,7 @@ final sittingUidsProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SittingUids = AutoDisposeNotifier<List<String>>;
+typedef _$SittingUids = Notifier<List<String>>;
 String _$errorTextHash() => r'a50cffbf42c3ee751f00c13721025752e6ecc205';
 
 /// See also [ErrorText].
@@ -36,7 +36,7 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'420334f968341c7b9566c2757234868030d86eae';
+String _$roundHash() => r'91e095daafe1f8d400c9a992f898bf870afaed9e';
 
 ///
 /// Round
@@ -54,7 +54,7 @@ final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
 );
 
 typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$bigIdHash() => r'6dac66508b13072cf6f343a12507fcc977a36087';
+String _$bigIdHash() => r'329a18ebbbc343c18beb294f1b5ec3751d710b4b';
 
 ///
 /// position
