@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
@@ -49,6 +50,10 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
   }
 
   void connect(WidgetRef ref) {
+    context.loaderOverlay.show();
+    Future.delayed(const Duration(seconds: 2), () {
+      context.loaderOverlay.hide();
+    });
     final roomId = int.parse(ref.read(idTextFieldControllerProvider).text);
     final peerId = roomToPeerId(roomId);
     final connection = peer.connect(widget.id ?? peerId);
@@ -61,6 +66,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       print('open!');
       setState(() {
         connected = true;
+        context.loaderOverlay.hide();
         ref.read(isJoinProvider.notifier).update((state) => true);
       });
 
@@ -129,6 +135,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final width = MediaQuery.of(context).size.width;
     final flavor = ref.watch(flavorProvider);
     final isStart = ref.watch(isStartProvider);
+    final isJoin = ref.watch(isJoinProvider);
+
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
         Future.delayed(const Duration(seconds: 1), () {
@@ -158,79 +166,84 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
         body: SafeArea(
-          child: Column(
-            children: [
-              BannerAdWidget(width: width, height: 48),
-              Expanded(
-                child: SizedBox(
-                  width: width,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        child: Image.asset(
-                          'assets/images/board.png',
-                          fit: BoxFit.fitHeight,
-                          height: height - 36,
-                          width: width,
-                        ),
-                      ),
-                      const Positioned(
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: UserBoxes(false),
-                        ),
-                      ),
-                      Positioned(
-                        top: height * 0.25,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: PotWidget(false),
-                        ),
-                      ),
-                      Visibility(
-                        visible: isStart,
-                        child: Positioned(
-                          top: height * 0.35,
-                          child: const InfoWidget(false),
-                        ),
-                      ),
-                      Visibility(
-                        visible: !isStart,
-                        child: Positioned(
-                          top: height * 0.4,
-                          child: const Text(
-                            'ホストが開始するまでお待ち下さい',
-                            style: TextStyleConstant.normal14,
+          child: LoaderOverlay(
+            overlayWholeScreen: false,
+            overlayWidth: width,
+            overlayHeight: height * 0.75,
+            child: Column(
+              children: [
+                BannerAdWidget(width: width, height: height * 0.06),
+                Expanded(
+                  child: SizedBox(
+                    width: width,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          child: Image.asset(
+                            'assets/images/board.png',
+                            fit: BoxFit.fitHeight,
+                            height: height - 36,
+                            width: width,
                           ),
                         ),
-                      ),
-                      // Positioned(
-                      //   child: Image.asset(
-                      //     'assets/images/chips.png',
-                      //     fit: BoxFit.fitHeight,
-                      //     height: 200,
-                      //     width: 200,
-                      //   ),
-                      // ),
-                      IdTextField((ref) => connect(ref)),
-                      Positioned(
-                          bottom: height * 0.2, child: const Hole(false)),
-                      Visibility(
-                        visible: flavor == 'dev',
-                        child: Positioned(
-                            bottom: height * 0.17,
-                            child: Text(connected.toString())),
-                      ),
-                      Positioned(
-                          bottom: height * 0.08, left: 0, child: const Chips()),
-                    ],
+                        const Positioned(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: UserBoxes(false),
+                          ),
+                        ),
+                        Positioned(
+                          top: height * 0.25,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: PotWidget(false),
+                          ),
+                        ),
+                        Visibility(
+                          visible: isStart,
+                          child: Positioned(
+                            top: height * 0.35,
+                            child: const InfoWidget(false),
+                          ),
+                        ),
+                        Visibility(
+                          visible: !isStart && isJoin,
+                          child: Positioned(
+                            top: height * 0.4,
+                            child: const Text(
+                              'ホストが開始するまでお待ち下さい',
+                              style: TextStyleConstant.normal14,
+                            ),
+                          ),
+                        ),
+                        // Positioned(
+                        //   child: Image.asset(
+                        //     'assets/images/chips.png',
+                        //     fit: BoxFit.fitHeight,
+                        //     height: 200,
+                        //     width: 200,
+                        //   ),
+                        // ),
+                        IdTextField((ref) => connect(ref)),
+                        Positioned(
+                            bottom: height * 0.2, child: const Hole(false)),
+                        Visibility(
+                          visible: flavor == 'dev',
+                          child: Positioned(
+                              bottom: height * 0.17,
+                              child: Text(connected.toString())),
+                        ),
+                        Positioned(
+                            bottom: height * 0.08, left: 0, child: const Chips()),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
