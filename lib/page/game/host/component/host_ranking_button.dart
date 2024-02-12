@@ -109,7 +109,8 @@ Map<String, int> distributeSidePots(List<SidePotEntity> sidePots, int pot,
       continue;
     }
     // サイドポットを関連する勝者に分配
-    int potShare = pot.size ~/ eligibleWinners.length;
+    int potShare = pot.size ~/ (eligibleWinners.length * 10);
+    potShare = potShare * 10;
     for (var winner in eligibleWinners) {
       distributions.update(winner, (value) => value + potShare,
           ifAbsent: () => potShare);
