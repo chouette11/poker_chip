@@ -1,3 +1,4 @@
+import 'package:poker_chip/data/revenue_data_source.dart';
 import 'package:poker_chip/page/game/host/host.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/ori.dart';
@@ -12,6 +13,10 @@ import 'package:uuid/uuid.dart';
 final firebaseAuthProvider = Provider((_) => FirebaseAuth.instance);
 
 final uuidProvider = Provider((_) => const Uuid());
+
+final isProUserProvider = FutureProvider<bool>(
+      (ref) async => await ref.read(revenueProvider).getIsProUser(),
+);
 
 /// ページ遷移のプロバイダ
 final routerProvider = Provider<GoRouter>(
