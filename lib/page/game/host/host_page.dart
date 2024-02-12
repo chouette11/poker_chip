@@ -47,7 +47,7 @@ class _GamePageState extends ConsumerState<HostPage> {
   void initState() {
     super.initState();
     final flavor = ref.read(flavorProvider);
-    final roomId = flavor == 'dev' ? 000000: ref.read(roomIdProvider);
+    final roomId = flavor == 'dev' ? 000000 : ref.read(roomIdProvider);
     final id = roomToPeerId(roomId);
 
     final peer = ref.read(peerProvider(id));
@@ -78,7 +78,7 @@ class _GamePageState extends ConsumerState<HostPage> {
         body: SafeArea(
           child: Column(
             children: [
-              BannerAdWidget(width: width, height: 48),
+              BannerAdWidget(width: width, height: height * 0.06),
               Expanded(
                 child: SizedBox(
                   width: width,
@@ -107,7 +107,8 @@ class _GamePageState extends ConsumerState<HostPage> {
                           height: height * 0.3,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('optId:${ref.watch(optionAssignedIdProvider)}'),
+                            child: Text(
+                                'optId:${ref.watch(optionAssignedIdProvider)}'),
                           ),
                         ),
                       ),
@@ -140,28 +141,24 @@ class _GamePageState extends ConsumerState<HostPage> {
                         child: Positioned(
                           top: height * 0.4,
                           child: ElevatedButton(
-                            onPressed: () {
-                              _game(cons, ref);
-                            },
+                            onPressed: ref
+                                        .watch(playerDataProvider.notifier)
+                                        .activePlayers()
+                                        .length <
+                                    2
+                                ? null
+                                : () => _game(cons, ref),
                             child: const Text('スタート'),
                           ),
                         ),
                       ),
-                      // Positioned(
-                      //   child: Image.asset(
-                      //     'assets/images/chips.png',
-                      //     fit: BoxFit.fitHeight,
-                      //     height: 200,
-                      //     width: 200,
-                      //   ),
-                      // ),
                       Visibility(
                         visible: !isStart,
                         child: Positioned(
                           top: height * 0.5,
-                          child: const Text(
-                            '全員が揃ったら開始してください',
-                            style: TextStyleConstant.normal16,
+                          child: Text(
+                            '部屋作成者はタスクキルをしないでください',
+                            style: TextStyleConstant.normal16.copyWith(color: ColorConstant.black10),
                           ),
                         ),
                       ),
@@ -169,9 +166,11 @@ class _GamePageState extends ConsumerState<HostPage> {
                       Visibility(
                         visible: flavor == 'dev',
                         child: Positioned(
-                            bottom: height * 0.17, child: Text(connected.toString())),
+                            bottom: height * 0.17,
+                            child: Text(connected.toString())),
                       ),
-                      Positioned(bottom: height * 0.08, left: 0, child: const Chips()),
+                      Positioned(
+                          bottom: height * 0.08, left: 0, child: const Chips()),
                     ],
                   ),
                 ),

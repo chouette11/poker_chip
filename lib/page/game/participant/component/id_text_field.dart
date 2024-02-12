@@ -53,6 +53,12 @@ class IdTextField extends ConsumerWidget {
             onPressed: () => join(ref),
             child: const Text('入室'),
           ),
+          const SizedBox(height: 16),
+          Text(
+            'タスクキルをした場合入室し直してください',
+            style: TextStyleConstant.normal16
+                .copyWith(color: ColorConstant.black10),
+          ),
         ],
       ),
     );
