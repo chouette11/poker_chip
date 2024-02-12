@@ -35,6 +35,7 @@ dependencies:
   app_tracking_transparency: ^2.0.4
   async_preferences: ^0.8.0
   intl: ^0.18.1
+  loader_overlay: ^4.0.0
 
 dev_dependencies:
   flutter_test:
