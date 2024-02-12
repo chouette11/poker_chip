@@ -1,25 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:poker_chip/provider/domain_providers.dart';
 
-class BannerAdWidget extends StatefulWidget {
-  const BannerAdWidget({Key? key, required this.width, required this.height})
-      : super(key: key);
+class BannerAdWidget extends ConsumerStatefulWidget {
+  const BannerAdWidget({super.key, required this.width, required this.height});
+
   final double width;
   final double height;
 
   @override
-  _BannerAdWidgetState createState() => _BannerAdWidgetState();
+  ConsumerState<BannerAdWidget> createState() => _BannerAdWidgetState();
 }
 
-class _BannerAdWidgetState extends State<BannerAdWidget> {
+class _BannerAdWidgetState extends ConsumerState<BannerAdWidget> {
   late BannerAd _ad;
 
   @override
   void initState() {
     super.initState();
-    final AdSize adSize = AdSize(width: widget.width.toInt(), height: widget.height.toInt());
+    final AdSize adSize =
+        AdSize(width: widget.width.toInt(), height: widget.height.toInt());
 
     _ad = BannerAd(
         adUnitId: unitId(AdState.bannerAdUnitId),
@@ -32,16 +35,22 @@ class _BannerAdWidgetState extends State<BannerAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unnecessary_null_comparison
-    if (_ad == null) {
-      return const SizedBox(height: 50);
-    } else {
-      return SizedBox(
-        width: _ad.size.width.toDouble(),
-        height: _ad.size.height.toDouble(),
-        child: AdWidget(ad: _ad),
-      );
-    }
+    final isPro = ref.watch(isProUserProvider);
+    return isPro.when(
+      data: (isPro) {
+        if (_ad == null  || isPro) {
+          return const SizedBox.shrink();
+        } else {
+          return SizedBox(
+            width: _ad.size.width.toDouble(),
+            height: _ad.size.height.toDouble(),
+            child: AdWidget(ad: _ad),
+          );
+        }
+      },
+      error: (_, __) => const SizedBox.shrink(),
+      loading: () => const SizedBox.shrink(),
+    );
   }
 }
 
