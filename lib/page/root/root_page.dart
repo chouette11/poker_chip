@@ -37,16 +37,13 @@ class RootPage extends ConsumerWidget {
                         left: 0,
                         child: Image.asset(
                           'assets/images/board.png',
-                          fit: BoxFit.fitHeight,
+                          fit: BoxFit.fill,
                           height: height - 36,
                           width: width,
                         ),
                       ),
                       const Positioned(
-                        top: 0,
-                        right: 0,
-                        child: SettingButton()
-                      ),
+                          top: 0, right: 0, child: SettingButton()),
                       Positioned(
                         top: height * 0.3,
                         child: const Padding(

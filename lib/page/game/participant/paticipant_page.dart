@@ -184,7 +184,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                           left: 0,
                           child: Image.asset(
                             'assets/images/board.png',
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fill,
                             height: height - 36,
                             width: width,
                           ),
