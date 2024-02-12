@@ -37,6 +37,7 @@ dependencies:
   intl: ^0.18.1
   loader_overlay: ^4.0.0
   purchases_flutter: ^6.20.0
+  dotted_border: ^2.1.0
 
 dev_dependencies:
   flutter_test:
