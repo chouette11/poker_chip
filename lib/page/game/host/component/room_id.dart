@@ -16,11 +16,11 @@ class RoomIdWidget extends ConsumerWidget {
         children: [
           const Text(
             'RoomID',
-            style: TextStyleConstant.normal18,
+            style: TextStyleConstant.bold16,
           ),
           Text(
             '$roomId',
-            style: TextStyleConstant.normal16,
+            style: TextStyleConstant.bold20,
           )
         ],
       ),
