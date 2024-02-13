@@ -168,8 +168,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         body: SafeArea(
           child: LoaderOverlay(
             overlayWholeScreen: false,
-            overlayWidth: width,
-            overlayHeight: height * 0.75,
+            overlayWidth: 128,
+            overlayHeight: 128,
+            overlayColor: ColorConstant.black80.withOpacity(0.5),
             child: Column(
               children: [
                 BannerAdWidget(width: width, height: height * 0.06),
@@ -184,7 +185,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                           left: 0,
                           child: Image.asset(
                             'assets/images/board.png',
-                            fit: BoxFit.fitHeight,
+                            fit: BoxFit.fill,
                             height: height - 36,
                             width: width,
                           ),

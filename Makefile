@@ -25,7 +25,8 @@ clean: ## clean project
 	fvm flutter clean
 	cd ios; rm -rf Podfile.lock Pods
 	fvm flutter pub get
-	make pod-install
+	sudo arch -x86_64 gem uninstall cocoapods
+	sudo arch -x86_64 gem uninstall ffi
 
 .PHONY: build-runner
 build-runner: ## code generate

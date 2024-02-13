@@ -70,6 +70,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     final cons = ref.watch(hostConsProvider);
     final flavor = ref.watch(flavorProvider);
     final isStart = ref.watch(isStartProvider);
+    final roomId = ref.watch(roomIdProvider);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -90,9 +91,29 @@ class _GamePageState extends ConsumerState<HostPage> {
                         left: 0,
                         child: Image.asset(
                           'assets/images/board.png',
-                          fit: BoxFit.fitHeight,
+                          fit: BoxFit.fill,
                           height: height - 36,
                           width: width,
+                        ),
+                      ),
+                      Visibility(
+                        visible: isStart,
+                        child: Positioned(
+                          bottom: 16,
+                          left: 16,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'RoomID',
+                                style: TextStyleConstant.normal12,
+                              ),
+                              Text(
+                                '$roomId',
+                                style: TextStyleConstant.normal16,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       const Positioned(
@@ -158,7 +179,8 @@ class _GamePageState extends ConsumerState<HostPage> {
                           top: height * 0.5,
                           child: Text(
                             '部屋作成者はタスクキルをしないでください',
-                            style: TextStyleConstant.normal16.copyWith(color: ColorConstant.black10),
+                            style: TextStyleConstant.normal16
+                                .copyWith(color: ColorConstant.black10),
                           ),
                         ),
                       ),
