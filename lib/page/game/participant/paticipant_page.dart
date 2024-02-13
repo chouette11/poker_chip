@@ -170,7 +170,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
             overlayWholeScreen: false,
             overlayWidth: 128,
             overlayHeight: 128,
-            overlayColor: ColorConstant.black20.withOpacity(0.5),
+            overlayColor: ColorConstant.black80.withOpacity(0.5),
             child: Column(
               children: [
                 BannerAdWidget(width: width, height: height * 0.06),
