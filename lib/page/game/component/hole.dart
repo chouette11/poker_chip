@@ -17,6 +17,7 @@ import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
@@ -200,7 +201,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                         SizedBox(
                           width: width * 0.6,
                           child: TextField(
-                            decoration: const InputDecoration(labelText: '名前'),
+                            decoration: const InputDecoration(labelText: 'Name'),
                             onChanged: (value) {
                               playername = value;
                             },
@@ -248,7 +249,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                           width: width * 0.6,
                           child: TextField(
                             decoration:
-                                const InputDecoration(labelText: 'stack'),
+                                const InputDecoration(labelText: 'Stack'),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
@@ -306,7 +307,8 @@ class _EditablePlayerCard extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(myData.name ?? 'プレイヤー1', style: TextStyleConstant.bold14),
+            Text(myData.name ?? context.l10n.playerX(1),
+                style: TextStyleConstant.bold14),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

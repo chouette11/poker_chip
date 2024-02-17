@@ -17,6 +17,7 @@ import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
@@ -169,7 +170,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                                     2
                                 ? null
                                 : () => _game(cons, ref),
-                            child: const Text('スタート'),
+                            child: Text(context.l10n.start),
                           ),
                         ),
                       ),
@@ -178,7 +179,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                         child: Positioned(
                           top: height * 0.5,
                           child: Text(
-                            '部屋作成者はタスクキルをしないでください',
+                            context.l10n.hostTaskKill,
                             style: TextStyleConstant.normal16
                                 .copyWith(color: ColorConstant.black10),
                           ),

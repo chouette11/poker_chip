@@ -4,6 +4,7 @@ import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 
@@ -32,20 +33,20 @@ class InfoWidget extends ConsumerWidget {
             style: TextStyleConstant.bold18,
           ),
           const SizedBox(height: 16),
-          _action(actionId, players, round)
+          _action(actionId, players, round, context)
         ],
       ),
     );
   }
 }
 
-Widget _action(int actionId, List<UserEntity> players, GameTypeEnum round) {
+Widget _action(int actionId, List<UserEntity> players, GameTypeEnum round, BuildContext context) {
   if (actionId == -1 || round == GameTypeEnum.showdown) {
     return const SizedBox.shrink();
   } else {
     final name = players[actionId].name ?? 'プレイヤー1';
     return Text(
-      '$nameのアクションです',
+      context.l10n.actionPerson(name),
       style: TextStyleConstant.bold14,
     );
   }

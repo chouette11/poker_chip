@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';

@@ -4,11 +4,30 @@
   "makeRoom": "部屋作成",
   "join" : "参加する",
   "enter" : "入室",
-  "openIssuesCount": "{count} open issues",
-  "@openIssuesCount": {
+  "joining" : "入室",
+  "setting" : "設定",
+  "privacy" : "プライバシーポリシー",
+  "usage" : "利用規約",
+  "gdpr" : "GDPRを変更",
+  "initialStack": "初期stackの変更",
+  "removeAd": "広告の削除",
+  "notCancelAd": "※キャンセルしない限り自動更新されます",
+  "price" : "¥ 280 / 月",
+  "hostTaskKill" : "部屋作成者はタスクキルをしないでください",
+  "participantTaskKill": "タスクキルをした場合入室し直してください",
+  "playerX": "プレイヤー{x}",
+  "@playerX": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "x": {
+        "x": "int"
+      }
+    }
+  },
+  "actionPerson": "{name}のアクションです",
+  "@actionPerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
       }
     }
   }

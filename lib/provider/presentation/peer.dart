@@ -13,6 +13,7 @@ import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
@@ -106,7 +107,7 @@ class HostConnOpen extends _$HostConnOpen {
             user = UserEntity(
               uid: user.uid,
               assignedId: players.length + 1,
-              name: user.name ?? 'プレイヤー${players.length + 1}',
+              name: user.name ?? context.l10n.playerX(players.length + 1),
               stack: ref.watch(stackProvider),
               score: 0,
               isBtn: false,

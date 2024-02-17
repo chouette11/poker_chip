@@ -8,6 +8,7 @@ import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
@@ -42,7 +43,7 @@ class ParticipantRankingButton extends ConsumerWidget {
           print(mes);
           conn.send(mes.toJson());
         },
-        child: const Text('確定'),
+        child: Text(context.l10n.confirm),
       ),
     );
   }

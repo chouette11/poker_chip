@@ -7,6 +7,7 @@ import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
 
@@ -116,7 +117,7 @@ class UserBox extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(userEntity.name ?? 'プレイヤー1',
+                Text( userEntity.name ?? context.l10n.playerX(1),
                     style: TextStyleConstant.bold14),
                 Text(userEntity.stack.toString(),
                     style: TextStyleConstant.bold20),

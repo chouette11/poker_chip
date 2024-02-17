@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class IdTextField extends ConsumerWidget {
@@ -51,11 +52,11 @@ class IdTextField extends ConsumerWidget {
           const SizedBox(height: 8),
           ElevatedButton(
             onPressed: () => join(ref),
-            child: const Text('入室'),
+            child: Text(context.l10n.enter),
           ),
           const SizedBox(height: 16),
           Text(
-            'タスクキルをした場合入室し直してください',
+            context.l10n.participantTaskKill,
             style: TextStyleConstant.normal16
                 .copyWith(color: ColorConstant.black10),
           ),
