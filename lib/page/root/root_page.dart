@@ -9,6 +9,7 @@ import 'package:poker_chip/page/root/setting_button.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 
 class RootPage extends ConsumerWidget {
   const RootPage({super.key});
@@ -58,7 +59,7 @@ class RootPage extends ConsumerWidget {
                           children: [
                             ElevatedButton(
                                 onPressed: () => context.go('/host'),
-                                child: const Text('部屋作成')),
+                                child: Text(context.l10n.makeRoom)),
                             const SizedBox(width: 32),
                             ElevatedButton(
                                 onPressed: () {
@@ -69,7 +70,7 @@ class RootPage extends ConsumerWidget {
                                   }
                                   context.go('/participant');
                                 },
-                                child: const Text('参加する')),
+                                child: Text(context.l10n.join)),
                           ],
                         ),
                       ),

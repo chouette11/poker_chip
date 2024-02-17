@@ -1,10 +1,33 @@
 {
-  "searchHintText": "Please enter a search word",
-  "openIssuesCount": "{count} open issues",
-  "@openIssuesCount": {
+  "confirm": "Confirm",
+  "start": "Start",
+  "makeRoom": "Create Room",
+  "join": "Join",
+  "enter": "Enter",
+  "joining": "Joining",
+  "setting": "Settings",
+  "privacy": "Privacy Policy",
+  "usage": "Terms of Use",
+  "gdpr": "Change GDPR",
+  "initialStack": "Change Initial Stack",
+  "removeAd": "Remove Ads",
+  "notCancelAd": "※Will be automatically renewed unless cancelled",
+  "price": "$1.99 / month",
+  "hostTaskKill": "Room creator, please do not kill the task",
+  "participantTaskKill": "If you kill the task, please re-enter",
+  "playerX": "Player {x}",
+  "@playerX": {
     "placeholders": {
-      "count": {
-        "type": "int"
+      "x": {
+        "x": "int"
+      }
+    }
+  },
+  "actionPerson": "{name}'s Action",
+  "@actionPerson": {
+    "placeholders": {
+      "name": {
+        "type": "String"
       }
     }
   }

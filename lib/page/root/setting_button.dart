@@ -8,6 +8,7 @@ import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,7 +47,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    '初期stack変更',
+                    context.l10n.initialStack,
                     style: TextStyleConstant.normal14
                         .copyWith(color: ColorConstant.black0),
                   ),
@@ -87,8 +88,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       Future.delayed(const Duration(seconds: 8), () {
                         context.loaderOverlay.hide();
                       });
-                      final a = await ref.read(revenueProvider).buyMonthly();
-
+                      await ref.read(revenueProvider).buyMonthly();
                       ref.refresh(isProUserProvider);
                     },
                     child: Padding(
@@ -132,13 +132,13 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                               ],
                             ),
                             Text(
-                              '広告の削除',
+                              context.l10n.removeAd,
                               style: TextStyleConstant.normal18.copyWith(
                                 color: ColorConstant.black30,
                               ),
                             ),
                             Text(
-                              '¥ 280 / 月',
+                              context.l10n.price,
                               style: TextStyleConstant.normal14.copyWith(
                                 color: ColorConstant.black30,
                               ),
@@ -149,7 +149,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     ),
                   ),
                   Text(
-                    '※キャンセルしない限り自動更新されます',
+                    context.l10n.notCancelAd,
                     style: TextStyleConstant.normal14
                         .copyWith(color: ColorConstant.black40),
                   ),
@@ -162,7 +162,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                               'https://lovely-year-a00.notion.site/2bd3e7eba8f844c4a7b56d1b11d90817'),
                         ),
                         child: Text(
-                          '利用規約',
+                          context.l10n.usage,
                           style: TextStyleConstant.normal10
                               .copyWith(color: Colors.blueAccent),
                         ),
@@ -172,7 +172,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                         child: TextButton(
                           onPressed: () => changeGDPR(),
                           child: Text(
-                            'GDPRを変更',
+                            context.l10n.gdpr,
                             style: TextStyleConstant.normal10
                                 .copyWith(color: Colors.blueAccent),
                           ),
@@ -184,7 +184,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                               'https://poker-chip-14428.web.app'),
                         ),
                         child: Text(
-                          'プライバシーポリシー',
+                          context.l10n.privacy,
                           style: TextStyleConstant.normal10
                               .copyWith(color: Colors.blueAccent),
                         ),
@@ -204,7 +204,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
           children: [
             const Icon(Icons.settings, color: ColorConstant.black0),
             Text(
-              '設定',
+    context.l10n.setting,
               style: TextStyleConstant.normal16
                   .copyWith(color: ColorConstant.black0),
             )
