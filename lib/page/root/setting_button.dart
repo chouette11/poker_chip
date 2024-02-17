@@ -9,6 +9,7 @@ import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingButton extends ConsumerStatefulWidget {
   const SettingButton({super.key});
@@ -94,8 +95,8 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border:
-                              Border.all(width: 2, color: ColorConstant.black10),
+                          border: Border.all(
+                              width: 2, color: ColorConstant.black10),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Row(
@@ -152,12 +153,23 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     style: TextStyleConstant.normal14
                         .copyWith(color: ColorConstant.black40),
                   ),
-                  Visibility(
-                    visible: isGDPR,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        TextButton(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () => _launchUrl(
+                          Uri.parse(
+                              'https://lovely-year-a00.notion.site/2bd3e7eba8f844c4a7b56d1b11d90817'),
+                        ),
+                        child: Text(
+                          '利用規約',
+                          style: TextStyleConstant.normal10
+                              .copyWith(color: Colors.blueAccent),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isGDPR,
+                        child: TextButton(
                           onPressed: () => changeGDPR(),
                           child: Text(
                             'GDPRを変更',
@@ -165,9 +177,20 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                                 .copyWith(color: Colors.blueAccent),
                           ),
                         ),
-                      ],
-                    ),
-                  )
+                      ),
+                      TextButton(
+                        onPressed: () => _launchUrl(
+                          Uri.parse(
+                              'https://poker-chip-14428.web.app'),
+                        ),
+                        child: Text(
+                          'プライバシーポリシー',
+                          style: TextStyleConstant.normal10
+                              .copyWith(color: Colors.blueAccent),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -223,5 +246,11 @@ class _DottedDivider extends StatelessWidget {
         );
       },
     );
+  }
+}
+
+Future<void> _launchUrl(Uri url) async {
+  if (!await launchUrl(url)) {
+    throw Exception('Could not launch $url');
   }
 }
