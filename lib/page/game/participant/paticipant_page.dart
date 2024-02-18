@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
+import 'package:poker_chip/page/game/component/hand_button.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
@@ -189,6 +190,11 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                             height: height - 36,
                             width: width,
                           ),
+                        ),
+                        const Positioned(
+                          bottom: 16,
+                          right: 16,
+                          child: HandButton(),
                         ),
                         const Positioned(
                           child: Padding(
