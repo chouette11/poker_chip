@@ -30,5 +30,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "handList": "役の強さ",
+  "high": "強",
+  "low": "弱",
+  "straightFlush": "ストレートフラッシュ",
+  "fourOfAKind": "フォーカード",
+  "fullHouse": "フルハウス",
+  "flush": "フラッシュ",
+  "straight": "ストレート",
+  "threeOfAKind": "スリーカード",
+  "twoPair": "ツーペア",
+  "onePair": "ワンペア",
+  "highCard": "ハイカード",
+  "straightFlushDesc": "同じ柄かつストレート",
+  "fourOfAKindDesc": "同じ数字が４枚",
+  "fullHouseDesc": "同じ数字が３枚と２枚",
+  "flushDesc": "同じ柄が５枚",
+  "straightDesc": "連続した数字が５枚",
+  "threeOfAKindDesc": "同じ数字が3枚",
+  "twoPairDesc": "同じ数字の２枚が２組",
+  "onePairDesc": "同じ数字が2枚",
+  "highCardDesc": "役なし"
 }

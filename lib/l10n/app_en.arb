@@ -2,7 +2,7 @@
   "confirm": "Confirm",
   "start": "Start",
   "makeRoom": "Create Room",
-  "join": "Join",
+  "join": "Join Room",
   "enter": "Enter",
   "joining": "Joining",
   "setting": "Settings",
@@ -30,5 +30,26 @@
         "type": "String"
       }
     }
-  }
+  },
+  "handList": "Hand List",
+  "high": "high",
+  "low": "low",
+  "straightFlush": "Straight Flush",
+  "fourOfAKind": "Four of a Kind",
+  "fullHouse": "Full House",
+  "flush": "Flush",
+  "straight": "Straight",
+  "threeOfAKind": "Three of a Kind",
+  "twoPair": "Two Pair",
+  "onePair": "One Pair",
+  "highCard": "High Card",
+  "straightFlushDesc": "Five cards in numerical order, all of identical suits",
+  "fourOfAKindDesc": "Four cards of the same rank",
+  "fullHouseDesc": "Three of a kind and a pair",
+  "flushDesc": "Five cards of the same suit",
+  "straightDesc": "Five cards in numerical order",
+  "threeOfAKindDesc": "Three cards of the same rank",
+  "twoPairDesc": "Two pairs of cards of the same rank",
+  "onePairDesc": "Two cards of the same rank",
+  "highCardDesc": "Highest card"
 }
