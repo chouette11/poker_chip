@@ -45,6 +45,15 @@ class BillingDataSource {
     }
   }
 
+  Future<CustomerInfo> restore() async {
+    try {
+      return await Purchases.restorePurchases();
+    } on PlatformException catch (e) {
+      print('Error restore: ${e.message}');
+      throw Exception();
+    }
+  }
+
   Future<bool> getIsProUser() async {
     final info = await getCustomerInfo();
     print(info);
