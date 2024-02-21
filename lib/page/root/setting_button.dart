@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:poker_chip/data/revenue_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
+import 'package:poker_chip/page/component/snack.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
@@ -48,7 +49,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                 children: [
                   Text(
                     context.l10n.initialStack,
-                    style: TextStyleConstant.normal14
+                    style: TextStyleConstant.normal18
                         .copyWith(color: ColorConstant.black0),
                   ),
                   Row(
@@ -148,10 +149,15 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       ),
                     ),
                   ),
-                  Text(
-                    context.l10n.notCancelAd,
-                    style: TextStyleConstant.normal14
-                        .copyWith(color: ColorConstant.black40),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        context.l10n.notCancelAd,
+                        style: TextStyleConstant.normal12
+                            .copyWith(color: ColorConstant.black40),
+                      ),
+                    ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -167,8 +173,36 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                               .copyWith(color: Colors.blueAccent),
                         ),
                       ),
+                      TextButton(
+                        onPressed: () => _launchUrl(
+                          Uri.parse('https://poker-chip-14428.web.app'),
+                        ),
+                        child: Text(
+                          context.l10n.privacy,
+                          style: TextStyleConstant.normal10
+                              .copyWith(color: Colors.blueAccent),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          await ref.read(revenueProvider).restore();
+                          AppSnackBar.of(
+                              messager: ScaffoldMessenger.of(context))
+                              .show('復元の記録が見つかりません。\nもう一度ご確認ください。');
+                        },
+                        child: Text(
+                          context.l10n.restore,
+                          style: TextStyleConstant.normal12
+                              .copyWith(color: Colors.indigo),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
                       Visibility(
-                        visible: isGDPR,
+                        visible: true,
                         child: TextButton(
                           onPressed: () => changeGDPR(),
                           child: Text(
@@ -178,19 +212,8 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () => _launchUrl(
-                          Uri.parse(
-                              'https://poker-chip-14428.web.app'),
-                        ),
-                        child: Text(
-                          context.l10n.privacy,
-                          style: TextStyleConstant.normal10
-                              .copyWith(color: Colors.blueAccent),
-                        ),
-                      ),
                     ],
-                  ),
+                  )
                 ],
               ),
             ),
@@ -204,7 +227,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
           children: [
             const Icon(Icons.settings, color: ColorConstant.black0),
             Text(
-    context.l10n.setting,
+              context.l10n.setting,
               style: TextStyleConstant.normal16
                   .copyWith(color: ColorConstant.black0),
             )

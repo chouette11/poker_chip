@@ -12,6 +12,7 @@
   "initialStack": "Change Initial Stack",
   "removeAd": "Remove Ads",
   "notCancelAd": "※Will be automatically renewed unless cancelled",
+  "restore": "restore",
   "price": "$1.99 / month",
   "hostTaskKill": "Room creator, please do not kill the task",
   "participantTaskKill": "If you kill the task, please re-enter",
