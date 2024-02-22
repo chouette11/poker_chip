@@ -65,7 +65,6 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         applicationIdSuffix appIdSuffix
-        resValue "string", "app_name", appName
     }
 
     signingConfigs {
