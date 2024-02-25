@@ -16,6 +16,7 @@ import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/user_repository.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -181,7 +182,7 @@ class _EditablePlayerCard extends ConsumerWidget {
     final uid = ref.watch(uidProvider);
     final myData =
         ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
-    String playername = '';
+    String playerName = '';
     int stack = 0;
 
     return GestureDetector(
@@ -201,26 +202,27 @@ class _EditablePlayerCard extends ConsumerWidget {
                         SizedBox(
                           width: width * 0.6,
                           child: TextField(
-                            decoration: const InputDecoration(labelText: 'Name'),
+                            decoration:
+                                const InputDecoration(labelText: 'Name'),
                             onChanged: (value) {
-                              playername = value;
+                              playerName = value;
                             },
                           ),
                         ),
                         IconButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (isHost) {
                                 /// Hostの状態変更
                                 ref
                                     .read(playerDataProvider.notifier)
-                                    .updateName(uid, playername);
+                                    .updateName(uid, playerName);
 
                                 /// Participantの状態変更
                                 final cons = ref.read(hostConsProvider);
                                 for (final con in cons) {
                                   final conn = con.con;
                                   final user =
-                                      myData.copyWith.call(name: playername);
+                                      myData.copyWith.call(name: playerName);
                                   final mes = MessageEntity(
                                     type: MessageTypeEnum.userSetting,
                                     content: user,
@@ -230,13 +232,17 @@ class _EditablePlayerCard extends ConsumerWidget {
                               } else {
                                 final conn = ref.read(participantConProvider);
                                 final user =
-                                    myData.copyWith.call(name: playername);
+                                    myData.copyWith.call(name: playerName);
                                 final mes = MessageEntity(
                                   type: MessageTypeEnum.userSetting,
                                   content: user,
                                 );
                                 conn!.send(mes.toJson());
                               }
+                              // 端末に保存
+                              await ref
+                                  .read(userRepositoryProvider)
+                                  .saveName(playerName);
                               context.pop();
                             },
                             icon: const Icon(Icons.check)),

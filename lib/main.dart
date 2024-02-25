@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
+import 'package:poker_chip/data/preferences_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
+import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/user_repository.dart';
 import 'package:poker_chip/util/environment/environment.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +53,9 @@ class _MyAppState extends ConsumerState<MyApp> {
   void initState() {
     Future(() async {
       ref.read(authProvider).autoLogin();
+      final user = ref.read(userRepositoryProvider);
+      final name = await user.getName();
+      ref.read(nameProvider.notifier).update((state) => name);
     });
     initPlugin();
     super.initState();
