@@ -147,7 +147,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
             content: UserEntity(
               uid: uid,
               assignedId: 404,
-              name: null,
+              name: ref.watch(nameProvider),
               stack: ref.watch(stackProvider),
               score: 0,
               isBtn: false,

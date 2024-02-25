@@ -29,6 +29,8 @@ final idTextFieldControllerProvider = Provider((_) => TextEditingController());
 
 final isSittingButtonProvider = StateProvider((ref) => true);
 
+final nameProvider = StateProvider<String?>((ref) => null);
+
 @Riverpod(keepAlive: true)
 class SittingUids extends _$SittingUids {
   @override

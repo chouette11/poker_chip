@@ -16,6 +16,7 @@ class PlayerData extends _$PlayerData {
     return [
       UserEntity(
         uid: uid,
+        name: ref.watch(nameProvider),
         stack: ref.watch(stackProvider),
         assignedId: 1,
         score: 0,
