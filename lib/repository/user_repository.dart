@@ -44,4 +44,17 @@ class UserRepository {
     pref.setBool(PrefKey.isNotificationDialog.name, true);
     return value ?? false;
   }
+
+  /// ユーザーの名前を保存
+  Future<void> saveName(String name) async {
+    final pref = ref.read(preferencesProvider);
+    pref.setString(PrefKey.name.name, name);
+  }
+
+  /// ユーザーの名前を取得
+  Future<String?> getName() async {
+    final pref = ref.read(preferencesProvider);
+    final value = await pref.getString(PrefKey.name.name);
+    return value;
+  }
 }

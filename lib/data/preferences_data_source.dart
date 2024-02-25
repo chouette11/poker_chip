@@ -4,7 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum PrefKey {
   isLaunch,
   isNotificationDialog,
-  isMute
+  isMute,
+  name
 }
 
 final preferencesProvider =
@@ -31,6 +32,16 @@ class PreferencesDataSource {
   Future<bool?> getBool(String key) async {
     final pref = await SharedPreferences.getInstance();
     return pref.getBool(key);
+  }
+
+  Future<void> setString(String key, String value) async {
+    final pref = await SharedPreferences.getInstance();
+    pref.setString(key, value);
+  }
+
+  Future<String?> getString(String key) async {
+    final pref = await SharedPreferences.getInstance();
+    return pref.getString(key);
   }
 
   Future<void> remove(String key) async {
