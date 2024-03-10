@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player.dart';
+part of 'change_seat.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerDataHash() => r'e15d23ca14da59c50523c31c6d0a192cbdf5f670';
+String _$changeSeatHash() => r'04cc4c7df3ea75efb44506dd85a6652231969bbe';
 
-/// See also [PlayerData].
-@ProviderFor(PlayerData)
-final playerDataProvider =
-    AutoDisposeNotifierProvider<PlayerData, List<UserEntity>>.internal(
-  PlayerData.new,
-  name: r'playerDataProvider',
+/// See also [ChangeSeat].
+@ProviderFor(ChangeSeat)
+final changeSeatProvider =
+    AutoDisposeNotifierProvider<ChangeSeat, List<UserEntity>>.internal(
+  ChangeSeat.new,
+  name: r'changeSeatProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerDataHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$changeSeatHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerData = AutoDisposeNotifier<List<UserEntity>>;
+typedef _$ChangeSeat = AutoDisposeNotifier<List<UserEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

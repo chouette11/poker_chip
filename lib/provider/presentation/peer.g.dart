@@ -21,7 +21,7 @@ final hostConsProvider =
 );
 
 typedef _$HostCons = AutoDisposeNotifier<List<PeerConEntity>>;
-String _$hostConnOpenHash() => r'da4aacb2559cfa2cb1a1cf39dc4832fb78e167e5';
+String _$hostConnOpenHash() => r'd7c021fb14049bfc16b6203751642444d8994fc3';
 
 /// Copied from Dart SDK
 class _SystemHash {

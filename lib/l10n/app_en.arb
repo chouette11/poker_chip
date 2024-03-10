@@ -6,6 +6,8 @@
   "enter": "Enter",
   "joining": "Joining",
   "setting": "Settings",
+  "changeSeat": "Tap on the user box\n to change seats",
+  "selectUser": "Please tap on\n the exchange target's user box",
   "privacy": "Privacy Policy",
   "usage": "Terms of Use",
   "gdpr": "Change GDPR",
