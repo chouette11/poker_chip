@@ -11,9 +11,9 @@ import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
+import 'package:poker_chip/page/game/host/component/change_seat.dart';
 import 'package:poker_chip/page/game/host/component/room_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
-import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -130,17 +130,6 @@ class _GamePageState extends ConsumerState<HostPage> {
                         ),
                       ),
                       Visibility(
-                        visible: flavor == 'dev',
-                        child: Positioned(
-                          height: height * 0.3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                'optId:${ref.watch(optionAssignedIdProvider)}'),
-                          ),
-                        ),
-                      ),
-                      Visibility(
                         visible: isStart,
                         child: Positioned(
                           top: height * 0.25,
@@ -151,10 +140,13 @@ class _GamePageState extends ConsumerState<HostPage> {
                         ),
                       ),
                       Visibility(
-                        visible: isStart,
+                        visible: !isStart,
                         child: Positioned(
-                          top: height * 0.35,
-                          child: const InfoWidget(true),
+                          top: height * 0.2,
+                          child: const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: ChangeSeatWidget(),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -162,6 +154,13 @@ class _GamePageState extends ConsumerState<HostPage> {
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: RoomIdWidget(),
+                        ),
+                      ),
+                      Visibility(
+                        visible: isStart,
+                        child: Positioned(
+                          top: height * 0.35,
+                          child: const InfoWidget(true),
                         ),
                       ),
                       Visibility(
