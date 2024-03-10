@@ -6,6 +6,8 @@
   "enter" : "入室",
   "joining" : "入室",
   "setting" : "設定",
+  "changeSeat" : "ユーザーをタップして\n席替えができます",
+  "selectUser" : "交換先のユーザーを\nタップしてください",
   "privacy" : "プライバシーポリシー",
   "usage" : "利用規約",
   "gdpr" : "GDPRを変更",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation/change_seat.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 
 class ChangeSeatWidget extends ConsumerWidget {
@@ -17,7 +18,7 @@ class ChangeSeatWidget extends ConsumerWidget {
         borderRadius: BorderRadius.circular(8)
       ),
       child: Text(
-        changeSeat.isEmpty ? 'ユーザーをタップして\n席替えができます' : '交換先のユーザーを\nタップしてください',
+        changeSeat.isEmpty ? context.l10n.changeSeat : context.l10n.selectUser,
         textAlign: TextAlign.center,
         style: TextStyleConstant.bold14.copyWith(color: ColorConstant.black10),
       ),
