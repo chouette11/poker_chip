@@ -5,8 +5,9 @@ import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:poker_chip/page/root/setting_button.dart';
+import 'package:poker_chip/page/root/component/setting_button.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
+import 'package:poker_chip/page/root/component/usage_button.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
@@ -52,14 +53,16 @@ class RootPage extends ConsumerWidget {
                           child: PotWidget(true),
                         ),
                       ),
+                      const UsageButton(),
                       Positioned(
                         bottom: height * 0.35,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                                onPressed: () => context.go('/host'),
-                                child: Text(context.l10n.makeRoom)),
+                              onPressed: () => context.go('/host'),
+                              child: Text(context.l10n.makeRoom),
+                            ),
                             const SizedBox(width: 32),
                             ElevatedButton(
                                 onPressed: () {
