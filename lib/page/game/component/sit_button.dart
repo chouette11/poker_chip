@@ -26,7 +26,7 @@ class SitButton extends ConsumerWidget {
           },
         );
       },
-      child: Text(context.l10n.joining),
+      child: Center(child: FittedBox(child: Text(context.l10n.joining))),
     );
   }
 }
@@ -77,6 +77,10 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                   /// Hostの状態変更
                   ref.read(sittingUidsProvider.notifier).add(uid);
                   ref.read(playerDataProvider.notifier).changeStack(uid, stack);
+                  // ゲームが終了していた場合即時参加
+                  if (!ref.read(isStartProvider)) {
+                    ref.read(playerDataProvider.notifier).updateSitOut(uid, false);
+                  }
 
                   /// Participantの状態変更
                   final user = myData.copyWith.call(stack: stack);
@@ -87,15 +91,15 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                   ref.read(hostConsProvider.notifier).send(mes);
                 } else {
                   final conn = ref.read(participantConProvider);
-                  conn!.send(
-                      MessageEntity(type: MessageTypeEnum.sit, content: uid)
-                          .toJson());
                   final user = myData.copyWith.call(stack: stack);
                   final mes = MessageEntity(
                     type: MessageTypeEnum.userSetting,
                     content: user,
                   );
-                  conn.send(mes.toJson());
+                  conn!.send(mes.toJson());
+                  conn.send(
+                      MessageEntity(type: MessageTypeEnum.sit, content: uid)
+                          .toJson());
                 }
                 context.pop();
               },
