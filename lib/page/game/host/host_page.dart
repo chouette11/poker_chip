@@ -37,10 +37,6 @@ class _GamePageState extends ConsumerState<HostPage> {
 
   @override
   void dispose() {
-    final roomId = ref.read(roomIdProvider);
-    final id = roomToPeerId(roomId);
-    final peer = ref.read(peerProvider(id));
-    peer.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -74,8 +70,8 @@ class _GamePageState extends ConsumerState<HostPage> {
     final isStart = ref.watch(isStartProvider);
     final roomId = ref.watch(roomIdProvider);
 
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: !isStart,
       child: Scaffold(
         backgroundColor: ColorConstant.back,
         body: SafeArea(
