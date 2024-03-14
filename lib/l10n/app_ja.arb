@@ -4,7 +4,7 @@
   "makeRoom": "部屋作成",
   "join" : "参加する",
   "enter" : "入室",
-  "joining" : "入室",
+  "joining" : "参加",
   "setting" : "設定",
   "changeSeat" : "ユーザーをタップして\n席替えができます",
   "selectUser" : "交換先のユーザーを\nタップしてください",

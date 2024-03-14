@@ -1,10 +1,10 @@
 {
-  "confirm": "Confirm",
+  "confirm": "OK",
   "start": "Start",
   "makeRoom": "Create Room",
   "join": "Join Room",
   "enter": "Enter",
-  "joining": "Joining",
+  "joining": "Enter",
   "setting": "Settings",
   "changeSeat": "Tap on the user box\n to change seats",
   "selectUser": "Please tap on\n the exchange target's user box",

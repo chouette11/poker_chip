@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
-import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -180,7 +180,7 @@ class Round extends _$Round {
   }
 }
 
-void _game(List<PeerConEntity> cons,
+void _game(List<DataConnection> cons,
     AutoDisposeNotifierProviderRef<GameTypeEnum> ref) {
   /// アクティブプレイヤーが一人の場合終了
   final actPlayers = ref.read(playerDataProvider.notifier).activePlayers();
@@ -227,8 +227,7 @@ void _game(List<PeerConEntity> cons,
   );
 
   /// Participantの状態変更
-  for (var conEntity in cons) {
-    final conn = conEntity.con;
+  for (var conn in cons) {
     conn.send(smallBlind.toJson());
     conn.send(bigBlind.toJson());
     conn.send(btn.toJson());

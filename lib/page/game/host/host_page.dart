@@ -1,7 +1,6 @@
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
-import 'package:poker_chip/model/entity/peer/peer_con_entity.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hand_button.dart';
@@ -224,7 +223,7 @@ String roomToPeerId(int roomId) {
   return '$roomId--chouette111-poker-chip';
 }
 
-void _game(List<PeerConEntity> cons, WidgetRef ref) {
+void _game(List<DataConnection> cons, WidgetRef ref) {
   ref.read(isStartProvider.notifier).update((state) => true);
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
@@ -254,8 +253,7 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   );
 
   /// Participantの状態変更
-  for (var conEntity in cons) {
-    final conn = conEntity.con;
+  for (var conn in cons) {
     conn.send(smallBlind.toJson());
     conn.send(bigBlind.toJson());
     conn.send(btn.toJson());
