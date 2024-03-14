@@ -6,7 +6,7 @@ part of 'change_seat.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$changeSeatHash() => r'04cc4c7df3ea75efb44506dd85a6652231969bbe';
+String _$changeSeatHash() => r'058b2706cc3f56370f1be3e63d3c517774c6d369';
 
 /// See also [ChangeSeat].
 @ProviderFor(ChangeSeat)
