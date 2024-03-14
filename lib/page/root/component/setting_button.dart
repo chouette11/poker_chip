@@ -202,7 +202,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Visibility(
-                        visible: true,
+                        visible: isGDPR,
                         child: TextButton(
                           onPressed: () => changeGDPR(),
                           child: Text(
