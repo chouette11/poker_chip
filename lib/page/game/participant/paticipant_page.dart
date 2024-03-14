@@ -79,7 +79,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         int count = 0;
         Future(() async {
           do {
-            await Future.delayed(const Duration(seconds: 2));
+            await Future.delayed(const Duration(seconds: 1));
             connect(ref);
             count++;
           } while (!connected && count < 20);
