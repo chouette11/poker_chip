@@ -65,6 +65,9 @@ flutter:
          - asset: assets/fonts/Rubik/Rubik-Regular.ttf
          - asset: assets/fonts/Rubik/Rubik-SemiBold.ttf
          - asset: assets/fonts/Rubik/Rubik-Bold.ttf
+     - family: Sawarabi
+       fonts:
+         - asset: assets/fonts/Sawarabi/SawarabiMincho-Regular.ttf
 
   uses-material-design: true
 
