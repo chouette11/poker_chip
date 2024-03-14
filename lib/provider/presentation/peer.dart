@@ -67,12 +67,12 @@ class HostConnOpen extends _$HostConnOpen {
     peer.on<DataConnection>("connection").listen((event) {
       conn = event;
       print('con!');
+      ref.read(hostConsProvider.notifier).add(event);
 
       conn.on("data").listen((data) {
         print('data!!');
         final mes = MessageEntity.fromJson(data);
         print('host: $mes');
-        ref.read(hostConsProvider.notifier).add(event);
 
         if (mes.type == MessageTypeEnum.join) {
           UserEntity user = UserEntity.fromJson(mes.content);
