@@ -45,6 +45,8 @@ class HostCons extends _$HostCons {
   }
 }
 
+final hostResCountProvider = StateProvider((ref) => 0);
+
 @Riverpod(keepAlive: true)
 @riverpod
 class HostConnOpen extends _$HostConnOpen {
