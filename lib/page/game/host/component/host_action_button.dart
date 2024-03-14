@@ -112,8 +112,7 @@ class _ActionButton extends ConsumerWidget {
           ref.read(playerDataProvider.notifier).updateStack(winner.uid, pot);
 
           /// Participantのターン状態変更
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
+          for (final conn in cons) {
             final uids = notifier.activePlayers().map((e) => e.uid).toList();
             final game = GameEntity(
                 uid: uids.first, type: GameTypeEnum.foldout, score: pot);
@@ -130,8 +129,7 @@ class _ActionButton extends ConsumerWidget {
             ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
 
             final cons = ref.read(hostConsProvider);
-            for (final con in cons) {
-              final conn = con.con;
+            for (final conn in cons) {
               for (final sidePot in sidePots) {
                 /// Participantの状態変更
                 final game = GameEntity(
@@ -153,8 +151,7 @@ class _ActionButton extends ConsumerWidget {
             ref.read(hostSidePotsProvider.notifier).addSidePots(sidePots);
 
             final cons = ref.read(hostConsProvider);
-            for (final con in cons) {
-              final conn = con.con;
+            for (final conn in cons) {
               for (final sidePot in sidePots) {
                 /// Participantの状態変更
                 final game = GameEntity(
@@ -175,8 +172,7 @@ class _ActionButton extends ConsumerWidget {
         }
 
         /// ParticipantのStack状態変更
-        for (final conEntity in cons) {
-          final conn = conEntity.con;
+        for (final conn in cons) {
           final optId = ref.read(optionAssignedIdProvider);
           final action = ActionEntity(
             uid: myUid,
@@ -191,8 +187,7 @@ class _ActionButton extends ConsumerWidget {
 
         if (isFoldout) {
           /// Participantのターン状態変更
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
+          for (final conn in cons) {
             final optId = ref.read(optionAssignedIdProvider);
             final game =
                 GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
@@ -202,8 +197,7 @@ class _ActionButton extends ConsumerWidget {
           }
         } else if (isChangeRound || isAllinShowDown) {
           /// Participantのターン状態変更
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
+          for (final conn in cons) {
             final round = ref.read(roundProvider);
             final game = GameEntity(uid: '', type: round, score: 0);
             final mes =

@@ -218,17 +218,13 @@ class _EditablePlayerCard extends ConsumerWidget {
                                     .updateName(uid, playerName);
 
                                 /// Participantの状態変更
-                                final cons = ref.read(hostConsProvider);
-                                for (final con in cons) {
-                                  final conn = con.con;
-                                  final user =
-                                      myData.copyWith.call(name: playerName);
-                                  final mes = MessageEntity(
-                                    type: MessageTypeEnum.userSetting,
-                                    content: user,
-                                  );
-                                  conn.send(mes.toJson());
-                                }
+                                final user =
+                                    myData.copyWith.call(name: playerName);
+                                final mes = MessageEntity(
+                                  type: MessageTypeEnum.userSetting,
+                                  content: user,
+                                );
+                                ref.read(hostConsProvider.notifier).send(mes);
                               } else {
                                 final conn = ref.read(participantConProvider);
                                 final user =
@@ -274,17 +270,12 @@ class _EditablePlayerCard extends ConsumerWidget {
                                     .changeStack(uid, stack);
 
                                 /// Participantの状態変更
-                                final cons = ref.read(hostConsProvider);
-                                for (final con in cons) {
-                                  final conn = con.con;
-                                  final user =
-                                      myData.copyWith.call(stack: stack);
-                                  final mes = MessageEntity(
-                                    type: MessageTypeEnum.userSetting,
-                                    content: user,
-                                  );
-                                  conn.send(mes.toJson());
-                                }
+                                final user = myData.copyWith.call(stack: stack);
+                                final mes = MessageEntity(
+                                  type: MessageTypeEnum.userSetting,
+                                  content: user,
+                                );
+                                ref.read(hostConsProvider.notifier).send(mes);
                               } else {
                                 final conn = ref.read(participantConProvider);
                                 final user = myData.copyWith.call(stack: stack);

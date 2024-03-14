@@ -45,8 +45,7 @@ class HostRankingButton extends ConsumerWidget {
             ref.read(playerDataProvider.notifier).updateStack(uid, score);
 
             /// Participantのstack状態変更
-            for (final conEntity in cons) {
-              final conn = conEntity.con;
+            for (final conn in cons) {
               final game = GameEntity(
                   uid: uid, type: GameTypeEnum.showdown, score: score);
               final mes =
@@ -60,8 +59,7 @@ class HostRankingButton extends ConsumerWidget {
 
           /// ParticipantのOption状態変更
           final optId = ref.read(optionAssignedIdProvider);
-          for (final conEntity in cons) {
-            final conn = conEntity.con;
+          for (final conn in cons) {
             final game =
                 GameEntity(uid: '', type: GameTypeEnum.preFlop, score: optId);
             final mes =

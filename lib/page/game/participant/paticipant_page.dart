@@ -71,13 +71,18 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         ref.read(isJoinProvider.notifier).update((state) => true);
       });
 
-      connection.on("close").listen((event) {
+      conn.on("close").listen((event) {
         setState(() {
           connected = false;
         });
         peer = Peer(options: PeerOptions(debug: LogLevel.All));
-        Future.delayed(const Duration(seconds: 2), () {
-          connect(ref);
+        int count = 0;
+        Future(() async {
+          do {
+            await Future.delayed(const Duration(seconds: 2));
+            connect(ref);
+            count++;
+          } while (!connected && count < 20);
         });
       });
 
@@ -166,6 +171,12 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print('aaa');
+            conn.close();
+          },
+        ),
         body: SafeArea(
           child: LoaderOverlay(
             overlayWholeScreen: false,
@@ -195,6 +206,14 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                           bottom: 16,
                           right: 16,
                           child: HandButton(),
+                        ),
+                        Positioned(
+                          bottom: 16,
+                          left: 16,
+                          child: ElevatedButton(
+                            onPressed: () => connect(ref),
+                            child: Text('aa'),
+                          ),
                         ),
                         const Positioned(
                           child: Padding(
@@ -244,7 +263,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                               child: Text(connected.toString())),
                         ),
                         Positioned(
-                            bottom: height * 0.08, left: 0, child: const Chips()),
+                            bottom: height * 0.08,
+                            left: 0,
+                            child: const Chips()),
                       ],
                     ),
                   ),
