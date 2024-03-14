@@ -37,11 +37,7 @@ class _DataConnectionExampleState extends ConsumerState<Host> {
 
   void sendHelloWorld() {
     print('send');
-    final consEntity = ref.read(hostConsProvider);
-    for (var conEntity in consEntity) {
-      final conn = conEntity.con;
-      conn.send('send');
-    }
+
   }
 
   void sendBinary() {
