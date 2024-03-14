@@ -43,6 +43,10 @@ class SittingUids extends _$SittingUids {
       state = [...state, uid];
     }
   }
+
+  void clear() {
+    state = [];
+  }
 }
 
 @riverpod
@@ -159,6 +163,7 @@ class Round extends _$Round {
           content: player.copyWith.call(isSitOut: false));
       ref.read(hostConsProvider.notifier).send(mes);
     }
+    ref.read(sittingUidsProvider.notifier).clear();
 
     /// bigBlindを更新
     ref.read(bigIdProvider.notifier).updateId();
@@ -184,6 +189,7 @@ void _game(List<PeerConEntity> cons,
 
     ///Hostの状態変更
     ref.read(playerDataProvider.notifier).updateSitOut(user.uid, true);
+    ref.read(isStartProvider.notifier).update((state) => false);
 
     /// Participantの状態変更
     final mes = MessageEntity(
