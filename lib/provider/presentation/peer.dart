@@ -133,6 +133,10 @@ class HostConnOpen extends _$HostConnOpen {
         } else if (mes.type == MessageTypeEnum.sit) {
           final uid = mes.content as String;
           ref.read(sittingUidsProvider.notifier).add(uid);
+          // ゲームが終了していた場合即時参加
+          if (!ref.read(isStartProvider)) {
+            ref.read(playerDataProvider.notifier).updateSitOut(uid, false);
+          }
         } else if (mes.type == MessageTypeEnum.userSetting) {
           UserEntity user = UserEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);

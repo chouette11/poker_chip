@@ -73,6 +73,7 @@ class _GamePageState extends ConsumerState<HostPage> {
     final flavor = ref.watch(flavorProvider);
     final isStart = ref.watch(isStartProvider);
     final roomId = ref.watch(roomIdProvider);
+    final players = ref.watch(playerDataProvider);
 
     return WillPopScope(
       onWillPop: () async => false,
@@ -168,9 +169,9 @@ class _GamePageState extends ConsumerState<HostPage> {
                         child: Positioned(
                           top: height * 0.4,
                           child: ElevatedButton(
-                            onPressed: ref
-                                        .watch(playerDataProvider.notifier)
-                                        .activePlayers()
+                            onPressed: players
+                                        .where((e) => !e.isSitOut)
+                                        .toList()
                                         .length <
                                     2
                                 ? null
