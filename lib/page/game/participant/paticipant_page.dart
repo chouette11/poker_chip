@@ -171,12 +171,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print('aaa');
-            conn.close();
-          },
-        ),
         body: SafeArea(
           child: LoaderOverlay(
             overlayWholeScreen: false,
@@ -206,14 +200,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                           bottom: 16,
                           right: 16,
                           child: HandButton(),
-                        ),
-                        Positioned(
-                          bottom: 16,
-                          left: 16,
-                          child: ElevatedButton(
-                            onPressed: () => connect(ref),
-                            child: Text('aa'),
-                          ),
                         ),
                         const Positioned(
                           child: Padding(

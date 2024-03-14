@@ -77,11 +77,6 @@ class _GamePageState extends ConsumerState<HostPage> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            ref.read(hostConsProvider)[0].dispose();
-          },
-        ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: Column(
