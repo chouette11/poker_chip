@@ -72,9 +72,15 @@ final isStartProvider = StateProvider((ref) => false);
 
 final isJoinProvider = StateProvider((ref) => false);
 
+final isReviewDialogProvider = StateProvider((ref) => false);
+
 final raiseBetProvider = StateProvider((ref) => 0);
 
 final stackProvider = StateProvider((ref) => 1000);
+
+final sbProvider = StateProvider((ref) => 10);
+
+final bbProvider = StateProvider((ref) => 20);
 
 final playersExProvider = StateProvider((ref) => []);
 
@@ -196,8 +202,8 @@ void _game(List<PeerConEntity> cons,
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
   final btnId = ref.read(bigIdProvider.notifier).btnId();
-  const big = 20;
-  const small = 10;
+  final big = ref.watch(bbProvider);
+  final small = ref.watch(sbProvider);
   final smallBlind = MessageEntity(
     type: MessageTypeEnum.game,
     content: GameEntity(
