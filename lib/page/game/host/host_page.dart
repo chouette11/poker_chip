@@ -13,6 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/page/game/component/user_box.dart';
 import 'package:poker_chip/page/game/host/component/change_seat.dart';
 import 'package:poker_chip/page/game/host/component/room_id.dart';
+import 'package:poker_chip/page/game/host/component/setting_button.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
@@ -163,15 +164,22 @@ class _GamePageState extends ConsumerState<HostPage> {
                         visible: !isStart,
                         child: Positioned(
                           top: height * 0.4,
-                          child: ElevatedButton(
-                            onPressed: ref
-                                        .watch(playerDataProvider.notifier)
-                                        .activePlayers()
-                                        .length <
-                                    2
-                                ? null
-                                : () => _game(cons, ref),
-                            child: Text(context.l10n.start),
+                          child: Row(
+                            children: [
+                              const SizedBox(width: 66),
+                              ElevatedButton(
+                                onPressed: ref
+                                            .watch(playerDataProvider.notifier)
+                                            .activePlayers()
+                                            .length <
+                                        2
+                                    ? null
+                                    : () => _game(cons, ref),
+                                child: Text(context.l10n.start),
+                              ),
+                              const SizedBox(width: 16),
+                              const SettingButton(),
+                            ],
                           ),
                         ),
                       ),
@@ -224,8 +232,8 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
   final btnId = ref.read(bigIdProvider.notifier).btnId();
-  const big = 20;
-  const small = 10;
+  final big = ref.watch(bbProvider);
+  final small = ref.watch(sbProvider);
   final smallBlind = MessageEntity(
     type: MessageTypeEnum.game,
     content: GameEntity(
