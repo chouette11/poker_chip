@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:poker_chip/page/root/root_page.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
+
 import 'package:qr_flutter/qr_flutter.dart';
 
 class UsageButton extends StatelessWidget {
@@ -17,7 +19,8 @@ class UsageButton extends StatelessWidget {
         final rootBoundary = rootGlobalKey.currentContext?.findRenderObject()
             as RenderRepaintBoundary?;
         final rootImage = await rootBoundary!.toImage();
-        final byteData = await rootImage.toByteData(format: ImageByteFormat.png);
+        final byteData =
+            await rootImage.toByteData(format: ImageByteFormat.png);
         final rootBytes = byteData?.buffer.asUint8List();
         final rootImageWidget = Image.memory(rootBytes!.buffer.asUint8List());
 
@@ -30,7 +33,7 @@ class UsageButton extends StatelessWidget {
           },
         );
       },
-      child: const Text('使い方'),
+      child: Text(context.l10n.usageButtonTitle),
     );
   }
 }
@@ -52,7 +55,9 @@ class _UsageDialogState extends State<UsageDialog> {
     final pages = [
       const _Page1(),
       _Page2(rootImage: widget.rootImage),
-      _Page3(rootImage: widget.rootImage,),
+      _Page3(
+        rootImage: widget.rootImage,
+      ),
     ];
 
     return AlertDialog(
@@ -107,12 +112,12 @@ class _Page1 extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '1. 人数分のアプリが必要です',
+            context.l10n.page1Title,
             style:
                 TextStyleConstant.bold18.copyWith(color: ColorConstant.black10),
           ),
-          const Text(
-            '一緒にプレイする人がまだインストールしていない場合は以下のQRコードからインストールしてください',
+          Text(
+            context.l10n.page1Description,
             style: TextStyleConstant.text,
           ),
           SizedBox(child: QrImageView(data: 'https://onelink.to/pabhbm'))
@@ -135,12 +140,12 @@ class _Page2 extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '2. 部屋作成',
+            context.l10n.page2Title,
             style:
                 TextStyleConstant.bold18.copyWith(color: ColorConstant.black10),
           ),
-          const Text(
-            '誰か一人が\'部屋作成\'から部屋を作成してください。部屋作成者はユーザーを二人タップすることで席替えが出来ます',
+          Text(
+            context.l10n.page2Description,
             style: TextStyleConstant.text,
           ),
           ClipRect(
@@ -163,6 +168,7 @@ class _Page2 extends StatelessWidget {
 
 class _Page3 extends StatelessWidget {
   const _Page3({super.key, required this.rootImage});
+
   final Image rootImage;
 
   @override
@@ -173,12 +179,12 @@ class _Page3 extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '3. 部屋に参加',
+            context.l10n.page3Title,
             style:
                 TextStyleConstant.bold18.copyWith(color: ColorConstant.black10),
           ),
-          const Text(
-            '他の人は\'参加する\'から部屋に参加し、RoomIDを入力してください。',
+          Text(
+            context.l10n.page3Description,
             style: TextStyleConstant.text,
           ),
           ClipRect(
