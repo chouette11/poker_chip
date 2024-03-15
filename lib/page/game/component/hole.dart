@@ -170,20 +170,27 @@ class DealerButton extends StatelessWidget {
   }
 }
 
-class _EditablePlayerCard extends ConsumerWidget {
+class _EditablePlayerCard extends ConsumerStatefulWidget {
   const _EditablePlayerCard(this.isHost, this.myData, {super.key});
 
   final bool isHost;
   final UserEntity myData;
+  @override
+  ConsumerState<_EditablePlayerCard> createState() => _EditablePlayerCardState();
+}
+
+class _EditablePlayerCardState extends ConsumerState<_EditablePlayerCard> {
+  String playerName = '';
+  int stack = 0;
+  int sb = 10;
+  int bb = 20;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final uid = ref.watch(uidProvider);
     final myData =
         ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
-    String playerName = '';
-    int stack = 0;
 
     return GestureDetector(
       onTap: () {
@@ -211,7 +218,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                         ),
                         IconButton(
                             onPressed: () async {
-                              if (isHost) {
+                              if (widget.isHost) {
                                 /// Hostの状態変更
                                 ref
                                     .read(playerDataProvider.notifier)
@@ -267,7 +274,7 @@ class _EditablePlayerCard extends ConsumerWidget {
                         ),
                         IconButton(
                             onPressed: () {
-                              if (isHost) {
+                              if (widget.isHost) {
                                 /// Hostの状態変更
                                 ref
                                     .read(playerDataProvider.notifier)
@@ -298,6 +305,71 @@ class _EditablePlayerCard extends ConsumerWidget {
                             },
                             icon: const Icon(Icons.check)),
                       ],
+                    ),
+                    Visibility(
+                      visible: widget.isHost,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                SizedBox(
+                                  width: context.screenWidth * 0.2,
+                                  height: 48,
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'SB',
+                                    ),
+                                    initialValue:
+                                        ref.read(sbProvider).toString(),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    onChanged: (value) {
+                                      sb = int.parse(value);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: context.screenWidth * 0.2,
+                                  height: 48,
+                                  child: TextFormField(
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
+                                      labelText: 'BB',
+                                    ),
+                                    initialValue:
+                                        ref.read(bbProvider).toString(),
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly
+                                    ],
+                                    onChanged: (value) {
+                                      bb = int.parse(value);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                ref
+                                    .read(sbProvider.notifier)
+                                    .update((state) => sb);
+                                ref
+                                    .read(bbProvider.notifier)
+                                    .update((state) => bb);
+                                context.pop();
+                              },
+                              icon: const Icon(Icons.check),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
