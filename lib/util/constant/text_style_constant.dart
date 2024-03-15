@@ -109,4 +109,14 @@ class TextStyleConstant {
       fontWeight: FontWeight.bold,
       fontSize: 14,
       color: ColorConstant.text);
+  static const text = TextStyle(
+      fontFamily: 'Sawarabi',
+      fontWeight: FontWeight.normal,
+      fontSize: 16,
+      color: ColorConstant.black10);
+  static const textBold = TextStyle(
+      fontFamily: 'Sawarabi',
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+      color: ColorConstant.black10);
 }

@@ -166,8 +166,8 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         });
       }
     });
-    return WillPopScope(
-      onWillPop: () async => false,
+    return PopScope(
+      canPop: !isStart,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: ColorConstant.back,
