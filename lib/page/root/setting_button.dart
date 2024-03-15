@@ -91,6 +91,107 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     ],
                   ),
                 ),
+                const SizedBox(height: 8),
+                const Text('Blind Levels'),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: width * 0.2,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'SB 1',
+                        ),
+                        controller: TextEditingController(text: '10'),
+                        onChanged: (value) {
+                          sb = int.parse(value);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.2,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'BB 1',
+                        ),
+                        controller: TextEditingController(text: '20'),
+                        onChanged: (value) {
+                          bb = int.parse(value);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.3,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Duration 1',
+                        ),
+                        controller: TextEditingController(text: '5'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                      child: IconButton(
+                        onPressed: () {
+                          ref.read(sbProvider.notifier).update((state) => sb);
+                          ref.read(bbProvider.notifier).update((state) => bb);
+                          context.pop();
+                        },
+                        icon: const Icon(Icons.check),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: width * 0.2,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'SB 2',
+                        ),
+                        onChanged: (value) {
+                          sb2 = int.parse(value);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.2,
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'BB 2',
+                        ),
+                        onChanged: (value) {
+                          bb2 = int.parse(value);
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.3,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Duration 2',
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16,
+                      child: IconButton(
+                          onPressed: () {
+                            context.pop();
+                          },
+                          icon: const Icon(Icons.close)),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                    onPressed: () {}, child: const Text('Add another level')),
               ],
             ),
           ),

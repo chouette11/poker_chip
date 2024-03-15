@@ -201,8 +201,8 @@ void _game(List<PeerConEntity> cons, WidgetRef ref) {
   final bigId = ref.read(bigIdProvider);
   final smallId = ref.read(bigIdProvider.notifier).smallId();
   final btnId = ref.read(bigIdProvider.notifier).btnId();
-  const big = 20;
-  const small = 10;
+  final big = ref.watch(bbProvider);
+  final small = ref.watch(sbProvider);
   final smallBlind = MessageEntity(
     type: MessageTypeEnum.game,
     content: GameEntity(
