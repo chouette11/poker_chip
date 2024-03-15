@@ -12,6 +12,8 @@ import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 
+final rootGlobalKey = GlobalKey();
+
 class RootPage extends ConsumerWidget {
   const RootPage({super.key});
 
@@ -20,8 +22,8 @@ class RootPage extends ConsumerWidget {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    return WillPopScope(
-      onWillPop: () async => false,
+    return RepaintBoundary(
+      key: rootGlobalKey,
       child: Scaffold(
         backgroundColor: ColorConstant.back,
         body: SafeArea(
@@ -47,33 +49,38 @@ class RootPage extends ConsumerWidget {
                       const Positioned(
                           top: 0, right: 0, child: SettingButton()),
                       Positioned(
-                        top: height * 0.3,
+                        top: height * 0.25,
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
                           child: PotWidget(true),
                         ),
                       ),
-                      const UsageButton(),
                       Positioned(
                         bottom: height * 0.35,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                        child: Column(
                           children: [
-                            ElevatedButton(
-                              onPressed: () => context.go('/host'),
-                              child: Text(context.l10n.makeRoom),
+                            const UsageButton(),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () => context.go('/host'),
+                                  child: Text(context.l10n.makeRoom),
+                                ),
+                                const SizedBox(width: 32),
+                                ElevatedButton(
+                                    onPressed: () {
+                                      final flavor = ref.read(flavorProvider);
+                                      if (flavor == 'dev') {
+                                        context.go('/participant',
+                                            extra: roomToPeerId(000000));
+                                      }
+                                      context.go('/participant');
+                                    },
+                                    child: Text(context.l10n.join)),
+                              ],
                             ),
-                            const SizedBox(width: 32),
-                            ElevatedButton(
-                                onPressed: () {
-                                  final flavor = ref.read(flavorProvider);
-                                  if (flavor == 'dev') {
-                                    context.go('/participant',
-                                        extra: roomToPeerId(000000));
-                                  }
-                                  context.go('/participant');
-                                },
-                                child: Text(context.l10n.join)),
                           ],
                         ),
                       ),
