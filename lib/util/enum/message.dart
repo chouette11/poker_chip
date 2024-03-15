@@ -4,7 +4,8 @@ enum MessageTypeEnum {
   sit('sit'),
   userSetting('userSetting'),
   game('game'),
-  action('action');
+  action('action'),
+  res('res');
 
   const MessageTypeEnum(this.displayName);
 

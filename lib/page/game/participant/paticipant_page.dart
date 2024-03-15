@@ -71,13 +71,18 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         ref.read(isJoinProvider.notifier).update((state) => true);
       });
 
-      connection.on("close").listen((event) {
+      conn.on("close").listen((event) {
         setState(() {
           connected = false;
         });
         peer = Peer(options: PeerOptions(debug: LogLevel.All));
-        Future.delayed(const Duration(seconds: 2), () {
-          connect(ref);
+        int count = 0;
+        Future(() async {
+          do {
+            await Future.delayed(const Duration(seconds: 1));
+            connect(ref);
+            count++;
+          } while (!connected && count < 20);
         });
       });
 
@@ -244,7 +249,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                               child: Text(connected.toString())),
                         ),
                         Positioned(
-                            bottom: height * 0.08, left: 0, child: const Chips()),
+                            bottom: height * 0.08,
+                            left: 0,
+                            child: const Chips()),
                       ],
                     ),
                   ),

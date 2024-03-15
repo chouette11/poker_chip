@@ -6,7 +6,7 @@ part of 'presentation_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sittingUidsHash() => r'6968ac7f81458ab8d28a9c0a5b6884a96f1a13a9';
+String _$sittingUidsHash() => r'f5adc3e8e8f9bc3fc9c7b2bd97c49941032bb2f8';
 
 /// See also [SittingUids].
 @ProviderFor(SittingUids)
@@ -36,7 +36,7 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'91e095daafe1f8d400c9a992f898bf870afaed9e';
+String _$roundHash() => r'ce24197ab738991259ca8ada4a5f16ffa920f694';
 
 ///
 /// Round
