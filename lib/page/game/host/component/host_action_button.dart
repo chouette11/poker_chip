@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
+import 'package:poker_chip/model/entity/history/history_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
+import 'package:poker_chip/provider/presentation/history.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
@@ -95,6 +97,15 @@ class _ActionButton extends ConsumerWidget {
           return;
         }
         final notifier = ref.read(playerDataProvider.notifier);
+
+        // 履歴の追加
+        final action =
+            ActionEntity(uid: myUid, type: actionTypeEnum, score: score);
+        final round = ref.read(roundProvider);
+        final players = ref.read(playerDataProvider);
+        final history = HistoryEntity(
+            dateTime: DateTime.now(), action: action, round: round, players: players);
+        ref.read(historyProvider.notifier).add(history);
 
         /// HostのStack状態変更
         _hostActionMethod(ref, actionTypeEnum, myUid, score);
