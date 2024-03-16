@@ -36,26 +36,11 @@ final errorTextProvider =
 );
 
 typedef _$ErrorText = AutoDisposeNotifier<String>;
-String _$roundHash() => r'ce24197ab738991259ca8ada4a5f16ffa920f694';
+String _$bigIdHash() => r'329a18ebbbc343c18beb294f1b5ec3751d710b4b';
 
 ///
 /// Round
 ///
-///
-/// Copied from [Round].
-@ProviderFor(Round)
-final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
-  Round.new,
-  name: r'roundProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$roundHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
-String _$bigIdHash() => r'329a18ebbbc343c18beb294f1b5ec3751d710b4b';
-
 ///
 /// position
 ///

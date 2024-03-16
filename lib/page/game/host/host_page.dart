@@ -121,6 +121,11 @@ class _GamePageState extends ConsumerState<HostPage> {
                         child: HandButton(),
                       ),
                       const Positioned(
+                        bottom: 8,
+                        right: 16,
+                        child: HandButton(),
+                      ),
+                      const Positioned(
                         child: Padding(
                           padding: EdgeInsets.all(8.0),
                           child: UserBoxes(true),

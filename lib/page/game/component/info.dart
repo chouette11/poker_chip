@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
-import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';

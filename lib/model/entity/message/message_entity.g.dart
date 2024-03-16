@@ -25,4 +25,5 @@ const _$MessageTypeEnumEnumMap = {
   MessageTypeEnum.userSetting: 'userSetting',
   MessageTypeEnum.game: 'game',
   MessageTypeEnum.action: 'action',
+  MessageTypeEnum.res: 'res',
 };
