@@ -20,7 +20,8 @@ class UserBoxes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<UserEntity> players = ref.watch(playerDataProvider);
+    List<UserEntity> oriPlayers = ref.watch(playerDataProvider);
+    List<UserEntity> players = List.of(oriPlayers);
     players.sort((a, b) => b.assignedId.compareTo(a.assignedId));
     final myAssignedId =
         players.firstWhere((e) => e.uid == ref.read(uidProvider)).assignedId;
