@@ -3,6 +3,8 @@ PODS:
     - Flutter
   - async_preferences (0.0.1):
     - Flutter
+  - audioplayers_darwin (0.0.1):
+    - Flutter
   - Firebase/Auth (10.18.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.18.0)
@@ -109,6 +111,7 @@ PODS:
 DEPENDENCIES:
   - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - async_preferences (from `.symlinks/plugins/async_preferences/ios`)
+  - audioplayers_darwin (from `.symlinks/plugins/audioplayers_darwin/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -145,6 +148,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/app_tracking_transparency/ios"
   async_preferences:
     :path: ".symlinks/plugins/async_preferences/ios"
+  audioplayers_darwin:
+    :path: ".symlinks/plugins/audioplayers_darwin/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -171,6 +176,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   app_tracking_transparency: 5b1745ef9ade815f7455cb6a0848349589afb7c5
   async_preferences: f3268e3d74e9fa7cae14b53be5ba23a4f657a7a1
+  audioplayers_darwin: 877d9a4d06331c5c374595e46e16453ac7eafa40
   Firebase: 414ad272f8d02dfbf12662a9d43f4bba9bec2a06
   firebase_auth: 8e9ec02991ca4659111cc671c84d0c010b6bfb26
   firebase_core: 0af4a2b24f62071f9bf283691c0ee41556dcb3f5
