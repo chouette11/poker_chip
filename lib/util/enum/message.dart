@@ -3,6 +3,7 @@ enum MessageTypeEnum {
   joined('joined'),
   sit('sit'),
   userSetting('userSetting'),
+  history('history'),
   game('game'),
   action('action'),
   res('res');

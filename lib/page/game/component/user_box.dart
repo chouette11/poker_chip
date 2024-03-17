@@ -6,6 +6,7 @@ import 'package:poker_chip/page/game/component/ranking_select_button.dart';
 import 'package:poker_chip/provider/presentation/change_seat.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
+import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
@@ -19,7 +20,8 @@ class UserBoxes extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<UserEntity> players = ref.watch(playerDataProvider);
+    List<UserEntity> oriPlayers = ref.watch(playerDataProvider);
+    List<UserEntity> players = List.of(oriPlayers);
     players.sort((a, b) => b.assignedId.compareTo(a.assignedId));
     final myAssignedId =
         players.firstWhere((e) => e.uid == ref.read(uidProvider)).assignedId;

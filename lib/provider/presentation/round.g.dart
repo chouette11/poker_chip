@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player.dart';
+part of 'round.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerDataHash() => r'954c02a40f02f4bfdf418795e2a4bfb36fe49b15';
+String _$roundHash() => r'f4795a06ff504da6048f21e9e5c3cc09433ebb5d';
 
-/// See also [PlayerData].
-@ProviderFor(PlayerData)
-final playerDataProvider =
-    AutoDisposeNotifierProvider<PlayerData, List<UserEntity>>.internal(
-  PlayerData.new,
-  name: r'playerDataProvider',
+/// See also [Round].
+@ProviderFor(Round)
+final roundProvider = AutoDisposeNotifierProvider<Round, GameTypeEnum>.internal(
+  Round.new,
+  name: r'roundProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerDataHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$roundHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerData = AutoDisposeNotifier<List<UserEntity>>;
+typedef _$Round = AutoDisposeNotifier<GameTypeEnum>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

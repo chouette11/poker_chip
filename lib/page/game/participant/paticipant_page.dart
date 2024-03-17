@@ -4,6 +4,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
+import 'package:poker_chip/model/entity/history/history_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
+import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -107,6 +109,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         } else if (mes.type == MessageTypeEnum.userSetting) {
           final user = UserEntity.fromJson(mes.content);
           ref.read(playerDataProvider.notifier).update(user);
+        } else if (mes.type == MessageTypeEnum.history) {
+          final history = HistoryEntity.fromJson(mes.content);
+          ref.read(playerDataProvider.notifier).restore(history.players);
+          ref.read(roundProvider.notifier).restore(history.round);
+          ref.read(potProvider.notifier).restore(history.pot);
+          ref
+              .read(sidePotsProvider.notifier)
+              .restore(history.sidePots.map((e) => e.size).toList());
+          ref
+              .read(participantOptIdProvider.notifier)
+              .update((state) => history.assignedId);
         } else if (mes.type == MessageTypeEnum.action) {
           final action = ActionEntity.fromJson(mes.content);
           _participantActionMethod(action, ref);

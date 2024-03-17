@@ -1,25 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player.dart';
+part of 'history.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerDataHash() => r'954c02a40f02f4bfdf418795e2a4bfb36fe49b15';
+String _$historyHash() => r'8b413cc000b91926d74bca56ef6ace616105497c';
 
-/// See also [PlayerData].
-@ProviderFor(PlayerData)
-final playerDataProvider =
-    AutoDisposeNotifierProvider<PlayerData, List<UserEntity>>.internal(
-  PlayerData.new,
-  name: r'playerDataProvider',
+/// See also [History].
+@ProviderFor(History)
+final historyProvider = NotifierProvider<History, List<HistoryEntity>>.internal(
+  History.new,
+  name: r'historyProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$playerDataHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$historyHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$PlayerData = AutoDisposeNotifier<List<UserEntity>>;
+typedef _$History = Notifier<List<HistoryEntity>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

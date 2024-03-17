@@ -71,4 +71,8 @@ class OptionAssignedId extends _$OptionAssignedId {
     }
     state = firstLargerNumber ?? smallestNumber;
   }
+
+  void restore(int id) {
+    state = id;
+  }
 }
