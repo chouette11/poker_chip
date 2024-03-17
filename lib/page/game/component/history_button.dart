@@ -24,7 +24,7 @@ class HistoryButton extends StatelessWidget {
       onPressed: () {
         showDialog(context: context, builder: (context) => _CustomDialog());
       },
-      child: Text('履歴'),
+      child: Text(context.l10n.history),
     );
   }
 }
@@ -49,7 +49,7 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              '履歴',
+              context.l10n.history,
               style: TextStyleConstant.bold16
                   .copyWith(color: ColorConstant.black10),
             ),
@@ -102,7 +102,7 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                           players: selectedHistory!.players, onTap: () => restore()),
                     );
                   },
-            child: Text('復元'),
+            child: Text(context.l10n.restore),
           )
         ],
       ),
@@ -198,7 +198,7 @@ class _ConfirmDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('以下の内容で復元します'),
+      title: Text(context.l10n.blowRestore),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
