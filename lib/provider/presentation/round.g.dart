@@ -6,7 +6,7 @@ part of 'round.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$roundHash() => r'ce24197ab738991259ca8ada4a5f16ffa920f694';
+String _$roundHash() => r'f4795a06ff504da6048f21e9e5c3cc09433ebb5d';
 
 /// See also [Round].
 @ProviderFor(Round)

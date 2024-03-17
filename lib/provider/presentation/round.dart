@@ -99,6 +99,10 @@ class Round extends _$Round {
       _game(cons, ref);
     });
   }
+
+  void restore(GameTypeEnum round) {
+    state = round;
+  }
 }
 
 void _game(List<DataConnection> cons,
