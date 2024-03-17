@@ -91,10 +91,6 @@ class _ActionButton extends ConsumerWidget {
     required this.maxScore,
     required this.audio,
   });
-  Future<void> tts() async {
-    await flutterTts.setLanguage("en-US");
-  }
-
   final ActionTypeEnum actionTypeEnum;
   final int maxScore;
   final String audio;
@@ -130,12 +126,13 @@ class _ActionButton extends ConsumerWidget {
 
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
-        if (locale.toString() == 'ja_JP') {
+        if (locale.toString() == 'ja') {
           audioPlayer.play(AssetSource(audio));
         } else {
-          tts();
+          flutterTts.setLanguage("en-US");
           flutterTts.speak(actionTypeEnum.name);
         }
+        print(locale.toString());
       },
       child: Column(
         children: [
