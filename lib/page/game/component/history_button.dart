@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
+import 'package:poker_chip/model/entity/history/history_entity.dart';
+import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/provider/presentation/history.dart';
+import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/game.dart';
+import 'package:poker_chip/util/enum/message.dart';
 
 class HistoryButton extends StatelessWidget {
   const HistoryButton({super.key});
@@ -24,15 +29,20 @@ class HistoryButton extends StatelessWidget {
   }
 }
 
-class _CustomDialog extends ConsumerWidget {
+class _CustomDialog extends ConsumerStatefulWidget {
   const _CustomDialog({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final history = ref.watch(historyProvider);
-    List<UserEntity> players = [];
-    print('history');
-    print(history);
+  ConsumerState<_CustomDialog> createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends ConsumerState<_CustomDialog> {
+  HistoryEntity? selectedHistory;
+  int selectedTileIndex = -1;
+
+  @override
+  Widget build(BuildContext context) {
+    final histories = ref.watch(historyProvider);
     return Dialog(
       child: Column(
         children: [
@@ -45,31 +55,53 @@ class _CustomDialog extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            height: history.length * 64 + 16,
+            height: histories.length * 64 + 16,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListView(
+              child: ListView.builder(
+                itemCount: histories.length,
                 reverse: true,
-                children: history
-                    .map(
-                      (e) => _CustomTile(
-                        dateTime: e.dateTime,
-                        action: e.action,
-                        round: e.round,
-                        onTap: () {
-                          players = e.players;
-                          print(players);
-                        },
-                      ),
-                    )
-                    .toList(),
+                itemBuilder: (context, index) {
+                  final history = histories[index];
+                  return _CustomTile(
+                    dateTime: history.dateTime,
+                    action: history.action,
+                    round: history.round,
+                    isSelected: index == selectedTileIndex,
+                    onTap: () {
+                      selectedHistory = history;
+                      selectedTileIndex = index;
+                      setState(() {});
+                    },
+                  );
+                },
               ),
             ),
           ),
           ElevatedButton(
-            onPressed: () {
-              ref.read(playerDataProvider.notifier).restore(players);
-            },
+            onPressed: selectedTileIndex == -1
+                ? null
+                : () {
+                    void restore() {
+                      print(selectedHistory);
+                      /// Hostの状態変更
+                      ref
+                          .read(historyProvider.notifier)
+                          .apply(selectedHistory!);
+
+                      /// Participantの状態変更
+                      final mes = MessageEntity(
+                          type: MessageTypeEnum.history,
+                          content: selectedHistory);
+                      ref.read(hostConsProvider.notifier).send(mes);
+                    }
+
+                    showDialog(
+                      context: context,
+                      builder: (content) => _ConfirmDialog(
+                          players: selectedHistory!.players, onTap: () => restore()),
+                    );
+                  },
             child: Text('復元'),
           )
         ],
@@ -86,12 +118,14 @@ class _CustomTile extends ConsumerWidget {
     required this.onTap,
     required this.dateTime,
     required this.round,
+    required this.isSelected,
   });
 
   final DateTime dateTime;
   final GameTypeEnum round;
   final ActionEntity? action;
   final GameEntity? game;
+  final bool isSelected;
   final void Function() onTap;
 
   @override
@@ -101,7 +135,9 @@ class _CustomTile extends ConsumerWidget {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: ColorConstant.black80.withOpacity(0.4),
+            color: isSelected
+                ? ColorConstant.black80
+                : ColorConstant.black80.withOpacity(0.4),
             border: Border.all(color: Colors.grey),
           ),
           child: Padding(
@@ -150,6 +186,42 @@ class _CustomTile extends ConsumerWidget {
         ],
       );
     }
+  }
+}
+
+class _ConfirmDialog extends StatelessWidget {
+  const _ConfirmDialog({super.key, required this.players, required this.onTap});
+
+  final List<UserEntity> players;
+  final Function onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('以下の内容で復元します'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: players
+                .map(
+                  (e) => Text(
+                      '${e.name ?? context.l10n.playerX(1)}  stack: ${e.stack} score: ${e.score}'),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+              onPressed: () {
+                onTap();
+                context.pop();
+                context.pop();
+              },
+              child: const Text('OK'))
+        ],
+      ),
+    );
   }
 }
 
