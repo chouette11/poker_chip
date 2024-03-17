@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
-import 'package:poker_chip/model/entity/history/history_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter/material.dart';
@@ -147,16 +146,6 @@ class HostConnOpen extends _$HostConnOpen {
           ActionEntity action = ActionEntity.fromJson(mes.content);
           final notifier = ref.read(playerDataProvider.notifier);
 
-          // 履歴の追加
-          final round = ref.read(roundProvider);
-          final players = ref.read(playerDataProvider);
-          final history = HistoryEntity(
-              dateTime: DateTime.now(),
-              action: action,
-              round: round,
-              players: players);
-          ref.read(historyProvider.notifier).add(history);
-
           /// HostのStack状態変更
           _actionStackMethod(action, ref);
 
@@ -266,6 +255,9 @@ class HostConnOpen extends _$HostConnOpen {
               conn.send(mes.toJson());
             }
           }
+
+          // 履歴の追加
+          ref.read(historyProvider.notifier).add(action);
         } else if (mes.type == MessageTypeEnum.game) {
           GameEntity game = GameEntity.fromJson(mes.content);
           print(game);
