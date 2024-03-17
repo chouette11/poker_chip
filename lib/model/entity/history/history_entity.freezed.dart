@@ -23,6 +23,9 @@ mixin _$HistoryEntity {
   DateTime get dateTime => throw _privateConstructorUsedError;
   GameTypeEnum get round => throw _privateConstructorUsedError;
   List<UserEntity> get players => throw _privateConstructorUsedError;
+  int get pot => throw _privateConstructorUsedError;
+  List<SidePotEntity> get sidePots => throw _privateConstructorUsedError;
+  int get assignedId => throw _privateConstructorUsedError;
   ActionEntity? get action => throw _privateConstructorUsedError;
   GameEntity? get game => throw _privateConstructorUsedError;
 
@@ -42,6 +45,9 @@ abstract class $HistoryEntityCopyWith<$Res> {
       {DateTime dateTime,
       GameTypeEnum round,
       List<UserEntity> players,
+      int pot,
+      List<SidePotEntity> sidePots,
+      int assignedId,
       ActionEntity? action,
       GameEntity? game});
 
@@ -65,6 +71,9 @@ class _$HistoryEntityCopyWithImpl<$Res, $Val extends HistoryEntity>
     Object? dateTime = null,
     Object? round = null,
     Object? players = null,
+    Object? pot = null,
+    Object? sidePots = null,
+    Object? assignedId = null,
     Object? action = freezed,
     Object? game = freezed,
   }) {
@@ -81,6 +90,18 @@ class _$HistoryEntityCopyWithImpl<$Res, $Val extends HistoryEntity>
           ? _value.players
           : players // ignore: cast_nullable_to_non_nullable
               as List<UserEntity>,
+      pot: null == pot
+          ? _value.pot
+          : pot // ignore: cast_nullable_to_non_nullable
+              as int,
+      sidePots: null == sidePots
+          ? _value.sidePots
+          : sidePots // ignore: cast_nullable_to_non_nullable
+              as List<SidePotEntity>,
+      assignedId: null == assignedId
+          ? _value.assignedId
+          : assignedId // ignore: cast_nullable_to_non_nullable
+              as int,
       action: freezed == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
@@ -129,6 +150,9 @@ abstract class _$$HistoryEntityImplCopyWith<$Res>
       {DateTime dateTime,
       GameTypeEnum round,
       List<UserEntity> players,
+      int pot,
+      List<SidePotEntity> sidePots,
+      int assignedId,
       ActionEntity? action,
       GameEntity? game});
 
@@ -152,6 +176,9 @@ class __$$HistoryEntityImplCopyWithImpl<$Res>
     Object? dateTime = null,
     Object? round = null,
     Object? players = null,
+    Object? pot = null,
+    Object? sidePots = null,
+    Object? assignedId = null,
     Object? action = freezed,
     Object? game = freezed,
   }) {
@@ -168,6 +195,18 @@ class __$$HistoryEntityImplCopyWithImpl<$Res>
           ? _value._players
           : players // ignore: cast_nullable_to_non_nullable
               as List<UserEntity>,
+      pot: null == pot
+          ? _value.pot
+          : pot // ignore: cast_nullable_to_non_nullable
+              as int,
+      sidePots: null == sidePots
+          ? _value._sidePots
+          : sidePots // ignore: cast_nullable_to_non_nullable
+              as List<SidePotEntity>,
+      assignedId: null == assignedId
+          ? _value.assignedId
+          : assignedId // ignore: cast_nullable_to_non_nullable
+              as int,
       action: freezed == action
           ? _value.action
           : action // ignore: cast_nullable_to_non_nullable
@@ -187,9 +226,13 @@ class _$HistoryEntityImpl extends _HistoryEntity {
       {required this.dateTime,
       required this.round,
       required final List<UserEntity> players,
+      required this.pot,
+      required final List<SidePotEntity> sidePots,
+      required this.assignedId,
       this.action,
       this.game})
       : _players = players,
+        _sidePots = sidePots,
         super._();
 
   factory _$HistoryEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -208,13 +251,25 @@ class _$HistoryEntityImpl extends _HistoryEntity {
   }
 
   @override
+  final int pot;
+  final List<SidePotEntity> _sidePots;
+  @override
+  List<SidePotEntity> get sidePots {
+    if (_sidePots is EqualUnmodifiableListView) return _sidePots;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_sidePots);
+  }
+
+  @override
+  final int assignedId;
+  @override
   final ActionEntity? action;
   @override
   final GameEntity? game;
 
   @override
   String toString() {
-    return 'HistoryEntity(dateTime: $dateTime, round: $round, players: $players, action: $action, game: $game)';
+    return 'HistoryEntity(dateTime: $dateTime, round: $round, players: $players, pot: $pot, sidePots: $sidePots, assignedId: $assignedId, action: $action, game: $game)';
   }
 
   @override
@@ -226,14 +281,26 @@ class _$HistoryEntityImpl extends _HistoryEntity {
                 other.dateTime == dateTime) &&
             (identical(other.round, round) || other.round == round) &&
             const DeepCollectionEquality().equals(other._players, _players) &&
+            (identical(other.pot, pot) || other.pot == pot) &&
+            const DeepCollectionEquality().equals(other._sidePots, _sidePots) &&
+            (identical(other.assignedId, assignedId) ||
+                other.assignedId == assignedId) &&
             (identical(other.action, action) || other.action == action) &&
             (identical(other.game, game) || other.game == game));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, dateTime, round,
-      const DeepCollectionEquality().hash(_players), action, game);
+  int get hashCode => Object.hash(
+      runtimeType,
+      dateTime,
+      round,
+      const DeepCollectionEquality().hash(_players),
+      pot,
+      const DeepCollectionEquality().hash(_sidePots),
+      assignedId,
+      action,
+      game);
 
   @JsonKey(ignore: true)
   @override
@@ -254,6 +321,9 @@ abstract class _HistoryEntity extends HistoryEntity {
       {required final DateTime dateTime,
       required final GameTypeEnum round,
       required final List<UserEntity> players,
+      required final int pot,
+      required final List<SidePotEntity> sidePots,
+      required final int assignedId,
       final ActionEntity? action,
       final GameEntity? game}) = _$HistoryEntityImpl;
   const _HistoryEntity._() : super._();
@@ -267,6 +337,12 @@ abstract class _HistoryEntity extends HistoryEntity {
   GameTypeEnum get round;
   @override
   List<UserEntity> get players;
+  @override
+  int get pot;
+  @override
+  List<SidePotEntity> get sidePots;
+  @override
+  int get assignedId;
   @override
   ActionEntity? get action;
   @override

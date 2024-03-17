@@ -13,6 +13,11 @@ _$HistoryEntityImpl _$$HistoryEntityImplFromJson(Map<String, dynamic> json) =>
       players: (json['players'] as List<dynamic>)
           .map((e) => UserEntity.fromJson(e as Map<String, dynamic>))
           .toList(),
+      pot: json['pot'] as int,
+      sidePots: (json['sidePots'] as List<dynamic>)
+          .map((e) => SidePotEntity.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      assignedId: json['assignedId'] as int,
       action: json['action'] == null
           ? null
           : ActionEntity.fromJson(json['action'] as Map<String, dynamic>),
@@ -26,6 +31,9 @@ Map<String, dynamic> _$$HistoryEntityImplToJson(_$HistoryEntityImpl instance) =>
       'dateTime': instance.dateTime.toIso8601String(),
       'round': _$GameTypeEnumEnumMap[instance.round]!,
       'players': instance.players,
+      'pot': instance.pot,
+      'sidePots': instance.sidePots,
+      'assignedId': instance.assignedId,
       'action': instance.action,
       'game': instance.game,
     };
