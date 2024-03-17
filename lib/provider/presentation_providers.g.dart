@@ -39,9 +39,6 @@ typedef _$ErrorText = AutoDisposeNotifier<String>;
 String _$bigIdHash() => r'329a18ebbbc343c18beb294f1b5ec3751d710b4b';
 
 ///
-/// Round
-///
-///
 /// position
 ///
 ///
