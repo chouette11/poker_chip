@@ -23,6 +23,8 @@ const _$MessageTypeEnumEnumMap = {
   MessageTypeEnum.joined: 'joined',
   MessageTypeEnum.sit: 'sit',
   MessageTypeEnum.userSetting: 'userSetting',
+  MessageTypeEnum.history: 'history',
   MessageTypeEnum.game: 'game',
   MessageTypeEnum.action: 'action',
+  MessageTypeEnum.res: 'res',
 };

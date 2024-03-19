@@ -29,6 +29,10 @@ class PlayerData extends _$PlayerData {
     ];
   }
 
+  void restore(List<UserEntity> players) {
+    state = players;
+  }
+
   void add(UserEntity user) {
     if (state.where((e) => e.uid == user.uid).isEmpty) {
       state = [...state, user];

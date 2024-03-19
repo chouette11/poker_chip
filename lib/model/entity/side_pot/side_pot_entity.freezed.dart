@@ -14,12 +14,17 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
+SidePotEntity _$SidePotEntityFromJson(Map<String, dynamic> json) {
+  return _SidePotEntity.fromJson(json);
+}
+
 /// @nodoc
 mixin _$SidePotEntity {
   List<String> get uids => throw _privateConstructorUsedError;
   int get size => throw _privateConstructorUsedError;
   List<String> get allinUids => throw _privateConstructorUsedError;
 
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
   $SidePotEntityCopyWith<SidePotEntity> get copyWith =>
       throw _privateConstructorUsedError;
@@ -112,7 +117,7 @@ class __$$SidePotEntityImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _$SidePotEntityImpl extends _SidePotEntity {
   const _$SidePotEntityImpl(
       {required final List<String> uids,
@@ -121,6 +126,9 @@ class _$SidePotEntityImpl extends _SidePotEntity {
       : _uids = uids,
         _allinUids = allinUids,
         super._();
+
+  factory _$SidePotEntityImpl.fromJson(Map<String, dynamic> json) =>
+      _$$SidePotEntityImplFromJson(json);
 
   final List<String> _uids;
   @override
@@ -156,6 +164,7 @@ class _$SidePotEntityImpl extends _SidePotEntity {
                 .equals(other._allinUids, _allinUids));
   }
 
+  @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -168,6 +177,13 @@ class _$SidePotEntityImpl extends _SidePotEntity {
   @pragma('vm:prefer-inline')
   _$$SidePotEntityImplCopyWith<_$SidePotEntityImpl> get copyWith =>
       __$$SidePotEntityImplCopyWithImpl<_$SidePotEntityImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$SidePotEntityImplToJson(
+      this,
+    );
+  }
 }
 
 abstract class _SidePotEntity extends SidePotEntity {
@@ -176,6 +192,9 @@ abstract class _SidePotEntity extends SidePotEntity {
       required final int size,
       required final List<String> allinUids}) = _$SidePotEntityImpl;
   const _SidePotEntity._() : super._();
+
+  factory _SidePotEntity.fromJson(Map<String, dynamic> json) =
+      _$SidePotEntityImpl.fromJson;
 
   @override
   List<String> get uids;

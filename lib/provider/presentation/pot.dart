@@ -37,6 +37,10 @@ class HostSidePots extends _$HostSidePots {
   void clear() {
     state = [];
   }
+
+  void restore(List<SidePotEntity> sidePots) {
+    state = sidePots;
+  }
 }
 
 @riverpod
@@ -61,6 +65,10 @@ class SidePots extends _$SidePots {
   void clear() {
     state = [];
   }
+
+  void restore(List<int> sidePots) {
+    state = sidePots;
+  }
 }
 
 @riverpod
@@ -83,5 +91,9 @@ class Pot extends _$Pot {
 
   void clear() {
     state = 0;
+  }
+
+  void restore(int pot) {
+    state = pot;
   }
 }

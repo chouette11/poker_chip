@@ -6,6 +6,8 @@
   "enter": "Enter",
   "joining": "Enter",
   "info": "Info",
+  "history": "History",
+  "blowRestore" : "Restore with the following contents",
   "usageButtonTitle": "How to Use",
   "page1Title": "1. One app per player is required",
   "page1Description": "If someone you are playing with has not installed the app yet, please install it from the QR code below",

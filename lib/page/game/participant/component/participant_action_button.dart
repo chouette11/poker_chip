@@ -6,14 +6,12 @@ import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
+import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter_tts/flutter_tts.dart';
-
-final flutterTts = FlutterTts();
 
 class ParticipantActionButtons extends ConsumerWidget {
   const ParticipantActionButtons({super.key});
@@ -32,38 +30,26 @@ class ParticipantActionButtons extends ConsumerWidget {
         return Row(
           children: [
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.bet,
-                maxScore: maxScore,
-                audio: 'audios/bet.wav'),
+                actionTypeEnum: ActionTypeEnum.bet, maxScore: maxScore, audio:'audios/bet.wav'),
             const SizedBox(width: 8),
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.check,
-                maxScore: maxScore,
-                audio: 'audios/check.wav'),
+                actionTypeEnum: ActionTypeEnum.check, maxScore: maxScore, audio: 'audios/check.wav'),
             const SizedBox(width: 8),
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.fold,
-                maxScore: maxScore,
-                audio: 'audios/fold.wav')
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore, audio: 'audios/fold.wav')
           ],
         );
       } else {
         return Row(
           children: [
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.raise,
-                maxScore: maxScore,
-                audio: 'audios/raise.wav'),
+                actionTypeEnum: ActionTypeEnum.raise, maxScore: maxScore, audio: 'audios/raise.wav'),
             const SizedBox(width: 8),
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.call,
-                maxScore: maxScore,
-                audio: 'audios/call.wav'),
+                actionTypeEnum: ActionTypeEnum.call, maxScore: maxScore, audio: 'audios/call.wav'),
             const SizedBox(width: 8),
             _ActionButton(
-                actionTypeEnum: ActionTypeEnum.fold,
-                maxScore: maxScore,
-                audio: 'audios/fold.wav'),
+                actionTypeEnum: ActionTypeEnum.fold, maxScore: maxScore, audio: 'audios/fold.wav'),
           ],
         );
       }
@@ -91,6 +77,7 @@ class _ActionButton extends ConsumerWidget {
     required this.maxScore,
     required this.audio,
   });
+
   final ActionTypeEnum actionTypeEnum;
   final int maxScore;
   final String audio;
@@ -105,7 +92,6 @@ class _ActionButton extends ConsumerWidget {
     final score =
         _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack, myScore);
     final audioPlayer = AudioPlayer();
-    Locale locale = Localizations.localeOf(context);
 
     return ElevatedButton(
       onPressed: () {
@@ -126,6 +112,8 @@ class _ActionButton extends ConsumerWidget {
 
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
+        
+        // 音声
         if (locale.toString() == 'ja') {
           audioPlayer.play(AssetSource(audio));
         } else {

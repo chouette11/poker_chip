@@ -4,6 +4,7 @@ import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hand_button.dart';
+import 'package:poker_chip/page/game/component/history_button.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
 import 'package:poker_chip/page/game/component/info.dart';
 import 'package:poker_chip/page/game/component/pot.dart';
@@ -119,6 +120,13 @@ class _GamePageState extends ConsumerState<HostPage> {
                         bottom: 8,
                         right: 16,
                         child: HandButton(),
+                      ),
+                      Visibility(
+                        visible: isStart,
+                        child: const Positioned(
+                          bottom: 8,
+                          child: HistoryButton(),
+                        ),
                       ),
                       const Positioned(
                         child: Padding(
