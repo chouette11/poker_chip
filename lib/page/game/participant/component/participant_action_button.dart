@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/page/game/host/component/host_action_button.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
@@ -92,9 +93,10 @@ class _ActionButton extends ConsumerWidget {
     final score =
         _fixScoreSize(actionTypeEnum, betScore, maxScore, myStack, myScore);
     final audioPlayer = AudioPlayer();
+    Locale locale = Localizations.localeOf(context);
 
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (conn == null) {
           return;
         }
@@ -113,11 +115,11 @@ class _ActionButton extends ConsumerWidget {
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
         
-        // 音声
+        /// 音声
         if (locale.toString() == 'ja') {
           audioPlayer.play(AssetSource(audio));
         } else {
-          flutterTts.setLanguage("en-US");
+          await flutterTts.setLanguage("en-US");
           flutterTts.speak(actionTypeEnum.name);
         }
         print(locale.toString());

@@ -109,7 +109,7 @@ class _ActionButton extends ConsumerWidget {
     Locale locale = Localizations.localeOf(context);
 
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if ((actionTypeEnum == ActionTypeEnum.bet ||
                 actionTypeEnum == ActionTypeEnum.raise) &&
             score < maxScore) {
@@ -230,10 +230,12 @@ class _ActionButton extends ConsumerWidget {
 
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
+
+        // 音声
         if (locale.toString() == 'ja') {
           audioPlayer.play(AssetSource(audio));
         } else {
-          flutterTts.setLanguage("en-US");
+          await flutterTts.setLanguage("en-US");
           flutterTts.speak(actionTypeEnum.name);
         }
 
@@ -241,9 +243,6 @@ class _ActionButton extends ConsumerWidget {
         final action =
             ActionEntity(uid: myUid, type: actionTypeEnum, score: score);
         ref.read(historyProvider.notifier).add(action);
-        
-        // 音声
-        audioPlayer.play(AssetSource(audio));
       },
       child: Column(
         children: [
