@@ -42,6 +42,7 @@ dependencies:
   qr_flutter: ^4.1.0
   in_app_review: ^2.0.8
   audioplayers: ^5.2.1
+  flutter_tts: ^4.0.1
 
 dev_dependencies:
   flutter_test:
