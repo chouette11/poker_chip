@@ -112,7 +112,15 @@ class _ActionButton extends ConsumerWidget {
 
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
-        audioPlayer.play(AssetSource(audio));
+        
+        // 音声
+        if (locale.toString() == 'ja') {
+          audioPlayer.play(AssetSource(audio));
+        } else {
+          flutterTts.setLanguage("en-US");
+          flutterTts.speak(actionTypeEnum.name);
+        }
+        print(locale.toString());
       },
       child: Column(
         children: [
