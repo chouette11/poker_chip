@@ -112,7 +112,7 @@ class _ActionButton extends ConsumerWidget {
       onPressed: () async {
         if ((actionTypeEnum == ActionTypeEnum.bet ||
                 actionTypeEnum == ActionTypeEnum.raise) &&
-            score < maxScore) {
+            (betScore == 0 || betScore < maxScore)) {
           return;
         }
         final notifier = ref.read(playerDataProvider.notifier);
