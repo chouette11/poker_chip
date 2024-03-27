@@ -176,11 +176,71 @@ class _EditablePlayerCard extends ConsumerStatefulWidget {
 
   final bool isHost;
   final UserEntity myData;
+
   @override
-  ConsumerState<_EditablePlayerCard> createState() => _EditablePlayerCardState();
+  ConsumerState<_EditablePlayerCard> createState() =>
+      _EditablePlayerCardState();
 }
 
 class _EditablePlayerCardState extends ConsumerState<_EditablePlayerCard> {
+  @override
+  Widget build(BuildContext context) {
+    final uid = ref.watch(uidProvider);
+    final myData =
+        ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
+
+    return Row(
+      children: [
+        const SizedBox(width: 52),
+        Container(
+          height: 60,
+          width: 100,
+          decoration: const BoxDecoration(color: ColorConstant.black60),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(myData.name ?? context.l10n.playerX(1),
+                  style: TextStyleConstant.bold14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(myData.stack.toString(),
+                      style: TextStyleConstant.bold20),
+                ],
+              ),
+            ],
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => _CustomDialog(widget.isHost),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(36, 36),
+            shape: const CircleBorder(),
+            backgroundColor: Colors.grey
+          ),
+          child: const Icon(Icons.manage_accounts, size: 20),
+        )
+      ],
+    );
+  }
+}
+
+class _CustomDialog extends ConsumerStatefulWidget {
+  const _CustomDialog(this.isHost, {super.key});
+
+  final bool isHost;
+
+  @override
+  ConsumerState<_CustomDialog> createState() => _CustomDialogState();
+}
+
+class _CustomDialogState extends ConsumerState<_CustomDialog> {
   String playerName = '';
   int stack = 0;
   int sb = 10;
@@ -192,206 +252,138 @@ class _EditablePlayerCardState extends ConsumerState<_EditablePlayerCard> {
     final uid = ref.watch(uidProvider);
     final myData =
         ref.watch(playerDataProvider).firstWhere((e) => e.uid == uid);
-
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return Dialog(
+    playerName = myData.name ?? context.l10n.playerX(1);
+    stack = myData.stack;
+    return Dialog(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: width * 0.6,
+                  child: TextFormField(
+                    initialValue: playerName,
+                    decoration: const InputDecoration(labelText: 'Name'),
+                    onChanged: (value) {
+                      playerName = value;
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  width: width * 0.6,
+                  child: TextFormField(
+                    initialValue: stack.toString(),
+                    decoration: const InputDecoration(labelText: 'Stack'),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    onChanged: (value) {
+                      stack = int.parse(value);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            Visibility(
+              visible: widget.isHost,
               child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Row(
-                      mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
-                          width: width * 0.6,
-                          child: TextField(
-                            decoration:
-                                const InputDecoration(labelText: 'Name'),
-                            onChanged: (value) {
-                              playerName = value;
-                            },
-                          ),
-                        ),
-                        IconButton(
-                            onPressed: () async {
-                              if (widget.isHost) {
-                                /// Hostの状態変更
-                                ref
-                                    .read(playerDataProvider.notifier)
-                                    .updateName(uid, playerName);
-
-                                /// Participantの状態変更
-                                final user =
-                                    myData.copyWith.call(name: playerName);
-                                final mes = MessageEntity(
-                                  type: MessageTypeEnum.userSetting,
-                                  content: user,
-                                );
-                                ref.read(hostConsProvider.notifier).send(mes);
-                              } else {
-                                final conn = ref.read(participantConProvider);
-                                final user =
-                                    myData.copyWith.call(name: playerName);
-                                final mes = MessageEntity(
-                                  type: MessageTypeEnum.userSetting,
-                                  content: user,
-                                );
-                                conn!.send(mes.toJson());
-                              }
-                              // 端末に保存
-                              await ref
-                                  .read(userRepositoryProvider)
-                                  .saveName(playerName);
-                              context.pop();
-                            },
-                            icon: const Icon(Icons.check)),
-                      ],
-                    ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: width * 0.6,
-                          child: TextField(
-                            decoration:
-                                const InputDecoration(labelText: 'Stack'),
+                          width: context.screenWidth * 0.2,
+                          height: 48,
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'SB',
+                            ),
+                            initialValue: ref.read(sbProvider).toString(),
                             keyboardType: TextInputType.number,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly
                             ],
                             onChanged: (value) {
-                              stack = int.parse(value);
+                              sb = int.parse(value);
                             },
                           ),
                         ),
-                        IconButton(
-                            onPressed: () {
-                              if (widget.isHost) {
-                                /// Hostの状態変更
-                                ref
-                                    .read(playerDataProvider.notifier)
-                                    .changeStack(uid, stack);
-
-                                /// Participantの状態変更
-                                final user = myData.copyWith.call(stack: stack);
-                                final mes = MessageEntity(
-                                  type: MessageTypeEnum.userSetting,
-                                  content: user,
-                                );
-                                ref.read(hostConsProvider.notifier).send(mes);
-                              } else {
-                                final conn = ref.read(participantConProvider);
-                                final user = myData.copyWith.call(stack: stack);
-                                final mes = MessageEntity(
-                                  type: MessageTypeEnum.userSetting,
-                                  content: user,
-                                );
-                                conn!.send(mes.toJson());
-                              }
-                              context.pop();
+                        SizedBox(
+                          width: context.screenWidth * 0.2,
+                          height: 48,
+                          child: TextFormField(
+                            decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'BB',
+                            ),
+                            initialValue: ref.read(bbProvider).toString(),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            onChanged: (value) {
+                              bb = int.parse(value);
                             },
-                            icon: const Icon(Icons.check)),
-                      ],
-                    ),
-                    Visibility(
-                      visible: widget.isHost,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: context.screenWidth * 0.2,
-                                  height: 48,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'SB',
-                                    ),
-                                    initialValue:
-                                        ref.read(sbProvider).toString(),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {
-                                      sb = int.parse(value);
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: context.screenWidth * 0.2,
-                                  height: 48,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: 'BB',
-                                    ),
-                                    initialValue:
-                                        ref.read(bbProvider).toString(),
-                                    keyboardType: TextInputType.number,
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.digitsOnly
-                                    ],
-                                    onChanged: (value) {
-                                      bb = int.parse(value);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                ref
-                                    .read(sbProvider.notifier)
-                                    .update((state) => sb);
-                                ref
-                                    .read(bbProvider.notifier)
-                                    .update((state) => bb);
-                                context.pop();
-                              },
-                              icon: const Icon(Icons.check),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            );
-          },
-        );
-      },
-      child: Container(
-        height: 64,
-        width: 100,
-        decoration: const BoxDecoration(color: ColorConstant.black60),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(myData.name ?? context.l10n.playerX(1),
-                style: TextStyleConstant.bold14),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(myData.stack.toString(), style: TextStyleConstant.bold20),
-                const SizedBox(
-                  height: 20,
-                  child: Icon(
-                    Icons.edit,
-                    color: ColorConstant.black100,
-                  ),
-                )
-              ],
             ),
+            ElevatedButton(
+                onPressed: () async {
+                  if (widget.isHost) {
+                    /// Hostの状態変更
+                    ref
+                        .read(playerDataProvider.notifier)
+                        .updateName(uid, playerName);
+                    ref
+                        .read(playerDataProvider.notifier)
+                        .changeStack(uid, stack);
+
+                    /// Participantの状態変更
+                    final user =
+                        myData.copyWith.call(name: playerName, stack: stack);
+                    final mes = MessageEntity(
+                      type: MessageTypeEnum.userSetting,
+                      content: user,
+                    );
+                    ref.read(hostConsProvider.notifier).send(mes);
+                  } else {
+                    final conn = ref.read(participantConProvider);
+                    final user =
+                        myData.copyWith.call(name: playerName, stack: stack);
+                    final mes = MessageEntity(
+                      type: MessageTypeEnum.userSetting,
+                      content: user,
+                    );
+                    conn!.send(mes.toJson());
+                  }
+                  // 端末に保存
+                  await ref.read(userRepositoryProvider).saveName(playerName);
+
+                  /// ブラインドを変更
+                  ref.read(sbProvider.notifier).update((state) => sb);
+                  ref.read(bbProvider.notifier).update((state) => bb);
+
+                  context.pop();
+                },
+                child: const Text('OK'))
           ],
         ),
       ),
