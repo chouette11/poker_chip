@@ -267,7 +267,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                         //     width: 200,
                         //   ),
                         // ),
-                        IdTextField((ref) => connect(ref)),
+                        IdTextField((ref) {
+                          int count = 0;
+                          Future(() async {
+                            do {
+                              connect(ref);
+                              count++;
+                              await Future.delayed(const Duration(seconds: 1));
+                            } while (!connected && count < 10);
+                          });
+                          count = 0;
+                        }),
                         Positioned(
                             bottom: height * 0.2, child: const Hole(false)),
                         Visibility(
