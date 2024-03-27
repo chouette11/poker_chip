@@ -28,6 +28,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
     return ElevatedButton(
       onPressed: () {
         showDialog(
+          barrierDismissible: false,
           context: context,
           builder: (BuildContext context) => Dialog(
             child: Padding(
@@ -57,32 +58,6 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                           },
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          final players = ref.read(playerDataProvider);
-                          ref
-                              .read(stackProvider.notifier)
-                              .update((state) => stack);
-
-                          /// Hostの状態変更
-                          for (final player in players) {
-                            ref
-                                .read(playerDataProvider.notifier)
-                                .changeStack(player.uid, stack);
-                          }
-
-                          /// Participantの状態変更
-                          for (final player in players) {
-                            final user = player.copyWith.call(stack: stack);
-                            final mes = MessageEntity(
-                                type: MessageTypeEnum.userSetting,
-                                content: user);
-                            ref.read(hostConsProvider.notifier).send(mes);
-                          }
-                          context.pop();
-                        },
-                        icon: const Icon(Icons.check),
-                      ),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -96,6 +71,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Row(
                           children: [
@@ -111,7 +87,8 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly
-                                ],                          onChanged: (value) {
+                                ],
+                                onChanged: (value) {
                                   sb = int.parse(value);
                                 },
                               ),
@@ -128,25 +105,44 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                                 keyboardType: TextInputType.number,
                                 inputFormatters: [
                                   FilteringTextInputFormatter.digitsOnly
-                                ],                          onChanged: (value) {
+                                ],
+                                onChanged: (value) {
                                   bb = int.parse(value);
                                 },
                               ),
                             ),
                           ],
                         ),
-                        IconButton(
-                          onPressed: () {
-                            ref.read(sbProvider.notifier).update((state) => sb);
-                            ref.read(bbProvider.notifier).update((state) => bb);
-                            context.pop();
-                          },
-                          icon: const Icon(Icons.check),
-                        ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      final players = ref.read(playerDataProvider);
+                      ref.read(stackProvider.notifier).update((state) => stack);
+
+                      /// Hostの状態変更
+                      for (final player in players) {
+                        ref
+                            .read(playerDataProvider.notifier)
+                            .changeStack(player.uid, stack);
+                      }
+
+                      /// Participantの状態変更
+                      for (final player in players) {
+                        final user = player.copyWith.call(stack: stack);
+                        final mes = MessageEntity(
+                            type: MessageTypeEnum.userSetting, content: user);
+                        ref.read(hostConsProvider.notifier).send(mes);
+                      }
+
+                      /// ブラインドを変更
+                      ref.read(sbProvider.notifier).update((state) => sb);
+                      ref.read(bbProvider.notifier).update((state) => bb);
+                      context.pop();
+                    },
+                    child: const Text('OK'),
+                  )
                 ],
               ),
             ),

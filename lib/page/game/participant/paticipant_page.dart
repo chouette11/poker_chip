@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
@@ -25,6 +26,7 @@ import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
 import 'package:poker_chip/util/enum/action.dart';
 import 'package:poker_chip/util/enum/game.dart';
@@ -158,24 +160,29 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
-        Future.delayed(const Duration(seconds: 1), () {
-          final uid = ref.read(uidProvider);
-          final mes = MessageEntity(
-            type: MessageTypeEnum.join,
-            content: UserEntity(
-              uid: uid,
-              assignedId: 404,
-              name: ref.watch(nameProvider),
-              stack: ref.watch(stackProvider),
-              score: 0,
-              isBtn: false,
-              isAction: false,
-              isFold: false,
-              isCheck: false,
-              isSitOut: false,
-            ),
-          );
-          conn.send(mes.toJson());
+        int count = 0;
+        Future(() async {
+          do {
+            await Future.delayed(const Duration(seconds: 1));
+            final uid = ref.read(uidProvider);
+            final mes = MessageEntity(
+              type: MessageTypeEnum.join,
+              content: UserEntity(
+                uid: uid,
+                assignedId: 404,
+                name: ref.watch(nameProvider),
+                stack: ref.watch(stackProvider),
+                score: 0,
+                isBtn: false,
+                isAction: false,
+                isFold: false,
+                isCheck: false,
+                isSitOut: false,
+              ),
+            );
+            conn.send(mes.toJson());
+            count++;
+          } while (preMes.type == MessageTypeEnum.game && count < 10);
         });
       }
     });
@@ -209,8 +216,23 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                             width: width,
                           ),
                         ),
+                        Visibility(
+                          visible: !isStart,
+                          child: Positioned(
+                              bottom: 8,
+                              left: 16,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  ref.refresh(isJoinProvider);
+                                  ref.refresh(playerDataProvider);
+                                  context.pop();
+                                },
+                                child: Text(context.l10n.returnTop),
+                              )
+                          ),
+                        ),
                         const Positioned(
-                          bottom: 16,
+                          bottom: 8,
                           right: 16,
                           child: HandButton(),
                         ),
@@ -252,7 +274,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                         //     width: 200,
                         //   ),
                         // ),
-                        IdTextField((ref) => connect(ref)),
+                        IdTextField((ref) {
+                          int count = 0;
+                          Future(() async {
+                            do {
+                              connect(ref);
+                              count++;
+                              await Future.delayed(const Duration(seconds: 1));
+                            } while (!connected && count < 10);
+                          });
+                          count = 0;
+                        }),
                         Positioned(
                             bottom: height * 0.2, child: const Hole(false)),
                         Visibility(

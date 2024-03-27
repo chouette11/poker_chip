@@ -100,6 +100,11 @@ class _ActionButton extends ConsumerWidget {
         if (conn == null) {
           return;
         }
+        if ((actionTypeEnum == ActionTypeEnum.bet ||
+            actionTypeEnum == ActionTypeEnum.raise) &&
+            (betScore == 0 || betScore < maxScore)) {
+          return;
+        }
         final optId = ref.read(optionAssignedIdProvider);
         final action = ActionEntity(
           uid: uid,
