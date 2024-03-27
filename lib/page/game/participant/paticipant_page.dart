@@ -209,8 +209,23 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                             width: width,
                           ),
                         ),
+                        Visibility(
+                          visible: !isStart,
+                          child: Positioned(
+                              bottom: 8,
+                              left: 16,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  ref.refresh(isJoinProvider);
+                                  ref.refresh(playerDataProvider);
+                                  context.pop();
+                                },
+                                child: Text(context.l10n.returnTop),
+                              )
+                          ),
+                        ),
                         const Positioned(
-                          bottom: 16,
+                          bottom: 8,
                           right: 16,
                           child: HandButton(),
                         ),

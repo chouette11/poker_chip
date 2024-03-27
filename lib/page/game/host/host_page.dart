@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
@@ -114,6 +115,20 @@ class _GamePageState extends ConsumerState<HostPage> {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                      Visibility(
+                        visible: !isStart,
+                        child: Positioned(
+                          bottom: 8,
+                          left: 16,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              ref.refresh(playerDataProvider);
+                              context.pop();
+                            },
+                            child: Text(context.l10n.returnTop),
+                          )
                         ),
                       ),
                       const Positioned(
