@@ -30,6 +30,7 @@
   "usage": "Terms of Use",
   "gdpr": "Change GDPR",
   "initialStack": "Change Initial Stack",
+  "changeStack": "Change Stack",
   "changeBlind": "Change Blinds",
   "removeAd": "Remove Ads",
   "notCancelAd": "※Will be automatically renewed unless cancelled",
