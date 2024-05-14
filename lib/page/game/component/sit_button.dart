@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/provider/presentation/opt_id.dart';
 import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:poker_chip/util/enum/game.dart';
 import 'package:poker_chip/util/enum/message.dart';
 
 class SitButton extends ConsumerWidget {
@@ -104,9 +107,20 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                     content: user,
                   );
                   ref.read(hostConsProvider.notifier).send(mes);
+                  final optId = ref.read(optionAssignedIdProvider);
+                  final game = GameEntity(
+                      uid: uid, type: GameTypeEnum.preFlop, score: optId);
+                  final optMes =
+                      MessageEntity(type: MessageTypeEnum.game, content: game);
+                  ref.read(hostConsProvider.notifier).send(optMes);
                 } else {
+                  // ゲームが終了していた場合即時参加
+                  ref
+                      .read(playerDataProvider.notifier)
+                      .updateSitOut(uid, false);
+
                   final conn = ref.read(participantConProvider);
-                  final user = myData.copyWith.call(stack: stack);
+                  final user = myData.copyWith.call(stack: stack, isSitOut: false);
                   final mes = MessageEntity(
                     type: MessageTypeEnum.userSetting,
                     content: user,

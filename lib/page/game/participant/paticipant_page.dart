@@ -160,24 +160,29 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
 
     ref.listen(isJoinProvider, (previous, next) {
       if (next) {
-        Future.delayed(const Duration(seconds: 1), () {
-          final uid = ref.read(uidProvider);
-          final mes = MessageEntity(
-            type: MessageTypeEnum.join,
-            content: UserEntity(
-              uid: uid,
-              assignedId: 404,
-              name: ref.watch(nameProvider),
-              stack: ref.watch(stackProvider),
-              score: 0,
-              isBtn: false,
-              isAction: false,
-              isFold: false,
-              isCheck: false,
-              isSitOut: false,
-            ),
-          );
-          conn.send(mes.toJson());
+        int count = 0;
+        Future(() async {
+          do {
+            await Future.delayed(const Duration(seconds: 1));
+            final uid = ref.read(uidProvider);
+            final mes = MessageEntity(
+              type: MessageTypeEnum.join,
+              content: UserEntity(
+                uid: uid,
+                assignedId: 404,
+                name: ref.watch(nameProvider),
+                stack: ref.watch(stackProvider),
+                score: 0,
+                isBtn: false,
+                isAction: false,
+                isFold: false,
+                isCheck: false,
+                isSitOut: false,
+              ),
+            );
+            conn.send(mes.toJson());
+            count++;
+          } while (preMes.type == MessageTypeEnum.game && count < 10);
         });
       }
     });
@@ -269,7 +274,17 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                         //     width: 200,
                         //   ),
                         // ),
-                        IdTextField((ref) => connect(ref)),
+                        IdTextField((ref) {
+                          int count = 0;
+                          Future(() async {
+                            do {
+                              connect(ref);
+                              count++;
+                              await Future.delayed(const Duration(seconds: 1));
+                            } while (!connected && count < 10);
+                          });
+                          count = 0;
+                        }),
                         Positioned(
                             bottom: height * 0.2, child: const Hole(false)),
                         Visibility(

@@ -125,8 +125,10 @@ class HostConnOpen extends _$HostConnOpen {
         } else if (mes.type == MessageTypeEnum.sit) {
           final uid = mes.content as String;
           ref.read(sittingUidsProvider.notifier).add(uid);
+          final players = ref.read(playerDataProvider);
+          final actPlayers = List.of(players).where((e) => !e.isSitOut).toList();
           // ゲームが終了していた場合即時参加
-          if (!ref.read(isStartProvider)) {
+          if (!ref.read(isStartProvider) || actPlayers.length < 2) {
             ref.read(playerDataProvider.notifier).updateSitOut(uid, false);
           }
         } else if (mes.type == MessageTypeEnum.userSetting) {
