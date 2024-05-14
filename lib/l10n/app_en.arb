@@ -4,6 +4,7 @@
   "makeRoom": "Create Room",
   "join": "Join Room",
   "enter": "Enter",
+  "enter_room_id": "Enter room ID",
   "joining": "Enter",
   "info": "Info",
   "history": "History",

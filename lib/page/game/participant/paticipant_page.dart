@@ -227,7 +227,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                                   ref.refresh(playerDataProvider);
                                   context.pop();
                                 },
-                                child: Text(context.l10n.returnTop),
+                                child: Text(context. l10n.returnTop),
                               )
                           ),
                         ),

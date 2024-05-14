@@ -28,14 +28,14 @@ class IdTextField extends ConsumerWidget {
               cursorColor: ColorConstant.black30,
               maxLines: 1,
               keyboardType: TextInputType.number,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 fillColor: ColorConstant.black90,
                 filled: true,
-                hintText: '部屋IDを入力',
+                hintText: context.l10n.enter_room_id,
                 hintStyle:
-                    TextStyle(fontSize: 16, color: ColorConstant.black50),
+                    const TextStyle(fontSize: 16, color: ColorConstant.black50),
                 floatingLabelBehavior: FloatingLabelBehavior.never,
-                border: OutlineInputBorder(
+                border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4)),
                   borderSide: BorderSide.none,
                 ),

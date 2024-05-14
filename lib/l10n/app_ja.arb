@@ -3,6 +3,7 @@
   "start" : "スタート",
   "makeRoom": "部屋作成",
   "join" : "参加する",
+  "enter_room_id": "部屋IDを入力",
   "enter" : "入室",
   "joining" : "参加",
   "info": "情報",
