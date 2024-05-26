@@ -140,16 +140,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     });
   }
 
-  void sendHelloWorld() {
-    conn.send('{"text":"Hello"}');
-    print('hello');
-  }
-
-  void sendBinary() {
-    final bytes = Uint8List(30);
-    conn.sendBinary(bytes);
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -266,14 +256,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                             ),
                           ),
                         ),
-                        // Positioned(
-                        //   child: Image.asset(
-                        //     'assets/images/chips.png',
-                        //     fit: BoxFit.fitHeight,
-                        //     height: 200,
-                        //     width: 200,
-                        //   ),
-                        // ),
                         IdTextField((ref) {
                           int count = 0;
                           Future(() async {
