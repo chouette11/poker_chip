@@ -56,12 +56,8 @@ class _InfoButtonState extends ConsumerState<InfoButton> {
                  const SizedBox(height: 16),
                 _DottedDivider(),
                  const SizedBox(height: 8),
-                GestureDetector(
+                InkWell(
                   onTap: () async {
-                    context.loaderOverlay.show();
-                    Future.delayed( const Duration(seconds: 8), () {
-                      context.loaderOverlay.hide();
-                    });
                     await ref.read(revenueProvider).buyMonthly();
                     ref.refresh(isProUserProvider);
                   },
