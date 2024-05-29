@@ -23,9 +23,9 @@ class FirestoreDataSource {
   }
 
   /// ルームを取得
-  Future<RoomDocument> fetchRoom(String roomId) async {
+  Future<RoomDocument> fetchRoom(int roomId) async {
     final db = ref.read(firebaseFirestoreProvider);
-    final room = await db.collection('rooms').doc(roomId).get();
+    final room = await db.collection('rooms').doc(roomId.toString()).get();
     return RoomDocument.fromJson(room.data()!);
   }
 
