@@ -29,6 +29,12 @@ class RoomRepository {
     await firestore.insertMember(userEntity, id);
   }
 
+  Future<RoomEntity> getRoom(int id) async {
+    final firestore = ref.read(firestoreProvider);
+    final room = await firestore.fetchRoom(id);
+    return RoomEntity.fromDoc(room);
+  }
+
   Future<List<UserEntity>> getMembers(int roomId) {
     final firestore = ref.read(firestoreProvider);
     return firestore.fetchMembers(roomId);
