@@ -89,7 +89,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
               assignedId: members.length + 1,
               name: ref.watch(nameProvider) ??
                   context.l10n.playerX(members.length + 1),
-              stack: ref.watch(stackProvider),
+              stack: 1000,
               score: 0,
               isBtn: false,
               isAction: false,
@@ -100,6 +100,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
             ref.read(roomRepositoryProvider).joinRoom(roomId, userEntity);
             ref.read(isJoinProvider.notifier).update((state) => true);
             final room = await ref.read(roomRepositoryProvider).getRoom(roomId);
+            ref.read(initStackProvider.notifier).update((state) => room.stack);
             ref.read(playerDataProvider.notifier).changeStack(uid, room.stack);
           }
         });
