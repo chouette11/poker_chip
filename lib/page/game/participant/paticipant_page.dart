@@ -1,5 +1,4 @@
-import 'dart:typed_data';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:peerdart/peerdart.dart';
@@ -25,6 +24,7 @@ import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation/round.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/room_repository.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -79,8 +79,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
           final uid = ref.read(uidProvider);
           if (!members.map((e) => e.uid).toList().contains(uid)) {
             // 自分のassignedIdを変更
-            ref.read(playerDataProvider.notifier).upDateAssignedId(
-                uid, members.length + 1);
+            ref
+                .read(playerDataProvider.notifier)
+                .upDateAssignedId(uid, members.length + 1);
 
             // firestoreに追加
             final userEntity = UserEntity(
@@ -165,33 +166,34 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final flavor = ref.watch(flavorProvider);
     final isStart = ref.watch(isStartProvider);
     final isJoin = ref.watch(isJoinProvider);
-
-    ref.listen(isJoinProvider, (previous, next) {
-      if (next) {
-        int count = 0;
-        Future(() async {
-          do {
-            await Future.delayed(const Duration(seconds: 1));
-            final uid = ref.read(uidProvider);
-            final mes = MessageEntity(
-              type: MessageTypeEnum.join,
-              content: UserEntity(
-                uid: uid,
-                assignedId: 404,
-                name: ref.watch(nameProvider),
-                stack: ref.watch(stackProvider),
-                score: 0,
-                isBtn: false,
-                isAction: false,
-                isFold: false,
-                isCheck: false,
-                isSitOut: false,
-              ),
-            );
-            conn.send(mes.toJson());
-            count++;
-          } while (preMes.type == MessageTypeEnum.game && count < 10);
-        });
+    final roomId = ref.watch(roomIdProvider);
+    ref
+        .read(roomRepositoryProvider)
+        .getMemberStream(roomId)
+        .listen((event) async {
+      for (final change in event.docChanges) {
+        final data = change.doc.data();
+        if (data == null) {
+          break;
+        }
+        final user = UserEntity.fromJson(data);
+        if (ref
+            .read(playerDataProvider)
+            .map((e) => e.uid)
+            .toList()
+            .contains(user.uid)) {
+          break;
+        }
+        switch (change.type) {
+          case DocumentChangeType.added:
+            ref.read(playerDataProvider.notifier).add(user);
+            break;
+          case DocumentChangeType.removed:
+            break;
+          case DocumentChangeType.modified:
+            ref.read(playerDataProvider.notifier).update(user);
+            break;
+        }
       }
     });
     return PopScope(
@@ -227,16 +229,16 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                         Visibility(
                           visible: !isStart,
                           child: Positioned(
-                              bottom: 8,
-                              left: 16,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  ref.refresh(isJoinProvider);
-                                  ref.refresh(playerDataProvider);
-                                  context.pop();
-                                },
-                                child: Text(context. l10n.returnTop),
-                              )
+                            bottom: 8,
+                            left: 16,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                ref.refresh(isJoinProvider);
+                                ref.refresh(playerDataProvider);
+                                context.pop();
+                              },
+                              child: Text(context.l10n.returnTop),
+                            ),
                           ),
                         ),
                         const Positioned(
