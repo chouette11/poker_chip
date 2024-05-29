@@ -1,6 +1,4 @@
 enum MessageTypeEnum {
-  join('join'),
-  joined('joined'),
   sit('sit'),
   userSetting('userSetting'),
   history('history'),
