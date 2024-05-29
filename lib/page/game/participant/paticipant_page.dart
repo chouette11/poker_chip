@@ -70,8 +70,38 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       print('open!');
       setState(() {
         connected = true;
+        ref.read(roomIdProvider.notifier).update((state) => roomId);
         context.loaderOverlay.hide();
-        ref.read(isJoinProvider.notifier).update((state) => true);
+        Future(() async {
+          final members =
+              await ref.read(roomRepositoryProvider).getMembers(roomId);
+
+          final uid = ref.read(uidProvider);
+          if (!members.map((e) => e.uid).toList().contains(uid)) {
+            // 自分のassignedIdを変更
+            ref.read(playerDataProvider.notifier).upDateAssignedId(
+                uid, members.length + 1);
+
+            // firestoreに追加
+            final userEntity = UserEntity(
+              uid: ref.read(uidProvider),
+              assignedId: members.length + 1,
+              name: ref.watch(nameProvider) ??
+                  context.l10n.playerX(members.length + 1),
+              stack: ref.watch(stackProvider),
+              score: 0,
+              isBtn: false,
+              isAction: false,
+              isFold: false,
+              isCheck: false,
+              isSitOut: false,
+            );
+            ref.read(roomRepositoryProvider).joinRoom(roomId, userEntity);
+            ref.read(isJoinProvider.notifier).update((state) => true);
+            final room = await ref.read(roomRepositoryProvider).getRoom(roomId);
+            ref.read(playerDataProvider.notifier).changeStack(uid, room.stack);
+          }
+        });
       });
 
       conn.on("close").listen((event) {
