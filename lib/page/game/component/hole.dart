@@ -372,7 +372,7 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                       type: MessageTypeEnum.userSetting,
                       content: user,
                     );
-                    conn!.send(mes.toJson());
+                    conn?.send(mes.toJson());
                   }
                   // 端末に保存
                   await ref.read(userRepositoryProvider).saveName(playerName);
