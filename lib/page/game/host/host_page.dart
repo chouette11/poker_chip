@@ -58,8 +58,8 @@ class _GamePageState extends ConsumerState<HostPage> {
       await ref.read(roomRepositoryProvider).createRoom(roomId);
       final userEntity = UserEntity(
         uid: ref.read(uidProvider),
-        name: ref.watch(nameProvider),
-        stack: ref.watch(stackProvider),
+        name: ref.read(nameProvider),
+        stack: ref.read(initStackProvider),
         assignedId: 1,
         score: 0,
         isBtn: false,
@@ -108,6 +108,11 @@ class _GamePageState extends ConsumerState<HostPage> {
     return PopScope(
       canPop: !isStart,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print(ref.read(playerDataProvider));
+          },
+        ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: Column(
