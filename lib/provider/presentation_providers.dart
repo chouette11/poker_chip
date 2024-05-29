@@ -72,7 +72,7 @@ final isReviewDialogProvider = StateProvider((ref) => false);
 
 final raiseBetProvider = StateProvider((ref) => 0);
 
-final stackProvider = StateProvider((ref) => 1000);
+final initStackProvider = StateProvider((ref) => 1000);
 
 final sbProvider = StateProvider((ref) => 10);
 

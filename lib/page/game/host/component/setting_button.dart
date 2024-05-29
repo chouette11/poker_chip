@@ -47,7 +47,7 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                       SizedBox(
                         width: context.screenWidth * 0.6,
                         child: TextFormField(
-                          initialValue: ref.read(stackProvider).toString(),
+                          initialValue: ref.read(initStackProvider).toString(),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -119,7 +119,12 @@ class _SettingButtonState extends ConsumerState<SettingButton> {
                   ElevatedButton(
                     onPressed: () {
                       final players = ref.read(playerDataProvider);
-                      ref.read(stackProvider.notifier).update((state) => stack);
+                      print('プレイヤー１');
+                      print(players);
+                      ref.read(initStackProvider.notifier).update((state) => stack);
+                      print('プレイヤー2');
+                      print(ref.read(playerDataProvider));
+
 
                       /// Hostの状態変更
                       for (final player in players) {

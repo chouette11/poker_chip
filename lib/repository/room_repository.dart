@@ -17,7 +17,7 @@ class RoomRepository {
     final firestore = ref.read(firestoreProvider);
     final room = RoomEntity(
       id: id,
-      stack: ref.read(stackProvider),
+      stack: ref.read(initStackProvider),
       sb: ref.read(sbProvider),
       bb: ref.read(bbProvider),
     );
