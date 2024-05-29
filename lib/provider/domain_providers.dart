@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:poker_chip/data/revenue_data_source.dart';
 import 'package:poker_chip/page/game/host/host.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
@@ -11,6 +12,8 @@ import 'package:poker_chip/page/root/root_page.dart';
 import 'package:uuid/uuid.dart';
 
 final firebaseAuthProvider = Provider((_) => FirebaseAuth.instance);
+
+final firebaseFirestoreProvider = Provider((_) => FirebaseFirestore.instance);
 
 final uuidProvider = Provider((_) => const Uuid());
 

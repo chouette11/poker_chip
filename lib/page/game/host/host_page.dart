@@ -54,15 +54,6 @@ class _GamePageState extends ConsumerState<HostPage> {
     ref.read(hostConnOpenProvider(peer).notifier).open(context);
   }
 
-  void sendHelloWorld(DataConnection conn) {
-    conn.send('{"text":"Hello"}');
-  }
-
-  void closeConnection(String id) {
-    final peer = ref.read(peerProvider(id));
-    peer.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
