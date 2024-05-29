@@ -65,7 +65,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     ref.read(participantConProvider.notifier).update((state) => connection);
     ref.read(errorTextProvider.notifier).view();
     conn = connection;
-    print('con!');
 
     conn.on("open").listen((event) {
       print('open!');
@@ -91,24 +90,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
       });
 
       conn.on("data").listen((data) {
-        final uid = ref.read(uidProvider);
         final mes = MessageEntity.fromJson(data);
         if (mes == preMes) {
           return;
         }
         preMes = mes;
         print('paticipant: $mes');
-        if (mes.type == MessageTypeEnum.joined) {
-          final data = mes.content as List;
-          final users = data.map((e) => UserEntity.fromJson(e)).toList();
-          for (final user in users) {
-            if (user.uid != uid) {
-              ref.read(playerDataProvider.notifier).add(user);
-            } else {
-              ref.read(playerDataProvider.notifier).update(user);
-            }
-          }
-        } else if (mes.type == MessageTypeEnum.userSetting) {
+        if (mes.type == MessageTypeEnum.userSetting) {
           final user = UserEntity.fromJson(mes.content);
           ref.read(playerDataProvider.notifier).update(user);
         } else if (mes.type == MessageTypeEnum.history) {
