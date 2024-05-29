@@ -75,6 +75,9 @@ class HostActionButtons extends ConsumerWidget {
       if (round == GameTypeEnum.foldout || round == GameTypeEnum.showdown) {
         return false;
       }
+      if (!ref.read(isStartProvider)) {
+        return false;
+      }
       final uid = assignedIdToUid(optAssignedId, ref);
       return ref.read(uidProvider) == uid;
     }
