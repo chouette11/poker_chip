@@ -76,53 +76,7 @@ class HostConnOpen extends _$HostConnOpen {
         final mes = MessageEntity.fromJson(data);
         print('host: $mes');
 
-        if (mes.type == MessageTypeEnum.join) {
-          UserEntity user = UserEntity.fromJson(mes.content);
-          ref.read(hostConsProvider.notifier).add(event);
-
-          final uids = ref.read(playerDataProvider).map((e) => e.uid).toList();
-          if (uids.contains(user.uid)) {
-            /// Hostの状態変更
-            user = ref
-                .read(playerDataProvider.notifier)
-                .specificPlayer(user.uid)
-                .copyWith
-                .call(isAction: true, isFold: true, isSitOut: true);
-            ref.read(playerDataProvider.notifier).update(user);
-
-            /// Participantの状態変更
-            final players = ref.read(playerDataProvider);
-            final res =
-                MessageEntity(type: MessageTypeEnum.joined, content: players);
-            ref.read(hostConsProvider.notifier).send(res);
-
-            _killAction(ref);
-          } else {
-            List<UserEntity> players = ref.read(playerDataProvider);
-            final isStart = ref.read(isStartProvider);
-            user = UserEntity(
-              uid: user.uid,
-              assignedId: players.length + 1,
-              name: user.name ?? context.l10n.playerX(players.length + 1),
-              stack: ref.watch(stackProvider),
-              score: 0,
-              isBtn: false,
-              isAction: false,
-              isFold: false,
-              isCheck: false,
-              isSitOut: isStart,
-            );
-
-            /// Hostの状態変更
-            ref.read(playerDataProvider.notifier).add(user);
-
-            /// Participantの状態変更
-            players = ref.read(playerDataProvider);
-            final res =
-                MessageEntity(type: MessageTypeEnum.joined, content: players);
-            ref.read(hostConsProvider.notifier).send(res);
-          }
-        } else if (mes.type == MessageTypeEnum.sit) {
+        if (mes.type == MessageTypeEnum.sit) {
           final uid = mes.content as String;
           ref.read(sittingUidsProvider.notifier).add(uid);
           final players = ref.read(playerDataProvider);
