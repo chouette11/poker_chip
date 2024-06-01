@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:poker_chip/model/document/timestamp_comverter.dart';
 
 part 'room_document.freezed.dart';
 
@@ -11,8 +13,7 @@ class RoomDocument with _$RoomDocument {
   const factory RoomDocument({
     @JsonKey(name: 'id') required int id,
     @JsonKey(name: 'stack') required int stack,
-    @JsonKey(name: 'sb') required int sb,
-    @JsonKey(name: 'bb') required int bb,
+    @TimestampConverter() @JsonKey(name: 'createdAt') required DateTime createdAt,
 
   }) = _RoomDocument;
 

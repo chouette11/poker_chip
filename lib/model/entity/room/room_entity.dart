@@ -12,8 +12,7 @@ class RoomEntity with _$RoomEntity {
   const factory RoomEntity({
     required int id,
     required int stack,
-    required int sb,
-    required int bb,
+    required DateTime createdAt,
   }) = _RoomEntity;
 
   factory RoomEntity.fromJson(Map<String, dynamic> json) =>
@@ -22,9 +21,7 @@ class RoomEntity with _$RoomEntity {
   static RoomEntity fromDoc(RoomDocument roomDoc) {
     return RoomEntity(
       id: roomDoc.id,
-      stack: roomDoc.stack,
-      sb: roomDoc.sb,
-      bb: roomDoc.bb,
+      stack: roomDoc.stack, createdAt: roomDoc.createdAt,
     );
   }
 
@@ -32,8 +29,7 @@ class RoomEntity with _$RoomEntity {
     return RoomDocument(
       id: id,
       stack: stack,
-      sb: sb,
-      bb: bb,
+      createdAt: createdAt,
     );
   }
 }

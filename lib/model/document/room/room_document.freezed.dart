@@ -24,10 +24,9 @@ mixin _$RoomDocument {
   int get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'stack')
   int get stack => throw _privateConstructorUsedError;
-  @JsonKey(name: 'sb')
-  int get sb => throw _privateConstructorUsedError;
-  @JsonKey(name: 'bb')
-  int get bb => throw _privateConstructorUsedError;
+  @TimestampConverter()
+  @JsonKey(name: 'startTime')
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,8 +43,7 @@ abstract class $RoomDocumentCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'stack') int stack,
-      @JsonKey(name: 'sb') int sb,
-      @JsonKey(name: 'bb') int bb});
+      @TimestampConverter() @JsonKey(name: 'startTime') DateTime createdAt});
 }
 
 /// @nodoc
@@ -63,8 +61,7 @@ class _$RoomDocumentCopyWithImpl<$Res, $Val extends RoomDocument>
   $Res call({
     Object? id = null,
     Object? stack = null,
-    Object? sb = null,
-    Object? bb = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -75,14 +72,10 @@ class _$RoomDocumentCopyWithImpl<$Res, $Val extends RoomDocument>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
-      sb: null == sb
-          ? _value.sb
-          : sb // ignore: cast_nullable_to_non_nullable
-              as int,
-      bb: null == bb
-          ? _value.bb
-          : bb // ignore: cast_nullable_to_non_nullable
-              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -98,8 +91,7 @@ abstract class _$$RoomDocumentImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'stack') int stack,
-      @JsonKey(name: 'sb') int sb,
-      @JsonKey(name: 'bb') int bb});
+      @TimestampConverter() @JsonKey(name: 'startTime') DateTime createdAt});
 }
 
 /// @nodoc
@@ -115,8 +107,7 @@ class __$$RoomDocumentImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? stack = null,
-    Object? sb = null,
-    Object? bb = null,
+    Object? createdAt = null,
   }) {
     return _then(_$RoomDocumentImpl(
       id: null == id
@@ -127,14 +118,10 @@ class __$$RoomDocumentImplCopyWithImpl<$Res>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
-      sb: null == sb
-          ? _value.sb
-          : sb // ignore: cast_nullable_to_non_nullable
-              as int,
-      bb: null == bb
-          ? _value.bb
-          : bb // ignore: cast_nullable_to_non_nullable
-              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -145,8 +132,9 @@ class _$RoomDocumentImpl extends _RoomDocument {
   const _$RoomDocumentImpl(
       {@JsonKey(name: 'id') required this.id,
       @JsonKey(name: 'stack') required this.stack,
-      @JsonKey(name: 'sb') required this.sb,
-      @JsonKey(name: 'bb') required this.bb})
+      @TimestampConverter()
+      @JsonKey(name: 'startTime')
+      required this.createdAt})
       : super._();
 
   factory _$RoomDocumentImpl.fromJson(Map<String, dynamic> json) =>
@@ -159,15 +147,13 @@ class _$RoomDocumentImpl extends _RoomDocument {
   @JsonKey(name: 'stack')
   final int stack;
   @override
-  @JsonKey(name: 'sb')
-  final int sb;
-  @override
-  @JsonKey(name: 'bb')
-  final int bb;
+  @TimestampConverter()
+  @JsonKey(name: 'startTime')
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'RoomDocument(id: $id, stack: $stack, sb: $sb, bb: $bb)';
+    return 'RoomDocument(id: $id, stack: $stack, createdAt: $createdAt)';
   }
 
   @override
@@ -177,13 +163,13 @@ class _$RoomDocumentImpl extends _RoomDocument {
             other is _$RoomDocumentImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.stack, stack) || other.stack == stack) &&
-            (identical(other.sb, sb) || other.sb == sb) &&
-            (identical(other.bb, bb) || other.bb == bb));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, stack, sb, bb);
+  int get hashCode => Object.hash(runtimeType, id, stack, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -203,8 +189,9 @@ abstract class _RoomDocument extends RoomDocument {
   const factory _RoomDocument(
       {@JsonKey(name: 'id') required final int id,
       @JsonKey(name: 'stack') required final int stack,
-      @JsonKey(name: 'sb') required final int sb,
-      @JsonKey(name: 'bb') required final int bb}) = _$RoomDocumentImpl;
+      @TimestampConverter()
+      @JsonKey(name: 'startTime')
+      required final DateTime createdAt}) = _$RoomDocumentImpl;
   const _RoomDocument._() : super._();
 
   factory _RoomDocument.fromJson(Map<String, dynamic> json) =
@@ -217,11 +204,9 @@ abstract class _RoomDocument extends RoomDocument {
   @JsonKey(name: 'stack')
   int get stack;
   @override
-  @JsonKey(name: 'sb')
-  int get sb;
-  @override
-  @JsonKey(name: 'bb')
-  int get bb;
+  @TimestampConverter()
+  @JsonKey(name: 'startTime')
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$RoomDocumentImplCopyWith<_$RoomDocumentImpl> get copyWith =>
