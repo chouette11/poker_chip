@@ -323,6 +323,7 @@ void _hostActionMethod(
       ref.read(potProvider.notifier).potUpdate(score);
       break;
     case ActionTypeEnum.check:
+      ref.read(playerDataProvider.notifier).updateCheck(uid);
       break;
   }
 }
