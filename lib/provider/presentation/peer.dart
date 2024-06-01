@@ -74,8 +74,15 @@ class HostConnOpen extends _$HostConnOpen {
         print('data!!');
         final mes = MessageEntity.fromJson(data);
         print('host: $mes');
-
-        if (mes.type == MessageTypeEnum.sit) {
+        if (mes.type == MessageTypeEnum.reconnect) {
+          final playersAndOptId = [
+            ref.read(playerDataProvider),
+            ref.read(optionAssignedIdProvider)
+          ];
+          final mes = MessageEntity(
+              type: MessageTypeEnum.reconnect, content: playersAndOptId);
+          ref.read(hostConsProvider.notifier).send(mes);
+        } else if (mes.type == MessageTypeEnum.sit) {
           final uid = mes.content as String;
           ref.read(sittingUidsProvider.notifier).add(uid);
           final players = ref.read(playerDataProvider);

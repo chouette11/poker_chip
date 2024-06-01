@@ -6,7 +6,7 @@ part of 'player.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$playerDataHash() => r'7fe2560f3afed8a56de4af1fb3895c2b076b7916';
+String _$playerDataHash() => r'09c8ad78620c501864c1c3d4a6b3fd9c74b56145';
 
 /// See also [PlayerData].
 @ProviderFor(PlayerData)

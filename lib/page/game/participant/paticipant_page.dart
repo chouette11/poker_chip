@@ -100,8 +100,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
             ref.read(roomRepositoryProvider).joinRoom(roomId, userEntity);
             ref.read(isJoinProvider.notifier).update((state) => true);
             final room = await ref.read(roomRepositoryProvider).getRoom(roomId);
-            ref.read(initStackProvider.notifier).update((state) => room.stack);
             ref.read(playerDataProvider.notifier).changeStack(uid, room.stack);
+          } else {
+            final conn = ref.read(participantConProvider);
+            final mes =
+                MessageEntity(type: MessageTypeEnum.reconnect, content: uid);
+            conn!.send(mes.toJson());
+            ref.read(isJoinProvider.notifier).update((state) => true);
           }
         });
       });
@@ -128,7 +133,16 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         }
         preMes = mes;
         print('paticipant: $mes');
-        if (mes.type == MessageTypeEnum.userSetting) {
+        if (mes.type == MessageTypeEnum.reconnect) {
+          final content = mes.content as List<dynamic>;
+          final tmpPlayers = content[0] as List<dynamic>;
+          final optId = content[1] as int;
+          final players =
+              tmpPlayers.map((e) => UserEntity.fromJson(e)).toList();
+          ref.read(isStartProvider.notifier).update((state) => true);
+          ref.read(playerDataProvider.notifier).restore(players);
+          ref.read(participantOptIdProvider.notifier).update((state) => optId);
+        } else if (mes.type == MessageTypeEnum.userSetting) {
           final user = UserEntity.fromJson(mes.content);
           ref.read(playerDataProvider.notifier).update(user);
         } else if (mes.type == MessageTypeEnum.history) {

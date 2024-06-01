@@ -18,8 +18,7 @@ class RoomRepository {
     final room = RoomEntity(
       id: id,
       stack: ref.read(initStackProvider),
-      sb: ref.read(sbProvider),
-      bb: ref.read(bbProvider),
+      createdAt: DateTime.now(),
     );
     await firestore.createRoom(room.toRoomDocument());
   }

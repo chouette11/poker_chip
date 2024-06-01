@@ -22,8 +22,7 @@ RoomEntity _$RoomEntityFromJson(Map<String, dynamic> json) {
 mixin _$RoomEntity {
   int get id => throw _privateConstructorUsedError;
   int get stack => throw _privateConstructorUsedError;
-  int get sb => throw _privateConstructorUsedError;
-  int get bb => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +36,7 @@ abstract class $RoomEntityCopyWith<$Res> {
           RoomEntity value, $Res Function(RoomEntity) then) =
       _$RoomEntityCopyWithImpl<$Res, RoomEntity>;
   @useResult
-  $Res call({int id, int stack, int sb, int bb});
+  $Res call({int id, int stack, DateTime createdAt});
 }
 
 /// @nodoc
@@ -55,8 +54,7 @@ class _$RoomEntityCopyWithImpl<$Res, $Val extends RoomEntity>
   $Res call({
     Object? id = null,
     Object? stack = null,
-    Object? sb = null,
-    Object? bb = null,
+    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -67,14 +65,10 @@ class _$RoomEntityCopyWithImpl<$Res, $Val extends RoomEntity>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
-      sb: null == sb
-          ? _value.sb
-          : sb // ignore: cast_nullable_to_non_nullable
-              as int,
-      bb: null == bb
-          ? _value.bb
-          : bb // ignore: cast_nullable_to_non_nullable
-              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ) as $Val);
   }
 }
@@ -87,7 +81,7 @@ abstract class _$$RoomEntityImplCopyWith<$Res>
       __$$RoomEntityImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int id, int stack, int sb, int bb});
+  $Res call({int id, int stack, DateTime createdAt});
 }
 
 /// @nodoc
@@ -103,8 +97,7 @@ class __$$RoomEntityImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? stack = null,
-    Object? sb = null,
-    Object? bb = null,
+    Object? createdAt = null,
   }) {
     return _then(_$RoomEntityImpl(
       id: null == id
@@ -115,14 +108,10 @@ class __$$RoomEntityImplCopyWithImpl<$Res>
           ? _value.stack
           : stack // ignore: cast_nullable_to_non_nullable
               as int,
-      sb: null == sb
-          ? _value.sb
-          : sb // ignore: cast_nullable_to_non_nullable
-              as int,
-      bb: null == bb
-          ? _value.bb
-          : bb // ignore: cast_nullable_to_non_nullable
-              as int,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
     ));
   }
 }
@@ -131,10 +120,7 @@ class __$$RoomEntityImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RoomEntityImpl extends _RoomEntity {
   const _$RoomEntityImpl(
-      {required this.id,
-      required this.stack,
-      required this.sb,
-      required this.bb})
+      {required this.id, required this.stack, required this.createdAt})
       : super._();
 
   factory _$RoomEntityImpl.fromJson(Map<String, dynamic> json) =>
@@ -145,13 +131,11 @@ class _$RoomEntityImpl extends _RoomEntity {
   @override
   final int stack;
   @override
-  final int sb;
-  @override
-  final int bb;
+  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'RoomEntity(id: $id, stack: $stack, sb: $sb, bb: $bb)';
+    return 'RoomEntity(id: $id, stack: $stack, createdAt: $createdAt)';
   }
 
   @override
@@ -161,13 +145,13 @@ class _$RoomEntityImpl extends _RoomEntity {
             other is _$RoomEntityImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.stack, stack) || other.stack == stack) &&
-            (identical(other.sb, sb) || other.sb == sb) &&
-            (identical(other.bb, bb) || other.bb == bb));
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, stack, sb, bb);
+  int get hashCode => Object.hash(runtimeType, id, stack, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -187,8 +171,7 @@ abstract class _RoomEntity extends RoomEntity {
   const factory _RoomEntity(
       {required final int id,
       required final int stack,
-      required final int sb,
-      required final int bb}) = _$RoomEntityImpl;
+      required final DateTime createdAt}) = _$RoomEntityImpl;
   const _RoomEntity._() : super._();
 
   factory _RoomEntity.fromJson(Map<String, dynamic> json) =
@@ -199,9 +182,7 @@ abstract class _RoomEntity extends RoomEntity {
   @override
   int get stack;
   @override
-  int get sb;
-  @override
-  int get bb;
+  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$RoomEntityImplCopyWith<_$RoomEntityImpl> get copyWith =>
