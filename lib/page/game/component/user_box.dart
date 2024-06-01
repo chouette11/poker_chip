@@ -26,7 +26,7 @@ class UserBoxes extends ConsumerWidget {
     final myAssignedId =
         players.firstWhere((e) => e.uid == ref.read(uidProvider)).assignedId;
 
-    if (players.length == 1) {
+    if (players.length == 1 || (!isHost && players.first.assignedId == 1)) {
       return const SizedBox.shrink();
     } else {
       players = rotateToMiddle(players, myAssignedId);

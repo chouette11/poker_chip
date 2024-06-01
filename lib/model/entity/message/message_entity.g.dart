@@ -19,8 +19,6 @@ Map<String, dynamic> _$$MessageEntityImplToJson(_$MessageEntityImpl instance) =>
     };
 
 const _$MessageTypeEnumEnumMap = {
-  MessageTypeEnum.join: 'join',
-  MessageTypeEnum.joined: 'joined',
   MessageTypeEnum.sit: 'sit',
   MessageTypeEnum.userSetting: 'userSetting',
   MessageTypeEnum.history: 'history',

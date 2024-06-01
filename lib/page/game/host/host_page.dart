@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:peerdart/peerdart.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
+import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hand_button.dart';
@@ -19,6 +21,7 @@ import 'package:poker_chip/provider/presentation/peer.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:poker_chip/provider/presentation/pot.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/room_repository.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -49,9 +52,47 @@ class _GamePageState extends ConsumerState<HostPage> {
     final flavor = ref.read(flavorProvider);
     final roomId = flavor == 'dev' ? 000000 : ref.read(roomIdProvider);
     final id = roomToPeerId(roomId);
-
     final peer = ref.read(peerProvider(id));
     ref.read(hostConnOpenProvider(peer).notifier).open(context);
+    Future(() async {
+      await ref.read(roomRepositoryProvider).createRoom(roomId);
+      final userEntity = UserEntity(
+        uid: ref.read(uidProvider),
+        name: ref.read(nameProvider),
+        stack: ref.read(initStackProvider),
+        assignedId: 1,
+        score: 0,
+        isBtn: false,
+        isAction: false,
+        isFold: false,
+        isCheck: false,
+        isSitOut: false,
+      );
+      await ref.read(roomRepositoryProvider).joinRoom(roomId, userEntity);
+    });
+
+    ref
+        .read(roomRepositoryProvider)
+        .getMemberStream(roomId)
+        .listen((event) async {
+      for (final change in event.docChanges) {
+        final data = change.doc.data();
+        if (data == null) {
+          break;
+        }
+        final user = UserEntity.fromJson(data);
+        switch (change.type) {
+          case DocumentChangeType.added:
+            ref.read(playerDataProvider.notifier).add(user);
+            break;
+          case DocumentChangeType.removed:
+            break;
+          case DocumentChangeType.modified:
+            ref.read(playerDataProvider.notifier).update(user);
+            break;
+        }
+      }
+    });
   }
 
   @override
@@ -67,6 +108,11 @@ class _GamePageState extends ConsumerState<HostPage> {
     return PopScope(
       canPop: !isStart,
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            print(ref.read(playerDataProvider));
+          },
+        ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: Column(
@@ -119,7 +165,7 @@ class _GamePageState extends ConsumerState<HostPage> {
                               context.pop();
                             },
                             child: Text(context.l10n.returnTop),
-                          )
+                          ),
                         ),
                       ),
                       const Positioned(

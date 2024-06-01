@@ -55,7 +55,7 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
     final uid = ref.watch(uidProvider);
     final myData = ref.watch(playerDataProvider.notifier).specificPlayer(uid);
     final initValue =
-        myData.stack == 0 ? ref.watch(stackProvider) : myData.stack;
+        myData.stack == 0 ? ref.read(initStackProvider) : myData.stack;
     return Dialog(
       child: Padding(
         padding: const EdgeInsets.all(8),

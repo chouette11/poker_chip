@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:loader_overlay/loader_overlay.dart';
 import 'package:poker_chip/data/revenue_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/page/component/snack.dart';
