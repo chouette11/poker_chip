@@ -4,7 +4,8 @@ enum MessageTypeEnum {
   history('history'),
   game('game'),
   action('action'),
-  res('res');
+  res('res'),
+  reconnect('reconnect');
 
   const MessageTypeEnum(this.displayName);
 

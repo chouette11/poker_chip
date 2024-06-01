@@ -25,4 +25,5 @@ const _$MessageTypeEnumEnumMap = {
   MessageTypeEnum.game: 'game',
   MessageTypeEnum.action: 'action',
   MessageTypeEnum.res: 'res',
+  MessageTypeEnum.reconnect: 'reconnect',
 };
