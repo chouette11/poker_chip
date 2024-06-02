@@ -62,6 +62,9 @@ class ParticipantActionButtons extends ConsumerWidget {
           !isStart) {
         return false;
       }
+      if (!ref.read(isStartProvider)) {
+        return false;
+      }
       final uid = assignedIdToUid(optAssignedId, ref);
       return ref.read(uidProvider) == uid;
     }
