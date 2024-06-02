@@ -190,6 +190,23 @@ class UserBox extends ConsumerWidget {
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: userEntity.isSitOut,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: const Color(0xFFFFF636),
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      child: Text(
+                        'Out',
+                        style: TextStyleConstant.score
+                            .copyWith(color: ColorConstant.black20),
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(width: 8),
               ],
             ),
