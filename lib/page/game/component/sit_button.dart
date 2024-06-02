@@ -114,13 +114,8 @@ class _CustomDialogState extends ConsumerState<_CustomDialog> {
                       MessageEntity(type: MessageTypeEnum.game, content: game);
                   ref.read(hostConsProvider.notifier).send(optMes);
                 } else {
-                  // ゲームが終了していた場合即時参加
-                  ref
-                      .read(playerDataProvider.notifier)
-                      .updateSitOut(uid, false);
-
                   final conn = ref.read(participantConProvider);
-                  final user = myData.copyWith.call(stack: stack, isSitOut: false);
+                  final user = myData.copyWith.call(stack: stack);
                   final mes = MessageEntity(
                     type: MessageTypeEnum.userSetting,
                     content: user,
