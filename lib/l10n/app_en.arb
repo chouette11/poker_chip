@@ -75,5 +75,8 @@
   "threeOfAKindDesc": "Three cards of the same rank",
   "twoPairDesc": "Two pairs of cards of the same rank",
   "onePairDesc": "Two cards of the same rank",
-  "highCardDesc": "Highest card"
+  "highCardDesc": "Highest card",
+  "dialogYes": "Yes",
+  "dialogNo": "No",
+  "isLeaveMessage": "Do you want to leave?"
 }

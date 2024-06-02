@@ -75,5 +75,8 @@
   "threeOfAKindDesc": "同じ数字が3枚",
   "twoPairDesc": "同じ数字の２枚が２組",
   "onePairDesc": "同じ数字が2枚",
-  "highCardDesc": "役なし"
+  "highCardDesc": "役なし",
+  "dialogYes": "はい",
+  "dialogNo": "いいえ",
+  "isLeaveMessage": "離席しますか？"
 }
