@@ -208,7 +208,65 @@ class _EditablePlayerCardState extends ConsumerState<_EditablePlayerCard> {
 
     return Row(
       children: [
-        const SizedBox(width: 52),
+        ElevatedButton(
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                content: Text(context.l10n.isLeaveMessage),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text(context.l10n.dialogYes),
+                    onPressed: () {
+                      if (widget.isHost) {
+                        /// Hostの状態変更
+                        ref
+                            .read(playerDataProvider.notifier)
+                            .updateSitOut(uid, true);
+                        ref
+                            .read(playerDataProvider.notifier)
+                            .updateFold(uid);
+                        ref
+                            .read(playerDataProvider.notifier)
+                            .updateAction(uid);
+
+                        /// Participantの状態変更
+                        final user = myData.copyWith
+                            .call(isSitOut: true, isFold: true, isAction: true);
+                        final mes = MessageEntity(
+                          type: MessageTypeEnum.userSetting,
+                          content: user,
+                        );
+                        ref.read(hostConsProvider.notifier).send(mes);
+                        context.pop();
+                      } else {
+                        final user = myData.copyWith
+                            .call(isSitOut: true, isFold: true, isAction: true);
+                        final mes = MessageEntity(
+                          type: MessageTypeEnum.userSetting,
+                          content: user,
+                        );
+                        ref.read(participantConProvider)?.send(mes.toJson());
+                        context.pop();
+                      }
+                    },
+                  ),
+                  TextButton(
+                    child: Text(context.l10n.dialogNo),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+              minimumSize: const Size(36, 36),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.grey),
+          child: const Icon(Icons.logout_rounded, size: 20),
+        ),
         Container(
           height: 60,
           width: 100,
@@ -237,12 +295,11 @@ class _EditablePlayerCardState extends ConsumerState<_EditablePlayerCard> {
             );
           },
           style: ElevatedButton.styleFrom(
-            minimumSize: const Size(36, 36),
-            shape: const CircleBorder(),
-            backgroundColor: Colors.grey
-          ),
+              minimumSize: const Size(36, 36),
+              shape: const CircleBorder(),
+              backgroundColor: Colors.grey),
           child: const Icon(Icons.manage_accounts, size: 20),
-        )
+        ),
       ],
     );
   }
