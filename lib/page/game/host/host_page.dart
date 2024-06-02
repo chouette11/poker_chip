@@ -108,11 +108,6 @@ class _GamePageState extends ConsumerState<HostPage> {
     return PopScope(
       canPop: !isStart,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            print(ref.read(playerDataProvider));
-          },
-        ),
         backgroundColor: ColorConstant.back,
         body: SafeArea(
           child: Column(
