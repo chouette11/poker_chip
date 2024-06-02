@@ -25,7 +25,7 @@ mixin _$RoomDocument {
   @JsonKey(name: 'stack')
   int get stack => throw _privateConstructorUsedError;
   @TimestampConverter()
-  @JsonKey(name: 'startTime')
+  @JsonKey(name: 'createdAt')
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -43,7 +43,7 @@ abstract class $RoomDocumentCopyWith<$Res> {
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'stack') int stack,
-      @TimestampConverter() @JsonKey(name: 'startTime') DateTime createdAt});
+      @TimestampConverter() @JsonKey(name: 'createdAt') DateTime createdAt});
 }
 
 /// @nodoc
@@ -91,7 +91,7 @@ abstract class _$$RoomDocumentImplCopyWith<$Res>
   $Res call(
       {@JsonKey(name: 'id') int id,
       @JsonKey(name: 'stack') int stack,
-      @TimestampConverter() @JsonKey(name: 'startTime') DateTime createdAt});
+      @TimestampConverter() @JsonKey(name: 'createdAt') DateTime createdAt});
 }
 
 /// @nodoc
@@ -133,7 +133,7 @@ class _$RoomDocumentImpl extends _RoomDocument {
       {@JsonKey(name: 'id') required this.id,
       @JsonKey(name: 'stack') required this.stack,
       @TimestampConverter()
-      @JsonKey(name: 'startTime')
+      @JsonKey(name: 'createdAt')
       required this.createdAt})
       : super._();
 
@@ -148,7 +148,7 @@ class _$RoomDocumentImpl extends _RoomDocument {
   final int stack;
   @override
   @TimestampConverter()
-  @JsonKey(name: 'startTime')
+  @JsonKey(name: 'createdAt')
   final DateTime createdAt;
 
   @override
@@ -190,7 +190,7 @@ abstract class _RoomDocument extends RoomDocument {
       {@JsonKey(name: 'id') required final int id,
       @JsonKey(name: 'stack') required final int stack,
       @TimestampConverter()
-      @JsonKey(name: 'startTime')
+      @JsonKey(name: 'createdAt')
       required final DateTime createdAt}) = _$RoomDocumentImpl;
   const _RoomDocument._() : super._();
 
@@ -205,7 +205,7 @@ abstract class _RoomDocument extends RoomDocument {
   int get stack;
   @override
   @TimestampConverter()
-  @JsonKey(name: 'startTime')
+  @JsonKey(name: 'createdAt')
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

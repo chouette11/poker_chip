@@ -11,12 +11,12 @@ _$RoomDocumentImpl _$$RoomDocumentImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as int,
       stack: json['stack'] as int,
       createdAt:
-          const TimestampConverter().fromJson(json['startTime'] as Timestamp),
+          const TimestampConverter().fromJson(json['createdAt'] as Timestamp),
     );
 
 Map<String, dynamic> _$$RoomDocumentImplToJson(_$RoomDocumentImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'stack': instance.stack,
-      'startTime': const TimestampConverter().toJson(instance.createdAt),
+      'createdAt': const TimestampConverter().toJson(instance.createdAt),
     };
