@@ -75,5 +75,9 @@
   "threeOfAKindDesc": "三张相同数字的牌",
   "twoPairDesc": "两对相同数字的牌",
   "onePairDesc": "一对相同数字的牌",
-  "highCardDesc": "无牌型"
+  "highCardDesc": "无牌型",
+  "dialogYes": "是",
+  "dialogNo": "否",
+  "isLeaveMessage": "你要离开吗？",
+  "dialogIncompatibleVersion": "此版本不兼容，可能会导致问题。我们对此带来的不便表示歉意，请其他成员使用以下链接更新到最新版本。"
 }

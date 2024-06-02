@@ -11,14 +11,60 @@ import 'package:poker_chip/page/root/component/usage_button.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
+import 'package:poker_chip/util/constant/text_style_constant.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 final rootGlobalKey = GlobalKey();
 
-class RootPage extends ConsumerWidget {
+class RootPage extends ConsumerStatefulWidget {
   const RootPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RootPage> createState() => _RootPageState();
+}
+
+class _RootPageState extends ConsumerState<RootPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => Future(
+        () async {
+          await Future.delayed(const Duration(seconds: 1));
+          return showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: SizedBox(
+                height: 400,
+                width: 400,
+                child: Column(
+                  children: [
+                    Text(
+                      context.l10n.dialogIncompatibleVersion,
+                      style: TextStyleConstant.text,
+                    ),
+                    QrImageView(data: 'https://onelink.to/pabhbm')
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(context.l10n.dialogYes),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
@@ -46,8 +92,7 @@ class RootPage extends ConsumerWidget {
                           width: width,
                         ),
                       ),
-                      const Positioned(
-                          top: 0, right: 0, child: InfoButton()),
+                      const Positioned(top: 0, right: 0, child: InfoButton()),
                       Positioned(
                         top: height * 0.25,
                         child: const Padding(

@@ -62,6 +62,9 @@ class ParticipantActionButtons extends ConsumerWidget {
           !isStart) {
         return false;
       }
+      if (!ref.read(isStartProvider)) {
+        return false;
+      }
       final uid = assignedIdToUid(optAssignedId, ref);
       return ref.read(uidProvider) == uid;
     }
@@ -119,6 +122,9 @@ class _ActionButton extends ConsumerWidget {
 
         /// bet額リセット
         ref.read(raiseBetProvider.notifier).update((state) => 0);
+
+        /// sitOutリセット
+        ref.read(isSittingButtonProvider.notifier).update((state) => true);
         
         /// 音声
         if (locale.toString() == 'ja') {

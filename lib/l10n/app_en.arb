@@ -75,5 +75,9 @@
   "threeOfAKindDesc": "Three cards of the same rank",
   "twoPairDesc": "Two pairs of cards of the same rank",
   "onePairDesc": "Two cards of the same rank",
-  "highCardDesc": "Highest card"
+  "highCardDesc": "Highest card",
+  "dialogYes": "Yes",
+  "dialogNo": "No",
+  "isLeaveMessage": "Do you want to leave?",
+  "dialogIncompatibleVersion": "This version is incompatible and may cause issues. We apologize for the inconvenience, but please have other members update to the latest version using the link below."
 }
