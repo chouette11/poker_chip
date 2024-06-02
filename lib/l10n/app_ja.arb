@@ -78,5 +78,6 @@
   "highCardDesc": "役なし",
   "dialogYes": "はい",
   "dialogNo": "いいえ",
-  "isLeaveMessage": "離席しますか？"
+  "isLeaveMessage": "離席しますか？",
+  "dialogIncompatibleVersion": "このバージョンは互換性がなく、不具合が生じる可能性があります。申し訳ありませんが他のメンバーも以下のリンクから最新バージョンに更新していただけると幸いです。"
 }
