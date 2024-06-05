@@ -154,4 +154,17 @@ class FirestoreDataSource {
       throw e;
     }
   }
+
+  /// version
+  Future<String> getVersion() async {
+    try {
+      final db = ref.read(firebaseFirestoreProvider);
+      final versions = await db.collection('versions').get();
+      final version = versions.docs.first.data()['version'];
+      return version;
+    } catch (e) {
+      print('firestore_getStream');
+      throw e;
+    }
+  }
 }
