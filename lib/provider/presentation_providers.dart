@@ -11,8 +11,7 @@ import 'package:uuid/uuid.dart';
 
 part 'presentation_providers.g.dart';
 
-final uidProvider = StateProvider<String>((ref) =>
-    ref.read(firebaseAuthProvider).currentUser?.uid ?? const Uuid().v4());
+final uidProvider = StateProvider<String>((ref) => '');
 
 final flavorProvider =
     Provider((ref) => const String.fromEnvironment('flavor'));
