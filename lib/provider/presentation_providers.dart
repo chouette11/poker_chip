@@ -3,11 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
-import 'package:poker_chip/provider/domain_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'presentation_providers.g.dart';
 
