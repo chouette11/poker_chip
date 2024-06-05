@@ -1,5 +1,4 @@
 import 'package:go_router/go_router.dart';
-import 'package:poker_chip/data/firestore_data_source.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
@@ -30,39 +29,34 @@ class _RootPageState extends ConsumerState<RootPage> {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => Future(
         () async {
-          await Future.delayed(const Duration(milliseconds: 500));
-          final version = await ref.read(firestoreProvider).getVersion();
-          print(version);
-          if (version == '') {
-            showDialog(
-              context: context,
-              builder: (context) =>
-                  AlertDialog(
-                    content: SizedBox(
-                      height: 400,
-                      width: 400,
-                      child: Column(
-                        children: [
-                          Text(
-                            context.l10n.dialogIncompatibleVersion,
-                            style: TextStyleConstant.text,
-                          ),
-                          QrImageView(data: 'https://onelink.to/pabhbm')
-                        ],
-                      ),
+          await Future.delayed(const Duration(seconds: 1));
+          return showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: SizedBox(
+                height: 400,
+                width: 400,
+                child: Column(
+                  children: [
+                    Text(
+                      context.l10n.dialogIncompatibleVersion,
+                      style: TextStyleConstant.text,
                     ),
-                    actions: <Widget>[
-                      TextButton(
-                        child: Text(context.l10n.dialogYes),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-            );
-          }
-        }
+                    QrImageView(data: 'https://onelink.to/pabhbm')
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(context.l10n.dialogYes),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
 
