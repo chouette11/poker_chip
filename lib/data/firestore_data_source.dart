@@ -29,20 +29,6 @@ class FirestoreDataSource {
     return RoomDocument.fromJson(room.data()!);
   }
 
-  /// 最新のオンラインルームを取得
-  Future<RoomDocument?> fetchLatestRoom() async {
-    final db = ref.read(firebaseFirestoreProvider);
-    final room = await db
-        .collection('rooms')
-        .orderBy('createdAt', descending: true)
-        .limit(1)
-        .get();
-    if (room.size == 0) {
-      return null;
-    }
-    return RoomDocument.fromJson(room.docs.first.data());
-  }
-
   /// ルームののストリームを取得
   Stream<RoomDocument> fetchRoomStream(String roomId) {
     try {
@@ -90,17 +76,6 @@ class FirestoreDataSource {
       });
     } catch (e) {
       print('update_room');
-      throw e;
-    }
-  }
-
-  /// ルームを削除
-  Future<void> deleteRoom(String roomId) async {
-    try {
-      final db = ref.read(firebaseFirestoreProvider);
-      await db.collection('rooms').doc(roomId).delete();
-    } catch (e) {
-      print('delete_room');
       throw e;
     }
   }
@@ -176,6 +151,19 @@ class FirestoreDataSource {
       });
     } catch (e) {
       print('update_room');
+      throw e;
+    }
+  }
+
+  /// version
+  Future<String> getVersion() async {
+    try {
+      final db = ref.read(firebaseFirestoreProvider);
+      final versions = await db.collection('versions').get();
+      final version = versions.docs.first.data()['version'];
+      return version;
+    } catch (e) {
+      print('firestore_getStream');
       throw e;
     }
   }

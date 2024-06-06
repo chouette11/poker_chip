@@ -12,10 +12,9 @@ part 'player.g.dart';
 class PlayerData extends _$PlayerData {
   @override
   List<UserEntity> build() {
-    final uid = ref.read(uidProvider);
     return [
       UserEntity(
-        uid: uid,
+        uid: ref.watch(uidProvider),
         name: ref.watch(nameProvider),
         stack: ref.read(initStackProvider),
         assignedId: 1,

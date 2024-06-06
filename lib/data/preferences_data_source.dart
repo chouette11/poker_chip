@@ -5,7 +5,8 @@ enum PrefKey {
   isLaunch,
   isNotificationDialog,
   isMute,
-  name
+  name,
+  uid
 }
 
 final preferencesProvider =

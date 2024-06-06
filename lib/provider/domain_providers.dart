@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:poker_chip/data/revenue_data_source.dart';
-import 'package:poker_chip/page/game/host/host.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
-import 'package:poker_chip/page/game/participant/ori.dart';
 import 'package:poker_chip/page/game/participant/paticipant_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,14 +37,6 @@ final routerProvider = Provider<GoRouter>(
         },
         builder: (context, state) => const RootPage(),
         routes: [
-          GoRoute(
-            path: 'host_ex',
-            builder: (context, state) => const Host(),
-          ),
-          GoRoute(
-            path: 'ori',
-            builder: (context, state) => const Ori(),
-          ),
           GoRoute(
             path: 'host',
             pageBuilder: (context, state) =>

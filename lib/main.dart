@@ -54,6 +54,8 @@ class _MyAppState extends ConsumerState<MyApp> {
       ref.read(authProvider).autoLogin();
       final user = ref.read(userRepositoryProvider);
       final name = await user.getName();
+      final uid = await user.getUID();
+      ref.read(uidProvider.notifier).update((state) => uid);
       ref.read(nameProvider.notifier).update((state) => name);
     });
     initPlugin();
