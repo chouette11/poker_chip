@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:poker_chip/data/revenue_data_source.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/game/participant/paticipant_page.dart';
@@ -13,10 +14,15 @@ final firebaseAuthProvider = Provider((_) => FirebaseAuth.instance);
 
 final firebaseFirestoreProvider = Provider((_) => FirebaseFirestore.instance);
 
+final firebaseAnalyticsProvider = Provider((_) => FirebaseAnalytics.instance);
+
+final analyticsObserverProvider = Provider((ref) =>
+    FirebaseAnalyticsObserver(analytics: ref.watch(firebaseAnalyticsProvider)));
+
 final uuidProvider = Provider((_) => const Uuid());
 
 final isProUserProvider = FutureProvider<bool>(
-      (ref) async => await ref.read(revenueProvider).getIsProUser(),
+  (ref) async => await ref.read(revenueProvider).getIsProUser(),
 );
 
 /// ページ遷移のプロバイダ
