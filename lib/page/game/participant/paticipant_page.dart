@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/data/firebase_analytics_data_source.dart';
 import 'package:poker_chip/model/entity/action/action_entity.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/history/history_entity.dart';
@@ -72,6 +73,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         connected = true;
         ref.read(roomIdProvider.notifier).update((state) => roomId);
         context.loaderOverlay.hide();
+        ref.read(analyticsProvider).joinSuccess();
         Future(() async {
           final members =
               await ref.read(roomRepositoryProvider).getMembers(roomId);
@@ -292,6 +294,7 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                           ),
                         ),
                         IdTextField((ref) {
+                          ref.read(analyticsProvider).pressJoinRoom();
                           int count = 0;
                           Future(() async {
                             do {

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:poker_chip/data/firebase_analytics_data_source.dart';
 import 'package:poker_chip/page/component/ad/banner_ad.dart';
 import 'package:poker_chip/page/game/component/chips.dart';
 import 'package:poker_chip/page/game/component/hole.dart';
@@ -110,7 +111,11 @@ class _RootPageState extends ConsumerState<RootPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 ElevatedButton(
-                                  onPressed: () => context.go('/host'),
+                                  onPressed: () {
+                                    final analytics = ref.read(analyticsProvider);
+                                    analytics.pressMakeRoom();
+                                    context.go('/host');
+                                  },
                                   child: Text(context.l10n.makeRoom),
                                 ),
                                 const SizedBox(width: 32),
