@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:poker_chip/data/firebase_analytics_data_source.dart';
 import 'package:poker_chip/data/firebase_auth_data_source.dart';
 import 'package:poker_chip/page/component/ad/gdpr.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
@@ -77,6 +78,10 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
+    final analytics = ref.watch(analyticsProvider);
+
+    // アプリが開かれたことをFirebaseAnalyticsに送信
+    analytics.appOpen();
     return MaterialApp.router(
       theme: ThemeData(
         useMaterial3: false,

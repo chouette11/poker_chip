@@ -9,6 +9,11 @@ class FirebaseAnalyticsDataSource {
 
   final Ref ref;
 
+  Future<void> appOpen() async {
+    final analytics = ref.read(firebaseAnalyticsProvider);
+    analytics.logAppOpen();
+  }
+
   Future<void> pressStart() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
