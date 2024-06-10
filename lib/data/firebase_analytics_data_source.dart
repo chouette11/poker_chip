@@ -47,9 +47,9 @@ class FirebaseAnalyticsDataSource {
   Future<void> joinSuccess() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'status',
+      name: 'button_press',
       parameters: <String, dynamic>{
-        'status_name': 'success_join',
+        'button_name': 'success_join',
       },
     );
   }
