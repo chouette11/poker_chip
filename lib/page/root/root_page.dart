@@ -10,6 +10,7 @@ import 'package:poker_chip/page/root/component/info_button.dart';
 import 'package:poker_chip/page/game/host/host_page.dart';
 import 'package:poker_chip/page/root/component/usage_button.dart';
 import 'package:poker_chip/provider/presentation_providers.dart';
+import 'package:poker_chip/repository/user_repository.dart';
 import 'package:poker_chip/util/constant/color_constant.dart';
 import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:poker_chip/util/constant/text_style_constant.dart';
@@ -31,32 +32,36 @@ class _RootPageState extends ConsumerState<RootPage> {
       (_) => Future(
         () async {
           await Future.delayed(const Duration(seconds: 1));
-          return showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-              content: SizedBox(
-                height: 400,
-                width: 400,
-                child: Column(
-                  children: [
-                    Text(
-                      context.l10n.dialogIncompatibleVersion,
-                      style: TextStyleConstant.text,
+          final isLaunch = await ref.read(userRepositoryProvider).getIsLaunch();
+          if (!isLaunch) {
+            return showDialog(
+              context: context,
+              builder: (context) =>
+                  AlertDialog(
+                    content: SizedBox(
+                      height: 400,
+                      width: 400,
+                      child: Column(
+                        children: [
+                          Text(
+                            context.l10n.dialogIncompatibleVersion,
+                            style: TextStyleConstant.text,
+                          ),
+                          QrImageView(data: 'https://onelink.to/pabhbm')
+                        ],
+                      ),
                     ),
-                    QrImageView(data: 'https://onelink.to/pabhbm')
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: Text(context.l10n.dialogYes),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ),
-          );
+                    actions: <Widget>[
+                      TextButton(
+                        child: Text(context.l10n.dialogYes),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+            );
+          }
         },
       ),
     );
