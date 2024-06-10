@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:peerdart/peerdart.dart';
+import 'package:poker_chip/data/firebase_analytics_data_source.dart';
 import 'package:poker_chip/model/entity/game/game_entity.dart';
 import 'package:poker_chip/model/entity/message/message_entity.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
@@ -229,7 +230,12 @@ class _GamePageState extends ConsumerState<HostPage> {
                                             .length <
                                         2
                                     ? null
-                                    : () => _game(cons, ref),
+                                    : () {
+                                        final analytics =
+                                            ref.read(analyticsProvider);
+                                        analytics.pressStart();
+                                        _game(cons, ref);
+                                      },
                                 child: Text(context.l10n.start),
                               ),
                               const SizedBox(width: 16),
