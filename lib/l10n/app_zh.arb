@@ -39,6 +39,8 @@
   "price" : "￥15.00 / 月",
   "hostTaskKill" : "房主请不要强制关闭应用",
   "participantTaskKill": "强制关闭应用后请重新进入房间",
+  "checkNumberMessage": "请再次确认ID",
+  "checkNetworkMessage": "网络环境不符合此应用程序的标准\n您或主机需要改善网络",
   "playerX": "玩家{x}",
   "@playerX": {
     "placeholders": {
