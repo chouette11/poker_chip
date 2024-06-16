@@ -45,9 +45,16 @@ class IdTextField extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            error,
-            style: TextStyleConstant.bold12.copyWith(color: Colors.red),
+          Visibility(
+            visible: !isStart && error != '',
+            child: Container(
+              padding: const EdgeInsets.all(4),
+              color: Colors.white,
+              child: Text(
+                error,
+                style: TextStyleConstant.bold14.copyWith(color: Colors.red),
+              ),
+            ),
           ),
           const SizedBox(height: 8),
           ElevatedButton(

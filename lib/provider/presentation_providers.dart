@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:poker_chip/model/entity/user/user_entity.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:poker_chip/provider/presentation/player.dart';
+import 'package:poker_chip/util/constant/context_extension.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'presentation_providers.g.dart';
@@ -45,14 +46,16 @@ class ErrorText extends _$ErrorText {
     return '';
   }
 
-  void view() {
-    Future.delayed(const Duration(seconds: 2), () {
-      final isStart = ref.watch(isJoinProvider);
-      if (!isStart) {
-        state = '再試行してください';
-      }
+  void viewCheckNetwork(BuildContext context) {
+    state = context.l10n.checkNetworkMessage;
+    Future.delayed(const Duration(seconds: 8), () {
+      state = '';
     });
-    Future.delayed(const Duration(seconds: 6), () {
+  }
+
+  void viewCheckNumber(BuildContext context) {
+    state = context.l10n.checkNumberMessage;
+    Future.delayed(const Duration(seconds: 4), () {
       state = '';
     });
   }
