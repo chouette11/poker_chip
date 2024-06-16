@@ -17,50 +17,42 @@ class FirebaseAnalyticsDataSource {
   Future<void> pressStart() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'button_press',
-      parameters: <String, dynamic>{
-        'button_name': 'start',
-      },
+      name: 'start_game',
     );
   }
 
   Future<void> pressMakeRoom() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'button_press',
-      parameters: <String, dynamic>{
-        'button_name': 'make_room',
-      },
+      name: 'make_room',
     );
   }
 
   Future<void> pressJoinRoom() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'button_press',
-      parameters: <String, dynamic>{
-        'button_name': 'join_room',
-      },
+      name: 'join_room',
     );
   }
 
   Future<void> joinSuccess() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'button_press',
-      parameters: <String, dynamic>{
-        'button_name': 'success_join',
-      },
+      name: 'success_join',
+    );
+  }
+
+  Future<void> reconnect() async {
+    final analytics = ref.read(firebaseAnalyticsProvider);
+    await analytics.logEvent(
+      name: 'reconnect',
     );
   }
 
   Future<void> pressUsage() async {
     final analytics = ref.read(firebaseAnalyticsProvider);
     await analytics.logEvent(
-      name: 'button_press',
-      parameters: <String, dynamic>{
-        'button_name': 'usage',
-      },
+      name: 'usage',
     );
   }
 }
