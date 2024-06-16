@@ -64,7 +64,6 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
     final peerId = roomToPeerId(roomId);
     final connection = peer.connect(widget.id ?? peerId);
     ref.read(participantConProvider.notifier).update((state) => connection);
-    ref.read(errorTextProvider.notifier).view();
     conn = connection;
 
     conn.on("open").listen((event) {
@@ -73,13 +72,13 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
         connected = true;
         ref.read(roomIdProvider.notifier).update((state) => roomId);
         context.loaderOverlay.hide();
-        ref.read(analyticsProvider).joinSuccess();
         Future(() async {
           final members =
               await ref.read(roomRepositoryProvider).getMembers(roomId);
 
           final uid = ref.read(uidProvider);
           if (!members.map((e) => e.uid).toList().contains(uid)) {
+            ref.read(analyticsProvider).joinSuccess();
             // 自分のassignedIdを変更
             ref
                 .read(playerDataProvider.notifier)
@@ -102,8 +101,9 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
             ref.read(roomRepositoryProvider).joinRoom(roomId, userEntity);
             ref.read(isJoinProvider.notifier).update((state) => true);
             final room = await ref.read(roomRepositoryProvider).getRoom(roomId);
-            ref.read(playerDataProvider.notifier).changeStack(uid, room.stack);
+            ref.read(playerDataProvider.notifier).changeStack(uid, room!.stack);
           } else {
+            ref.read(analyticsProvider).reconnect();
             final conn = ref.read(participantConProvider);
             final mes =
                 MessageEntity(type: MessageTypeEnum.reconnect, content: uid);
@@ -293,16 +293,28 @@ class _GamePageState extends ConsumerState<ParticipantPage> {
                             ),
                           ),
                         ),
-                        IdTextField((ref) {
+                        IdTextField((ref) async {
                           ref.read(analyticsProvider).pressJoinRoom();
+                          final roomId = int.parse(
+                              ref.read(idTextFieldControllerProvider).text);
+                          final room = await ref
+                              .read(roomRepositoryProvider)
+                              .getRoom(roomId);
+                          if (room == null) {
+                            ref
+                                .read(errorTextProvider.notifier)
+                                .viewCheckNumber(context);
+                            return;
+                          }
                           int count = 0;
-                          Future(() async {
-                            do {
-                              connect(ref);
-                              count++;
-                              await Future.delayed(const Duration(seconds: 1));
-                            } while (!connected && count < 10);
-                          });
+                          do {
+                            connect(ref);
+                            count++;
+                            await Future.delayed(const Duration(seconds: 1));
+                          } while (!connected && count < 10);
+                          ref
+                              .read(errorTextProvider.notifier)
+                              .viewCheckNetwork(context);
                           count = 0;
                         }),
                         Positioned(
