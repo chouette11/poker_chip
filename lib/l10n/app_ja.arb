@@ -39,6 +39,8 @@
   "price" : "¥ 280 / 月",
   "hostTaskKill" : "部屋作成者はタスクキルをしないでください",
   "participantTaskKill": "タスクキルをした場合入室し直してください",
+  "checkNumberMessage": "IDを再確認してください",
+  "checkNetworkMessage": "通信環境がこのアプリの基準を満たしていません\nhostまたは自分の通信を改善する必要があります",
   "playerX": "プレイヤー{x}",
   "@playerX": {
     "placeholders": {

@@ -39,6 +39,8 @@
   "price": "$1.99 / month",
   "hostTaskKill": "Room creator, please do not kill the task",
   "participantTaskKill": "If you kill the task, please re-enter",
+  "checkNumberMessage": "Please double-check the ID",
+  "checkNetworkMessage": "The network environment does not meet the standards of this app\nYou or the host need to improve the network",
   "playerX": "Player {x}",
   "@playerX": {
     "placeholders": {
