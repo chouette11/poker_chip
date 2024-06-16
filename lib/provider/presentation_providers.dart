@@ -103,6 +103,9 @@ class BigId extends _$BigId {
     if (state > len) {
       state = 1;
     }
+    if (isAllSitOut()) {
+      return;
+    }
     while (ref
         .read(playerDataProvider)
         .firstWhere((e) => e.uid == _assignedIdToUid2(state, ref))
@@ -119,6 +122,9 @@ class BigId extends _$BigId {
     int id = state - 1;
     if (id == 0) {
       id = players.length;
+    }
+    if (isAllSitOut()) {
+      return id;
     }
     while (ref
         .read(playerDataProvider)
@@ -143,6 +149,9 @@ class BigId extends _$BigId {
     if (id == 0) {
       id = len;
     }
+    if (isAllSitOut()) {
+      return id;
+    }
     while (ref
         .read(playerDataProvider)
         .firstWhere((e) => e.uid == _assignedIdToUid2(id, ref))
@@ -153,6 +162,15 @@ class BigId extends _$BigId {
       }
     }
     return id;
+  }
+
+  bool isAllSitOut() {
+    final players = ref.read(playerDataProvider);
+    final sitOuts = players.map((e) => e.isSitOut).toList();
+    if (sitOuts.where((e) => false).toList().isEmpty) {
+      return true;
+    }
+    return false;
   }
 }
 
